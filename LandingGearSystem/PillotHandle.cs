@@ -24,33 +24,33 @@ namespace LandingGearSystem
         /// <summary>
 		///   Gets the state machine that manages the state of the pilot handle.
 		/// </summary>
-		public readonly StateMachine<HandlePosition> StateMachine = HandlePosition.down;
+		public readonly StateMachine<HandlePosition> StateMachine = HandlePosition.Down;
     
         public override void Update()
         {
             StateMachine
                 .Transition(
-                    from: HandlePosition.down,
-                    to: HandlePosition.up,
-                    guard: PilotHandlePosition() == HandlePosition.up,
+                    from: HandlePosition.Down,
+                    to: HandlePosition.Up,
+                    guard: PilotHandlePosition() == HandlePosition.Up,
                     action: () => Moved = true)
 
                 .Transition(
-                    from: HandlePosition.down,
-                    to: HandlePosition.down,
-                    guard: PilotHandlePosition() == HandlePosition.down,
+                    from: HandlePosition.Down,
+                    to: HandlePosition.Down,
+                    guard: PilotHandlePosition() == HandlePosition.Down,
                     action: () => Moved = false)
 
                 .Transition(
-                    from: HandlePosition.up,
-                    to: HandlePosition.down,
-                    guard: PilotHandlePosition() == HandlePosition.down,
+                    from: HandlePosition.Up,
+                    to: HandlePosition.Down,
+                    guard: PilotHandlePosition() == HandlePosition.Down,
                     action: () => Moved = true)
 
                 .Transition(
-                    from: HandlePosition.up,
-                    to: HandlePosition.up,
-                    guard: PilotHandlePosition() == HandlePosition.up,
+                    from: HandlePosition.Up,
+                    to: HandlePosition.Up,
+                    guard: PilotHandlePosition() == HandlePosition.Up,
                     action: () => Moved = false);
                 
         }

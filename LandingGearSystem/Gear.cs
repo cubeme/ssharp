@@ -81,7 +81,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Indicates whether the airplane is on ground or in flight.
         /// </summary>
-        private GearShockAbsorber _shockAbsorber = new GearShockAbsorber();
+        private Airplane _shockAbsorber = new Airplane();
 
         /// <summary>
         /// Gets a value indicating which state the gear cylinder is currently in.

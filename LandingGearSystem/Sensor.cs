@@ -18,6 +18,16 @@ namespace LandingGearSystem
         /// <summary>
         ///  Gets the value recorded by the sensor.
         /// </summary>
-        public SensorType GetValue => CheckValue();
+        public SensorType Value => CheckValue();
     }
 }
+
+///Needed Sensors:
+///-> AnalogicalSwitch (AnalogicalSwitchStates)
+///-> CircuitPressurized (bool)
+///-> DoorLockedClosed (bool)
+///-> DoorOpen (bool)
+///-> GearLockedExtended (true)
+///-> GearLockedRetracted (true)
+///-> GearShockAbsorber (AirplaneStates)
+///-> PilotHandle (HandlePosition)

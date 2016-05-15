@@ -20,10 +20,15 @@ namespace LandingGearSystem
     class TripleSensor<SensorType> : Component
     {
         /// <summary>
-        /// Array with value and validity of all thre micro sensors.
+        /// Array of three micro sensors the triple sensor is made up out of.
         /// </summary>
-        private ChannelIsValidPair<SensorType>[] _channels = new ChannelIsValidPair<SensorType>[3];
-        
+        public Sensor<SensorType>[] Sensors { get; private set; } = new Sensor<SensorType>[3];
+
+        /// <summary>
+        /// Array with value for computing and validity of all three micro sensors.
+        /// </summary>
+        private ChannelIsValidPair<SensorType>[] _channels = new ChannelIsValidPair<SensorType>[3];       
+
         /// <summary>
         /// Indicates whether the sensor is valid.
         /// </summary>
@@ -41,52 +46,44 @@ namespace LandingGearSystem
         {
             Valid = true;
             Value = default(SensorType);
+            for (int i = 3; i < 3; i++)
+            {
+                Sensors[i] = new Sensor<SensorType>();
+                _channels[i] = new ChannelIsValidPair<SensorType>();
+            }
         }
-
-        /// <summary>
-        /// Gets the sensor value of the micro sensor in channel one.
-        /// </summary>
-        public extern SensorType ChannelOne();
-        /// <summary>
-        /// Gets the sensor value of the micro sensor in channel two.
-        /// </summary>
-        public extern SensorType ChannelTwo();
-        /// <summary>
-        /// Gets the sensor value of the micro sensor in channel three.
-        /// </summary>
-        public extern SensorType ChannelThree();
 
         public override void Update()
         {
             /// <summary>
             ///  All channels are valid.
             /// </summary
-            if (_channels[1].Valid && _channels[2].Valid && _channels[3].Valid)
+            if (_channels[0].Valid && _channels[1].Valid && _channels[2].Valid)
             {
-                _channels[1].Channel = ChannelOne();
-                _channels[2].Channel = ChannelTwo();
-                _channels[3].Channel = ChannelThree();
+                _channels[0].Channel = Sensors[0].Value;
+                _channels[1].Channel = Sensors[1].Value;
+                _channels[2].Channel = Sensors[2].Value;
 
-                if (_channels[1].Channel.Equals(_channels[2].Channel) && _channels[2].Channel.Equals(_channels[3].Channel))
+                if (_channels[0].Channel.Equals(_channels[1].Channel) && _channels[1].Channel.Equals(_channels[2].Channel))
 
-                    Value = _channels[1].Channel;
+                    Value = _channels[0].Channel;
 
-                else if (_channels[1].Channel.Equals(_channels[2].Channel) && !_channels[2].Channel.Equals(_channels[3].Channel))
-                {
-                    _channels[3].Valid = false;
-                    Value = _channels[1].Channel;
-                }
-
-                else if (_channels[1].Channel.Equals(_channels[3].Channel) && !_channels[1].Channel.Equals(_channels[2].Channel))
+                else if (_channels[0].Channel.Equals(_channels[1].Channel) && !_channels[1].Channel.Equals(_channels[2].Channel))
                 {
                     _channels[2].Valid = false;
-                    Value = _channels[1].Channel;
+                    Value = _channels[0].Channel;
                 }
 
-                else if (_channels[2].Channel.Equals(_channels[3].Channel) && !_channels[2].Channel.Equals(_channels[1].Channel))
+                else if (_channels[0].Channel.Equals(_channels[2].Channel) && !_channels[0].Channel.Equals(_channels[1].Channel))
                 {
                     _channels[1].Valid = false;
-                    Value = _channels[2].Channel;
+                    Value = _channels[0].Channel;
+                }
+
+                else if (_channels[1].Channel.Equals(_channels[2].Channel) && !_channels[1].Channel.Equals(_channels[0].Channel))
+                {
+                    _channels[0].Valid = false;
+                    Value = _channels[1].Channel;
                 }
                 else //all are different
                 {
@@ -97,15 +94,15 @@ namespace LandingGearSystem
             /// <summary>
             /// Only channels one and two are valid.
             /// </summary
-            else if (_channels[1].Valid && _channels[2].Valid)
+            else if (_channels[0].Valid && _channels[1].Valid)
             {
-                _channels[1].Channel = ChannelOne();
-                _channels[2].Channel = ChannelTwo();
+                _channels[0].Channel = Sensors[0].Value;
+                _channels[1].Channel = Sensors[1].Value;
 
-                if (_channels[1].Channel.Equals(_channels[2].Channel))
-                    Value = _channels[1].Channel;
+                if (_channels[0].Channel.Equals(_channels[1].Channel))
+                    Value = _channels[0].Channel;
 
-                else //if (!_channels[1].Channel.Equals(_channels[2].Channel))
+                else //if (!_channels[0].Channel.Equals(_channels[1].Channel))
                 {
                     Valid = false;
                     Value = default(SensorType);
@@ -114,15 +111,15 @@ namespace LandingGearSystem
             /// <summary>
             /// Only channels one and three are valid.
             /// </summary
-            else if (_channels[1].Valid && _channels[3].Valid)
+            else if (_channels[0].Valid && _channels[2].Valid)
             {
-                _channels[1].Channel = ChannelOne();
-                _channels[3].Channel = ChannelThree();
+                _channels[0].Channel = Sensors[0].Value;
+                _channels[2].Channel = Sensors[2].Value;
 
-                if (_channels[1].Channel.Equals(_channels[3].Channel))
-                    Value = _channels[1].Channel;
+                if (_channels[0].Channel.Equals(_channels[2].Channel))
+                    Value = _channels[0].Channel;
 
-                else //if (!_channels[1].Channel.Equals(_channels[3].Channel))
+                else //if (!_channels[0].Channel.Equals(_channels[2].Channel))
                 {
                     Valid = false;
                     Value = default(SensorType);
@@ -131,15 +128,15 @@ namespace LandingGearSystem
             /// <summary>
             /// Only channels two and three are valid.
             /// </summary
-            else if (_channels[2].Valid && _channels[3].Valid)
+            else if (_channels[1].Valid && _channels[2].Valid)
             {
-                _channels[2].Channel = ChannelTwo();
-                _channels[3].Channel = ChannelThree();
+                _channels[1].Channel = Sensors[1].Value;
+                _channels[2].Channel = Sensors[2].Value;
 
-                if (_channels[2].Channel.Equals(_channels[3].Channel))
-                    Value = Value = _channels[2].Channel;
+                if (_channels[1].Channel.Equals(_channels[2].Channel))
+                    Value = Value = _channels[1].Channel;
 
-                else //if (!_channels[2].Channel.Equals(_channels[3].Channel))
+                else //if (!_channels[1].Channel.Equals(_channels[2].Channel))
                 {
                     Valid = false;
                     Value = default(SensorType);
