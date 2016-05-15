@@ -20,16 +20,16 @@ namespace LandingGearSystem
         Flight
     }
 
-    class GearShockAbsorber : Component
+    class Airplane : Component
     {
         /// <summary>
         /// Nondeterministically chooses an airplane status.
         /// </summary>
         public AirplaneStates AirPlaneStatus { get; private set; } = AirplaneStates.Ground;
 
-        public override void Update()
+        public Airplane(AirplaneStates state)
         {
-            AirPlaneStatus = Choose(AirplaneStates.Ground, AirplaneStates.Flight);
+            AirPlaneStatus = state;
         }
     }
 }

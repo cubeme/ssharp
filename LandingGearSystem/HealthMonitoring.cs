@@ -54,64 +54,9 @@ namespace LandingGearSystem
     class HealthMonitoring : Component
     {
         /// <summary>
-        /// Indicates the current position of the analogical switch.
+        /// An instance of the associated computing module.
         /// </summary>
-        private Func<AnalogicalSwitchStates> _switchPosition;
-
-        /// <summary>
-        /// Indicates whether the hydraulic circuit is pressurized.
-        /// </summary>
-        private Func<bool> _circuitIsPressurized;
-
-        /// <summary>
-        /// Indicates whether all three doors are open.
-        /// </summary>
-        private Func<bool> _doorsAreOpen;
-
-        /// <summary>
-        /// Indicates whether all three doors are locked closed.
-        /// </summary>
-        private Func<bool> _doorsAreClosed;
-
-        /// <summary>
-        /// Indicates whether all three gears are locked retracted.
-        /// </summary>
-        private Func<bool> _gearsAreRetracted;
-
-        /// <summary>
-        /// Indicates whether all three gears are locked extended.
-        /// </summary>
-        private Func<bool> _gearsAreExtended;
-
-        /// <summary>
-        /// Indicates whether the pilot handle has been moved.
-        /// </summary>
-        private Func<bool> _handleHasMoved;
-
-        /// <summary>
-        /// Indicates whether the general electro valve is being stimulated.
-        /// </summary>
-        private Func<bool> _generalEV;
-
-        /// <summary>
-        /// Indicates whether the door opening electro valve is being stimulated.
-        /// </summary>
-        private Func<bool> _openEV;
-
-        /// <summary>
-        /// Indicates whether the door closure electro valve is being stimulated.
-        /// </summary>
-        private Func<bool> _closeEV;
-
-        /// <summary>
-        /// Indicates whether the gear extension electro valve is being stimulated.
-        /// </summary>
-        private Func<bool> _extendEV;
-
-        /// <summary>
-        /// Indicates whether the gear retraction electro valve is being stimulated.
-        /// </summary>
-        private Func<bool> _retractEV;
+        private ComputingModule computingModule;
 
         /// <summary>
         /// Indicates whether an anomaly has been detected.
@@ -161,38 +106,11 @@ namespace LandingGearSystem
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        /// <param name="switchPosition"> Indicates the current position of the analogical switch. </param>
-        /// <param name="circuitPressurized"> Indicates whether the hydraulic circuit is pressurized. </param>
-        /// <param name="doorsAreOpen"> Indicates whether all three doors are open. </param>
-        /// <param name="doorsAreClosed"> Indicates whether all three doors are locked closed. </param>
-        /// <param name="gearsAreRetracted"> Indicates whether all three gears are locked retracted. </param>
-        /// <param name="gearsAreExtended"> Indicates whether all three gears are locked extended. </param>
-        /// <param name="handleHasMoved"> Indicates whether the pilot handle has been moved. </param>
-        /// <param name="generalEV"> Indicates whether the general electro valve is being stimulated. </param>
-        /// <param name="openEV"> Indicates whether the door opening electro valve is being stimulated. </param>
-        /// <param name="closeEV"> Indicates whether the door closure electro valve is being stimulated. </param>
-        /// <param name="extendEV"> Indicates whether the gear extension electro valve is being stimulated. </param>
-        /// <param name="retractEV"> Indicates whether the gear retraction electro valve is being stimulatet. </param>
-        public HealthMonitoring(Func<AnalogicalSwitchStates> switchPosition, Func<bool> circuitPressurized, Func<bool> doorsAreOpen, Func<bool> doorsAreClosed, Func<bool> gearsAreRetracted, Func<bool> gearsAreExtended, Func<bool> handleHasMoved, Func<bool> generalEV, Func<bool> openEV, Func<bool> closeEV, Func<bool> extendEV, Func<bool> retractEV)
+        /// <param name="module"></param>
+        public HealthMonitoring(ComputingModule module)
         {
-        _switchPosition = switchPosition;
-        _circuitIsPressurized = circuitPressurized;
-
-        _doorsAreOpen = doorsAreOpen;
-        _doorsAreClosed = doorsAreClosed;
-
-        _gearsAreRetracted = gearsAreRetracted;
-        _gearsAreExtended = gearsAreRetracted;
-
-        _handleHasMoved = handleHasMoved;
-        _generalEV = generalEV;
-
-        _openEV = openEV;
-        _closeEV = closeEV;
-
-        _extendEV = extendEV;
-        _retractEV = retractEV;
-    }
+            computingModule = module;
+        }
 
         public override void Update()
         {
@@ -205,7 +123,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Start,
-                    guard: _handleHasMoved(),
+                    guard: computingModule.HandleHasMoved,
                     action: () =>
                     {
                         _timerSwitch.SetTimeout(200);
@@ -223,17 +141,17 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Error,
-                    guard: _timerSwitch.RemainingTime == 19 && _switchPosition.Equals(AnalogicalSwitchStates.open),
+                    guard: _timerSwitch.RemainingTime == 19 && computingModule.analogicalSwitch.Value == AnalogicalSwitchStates.Open,
                     action: () => AnomalyDetected = true)
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Wait,
-                    guard: _switchPosition.Equals(AnalogicalSwitchStates.open) && !_handleHasMoved(),
+                    guard: computingModule.analogicalSwitch.Value == AnalogicalSwitchStates.Open && !computingModule.HandleHasMoved,
                     action: () => _timerSwitch.Stop())
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Start,
-                    guard: _handleHasMoved(),
+                    guard: computingModule.HandleHasMoved,
                     action: () =>
                     {
                         _timerSwitch.SetTimeout(200);
@@ -242,7 +160,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Error,
-                    guard: _timerSwitch.HasElapsed && !_handleHasMoved() && _switchPosition.Equals(AnalogicalSwitchStates.closed),
+                    guard: _timerSwitch.HasElapsed && !computingModule.HandleHasMoved && computingModule.analogicalSwitch.Value == AnalogicalSwitchStates.Closed,
                     action: () => AnomalyDetected = true);
 
             //Pressure sensor monitoring
@@ -250,7 +168,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Start,
-                    guard:  _generalEV(),
+                    guard:  computingModule.GeneralEV,
                     action: () =>
                     {
                         _timerPressure.SetTimeout(20);
@@ -259,16 +177,16 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Intermediate,
-                    guard: _circuitIsPressurized())
+                    guard: computingModule.circuitPressurized.Value == true)
                 .Transition(
                     from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Error,
-                    guard: _timerPressure.HasElapsed && !_circuitIsPressurized(),
+                    guard: _timerPressure.HasElapsed && !computingModule.circuitPressurized.Value == true,
                     action: () => AnomalyDetected = true)
                 .Transition(
                     from: HealthMonitoringStates.Intermediate,
                     to: HealthMonitoringStates.End,
-                    guard: !_generalEV(),
+                    guard: !computingModule.GeneralEV,
                     action: () =>
                     {
                         _timerPressure.SetTimeout(100);
@@ -277,11 +195,11 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Wait,
-                    guard: !_circuitIsPressurized())
+                    guard: !computingModule.circuitPressurized.Value == true)
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Start,
-                    guard: _generalEV(),
+                    guard: computingModule.GeneralEV,
                     action: () =>
                     {
                         _timerPressure.SetTimeout(20);
@@ -290,7 +208,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Error,
-                    guard: _timerPressure.HasElapsed && _circuitIsPressurized(),
+                    guard: _timerPressure.HasElapsed && computingModule.circuitPressurized.Value == true,
                     action: () => AnomalyDetected = true);
 
             //Doors motion monitoring
@@ -298,7 +216,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Open,
-                    guard: _openEV(),
+                    guard: computingModule.OpenEV,
                     action: () =>
                     {
                         _timerDoors.SetTimeout(70);
@@ -307,16 +225,16 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Open,
                     to: HealthMonitoringStates.Error,
-                    guard: (_timerDoors.HasElapsed && _doorsAreClosed()) || (_timerDoors.HasElapsed && !_doorsAreOpen()),
+                    guard: (_timerDoors.HasElapsed && computingModule.DoorsClosed) || (_timerDoors.HasElapsed && !computingModule.DoorsOpen),
                     action: () => AnomalyDetected = true)
                 .Transition(
                     from: HealthMonitoringStates.Open,
                     to: HealthMonitoringStates.Wait,
-                    guard: !_doorsAreClosed() && _doorsAreOpen())
+                    guard: !computingModule.DoorsClosed && computingModule.DoorsOpen)
                 .Transition(
                     from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Close,
-                    guard: _closeEV(),
+                    guard: computingModule.CloseEV,
                     action: () =>
                     {
                         _timerDoors.SetTimeout(70);
@@ -325,19 +243,19 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Close,
                     to: HealthMonitoringStates.Error,
-                    guard: (_timerDoors.HasElapsed && _doorsAreOpen()) || (_timerDoors.HasElapsed && !_doorsAreClosed()),
+                    guard: (_timerDoors.HasElapsed && computingModule.DoorsOpen) || (_timerDoors.HasElapsed && !computingModule.DoorsClosed),
                     action: () => AnomalyDetected = true)
                 .Transition(
                     from: HealthMonitoringStates.Close,
                     to: HealthMonitoringStates.Wait,
-                    guard: _doorsAreClosed() && !_doorsAreOpen());
+                    guard: computingModule.DoorsClosed && !computingModule.DoorsOpen);
 
             //Gears motion monitoring
             StateMachineGears
                 .Transition(
                     from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Extend,
-                    guard: _extendEV(),
+                    guard: computingModule.ExtendEV,
                     action: () =>
                     {
                         _timerGears.SetTimeout(100);
@@ -346,16 +264,16 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Extend,
                     to: HealthMonitoringStates.Error,
-                    guard: (_timerGears.RemainingTime == 30 && _gearsAreRetracted()) || (_timerGears.HasElapsed && !_gearsAreExtended()),
+                    guard: (_timerGears.RemainingTime == 30 && computingModule.GearsRetracted) || (_timerGears.HasElapsed && !computingModule.GearsExtended),
                     action: () => AnomalyDetected = true)
                 .Transition(
                     from: HealthMonitoringStates.Extend,
                     to: HealthMonitoringStates.Wait,
-                    guard: _gearsAreExtended() && !_gearsAreRetracted())
+                    guard: computingModule.GearsExtended && !computingModule.GearsRetracted)
                 .Transition(
                     from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Retract,
-                    guard: _retractEV(),
+                    guard: computingModule.RetractEV,
                     action: () =>
                     {
                         _timerGears.SetTimeout(100);
@@ -364,12 +282,12 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Retract,
                     to: HealthMonitoringStates.Error,
-                    guard: (_timerGears.RemainingTime == 30 && _gearsAreExtended()) || (_timerGears.HasElapsed && !_gearsAreRetracted()),
+                    guard: (_timerGears.RemainingTime == 30 && computingModule.GearsExtended) || (_timerGears.HasElapsed && !computingModule.GearsRetracted),
                     action: () => AnomalyDetected = true)
                 .Transition(
                     from: HealthMonitoringStates.Retract,
                     to: HealthMonitoringStates.Wait,
-                    guard: _gearsAreRetracted() && !_gearsAreExtended());
+                    guard: computingModule.GearsRetracted && !computingModule.GearsExtended);
         }
     }
 }

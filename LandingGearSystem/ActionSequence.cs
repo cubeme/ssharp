@@ -21,9 +21,11 @@ namespace LandingGearSystem
 
     class ActionSequence : Component
     {
-        public bool Abort { get; set; }
+        public ComputingModule Module { get; private set; }
 
-        public List<SequenceStep> Steps { get; private set; } = new List<SequenceStep>();
+        public bool[] Conditions { get; private set; }
+
+        public bool Abort { get; set; }
 
         public bool Completed() => StateMachine.State == ActionSequenceStates.StateEnd;
 
@@ -32,11 +34,12 @@ namespace LandingGearSystem
         /// <summary>
 		///   Gets the state machine that manages the state of the action sequence
 		/// </summary>
-		public readonly StateMachine<ActionSequenceStates> StateMachine = ActionSequenceStates.StateStart;
-
-        public void Add(SequenceStep s)
+		public readonly StateMachine<ActionSequenceStates> StateMachine = ActionSequenceStates.StateStart;     
+        
+        public ActionSequence(ComputingModule module, bool[] conditions)
         {
-            Steps.Add(s);
-        }        
+            Module = module;
+            Conditions = conditions;
+        }  
     }
 }

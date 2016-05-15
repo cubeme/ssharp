@@ -11,29 +11,31 @@ namespace LandingGearSystem
     class OutgoingSequence : ActionSequence
     {
 
+        public OutgoingSequence(ComputingModule module, bool[] conditions) : base(module, conditions) { }
+
         public override void Update()
         {
             StateMachine
                 .Transition(
                     from: ActionSequenceStates.StateStart,
                     to: ActionSequenceStates.State1,
-                    guard: Steps[0].Condition() == true && Abort == false,
-                    action: () => Steps[0].RunStatement())
+                    guard: Conditions[0] == true && Abort == false,
+                    action: Module.OutgoingOne)
                 .Transition(
                     from: ActionSequenceStates.State1,
                     to: ActionSequenceStates.State2,
-                    guard: Steps[1].Condition() && Abort == false,
-                    action: () => Steps[1].RunStatement())
+                    guard: Conditions[1] && Abort == false,
+                    action: Module.OutgoingTwo)
                 .Transition(
                     from: ActionSequenceStates.State2,
                     to: ActionSequenceStates.State3,
-                    guard: Steps[2].Condition() && Abort == false,
-                    action: () => Steps[2].RunStatement())
+                    guard: Conditions[2] && Abort == false,
+                    action: Module.OutgoingThree)
                 .Transition(
                     from: ActionSequenceStates.State3,
                     to: ActionSequenceStates.State4,
-                    guard: Steps[3].Condition() && Abort == false,
-                    action: () => Steps[3].RunStatement())
+                    guard: Conditions[3] && Abort == false,
+                    action: Module.OutgoingFour)
                 .Transition(
                     from: ActionSequenceStates.State4,
                     to: ActionSequenceStates.StateEnd)

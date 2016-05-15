@@ -38,32 +38,6 @@ namespace LandingGearSystem
         [Root(Role.System)]
         public DigitalPart DigitalPart = new DigitalPart();
 
-        public Sensor<AnalogicalSwitchStates>[] AnalogicalSwitchSensor = new Sensor<AnalogicalSwitchStates>[3];
-
-        public Sensor<HandlePosition>[] PilotHandleSensor = new Sensor<HandlePosition>[3];
-
-        public Sensor<bool>[] PressureSensor = new Sensor<bool>[3];
-
-        public Sensor<bool>[] FrontDoorOpenSensor = new Sensor<bool>[3];
-        public Sensor<bool>[] LeftDoorOpenSensor = new Sensor<bool>[3];
-        public Sensor<bool>[] RightDoorOpenSensor = new Sensor<bool>[3];
-
-        public Sensor<bool>[] FrontDoorLockedClosed = new Sensor<bool>[3];
-        public Sensor<bool>[] LeftDoorLockedClosed = new Sensor<bool>[3];
-        public Sensor<bool>[] RightDoorLockedClosed = new Sensor<bool>[3];
-
-        public Sensor<bool>[] FrontGearLockedExtended = new Sensor<bool>[3];
-        public Sensor<bool>[] LeftGearLockedExtended = new Sensor<bool>[3];
-        public Sensor<bool>[] RightGearLockedExtended = new Sensor<bool>[3];
-
-        public Sensor<bool>[] FrontGearLockedRetracted = new Sensor<bool>[3];
-        public Sensor<bool>[] LeftGearLockedRetracted = new Sensor<bool>[3];
-        public Sensor<bool>[] RightGearLockedRetracted = new Sensor<bool>[3];
-
-        public Sensor<AirplaneStates>[] FrontGearShockAbsorber = new Sensor<AirplaneStates>[3];
-        public Sensor<AirplaneStates>[] LeftGearShockAbsorber = new Sensor<AirplaneStates>[3];
-        public Sensor<AirplaneStates>[] RightGearShockAbsorber = new Sensor<AirplaneStates>[3];
-
         [Root(Role.System)]
         public ElectroValve GeneralEV = new ElectroValve();
         [Root(Role.System)]

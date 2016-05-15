@@ -91,7 +91,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Gets a value indicating whether the door opening electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
         /// </summary
-        public bool OpenEVComposition() => OpenEVOne() || OpenEVTwo();
+        public bool OpenEVComposition => OpenEVOne() || OpenEVTwo();
 
         /// <summary>
         /// Gets a value indicating whether the gear retraction electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.

@@ -10,7 +10,8 @@ namespace LandingGearSystem
 
 
     class RetractionSequence : ActionSequence
-    {       
+    {
+        public RetractionSequence(ComputingModule module, bool[] conditions) : base(module, conditions) { }
 
         public override void Update()
         {
@@ -18,36 +19,36 @@ namespace LandingGearSystem
                 .Transition(
                     from: ActionSequenceStates.StateStart,
                     to: ActionSequenceStates.State1,
-                    guard: Steps[0].Condition() == true && Abort == false,
-                    action: () => Steps[0].RunStatement())
+                    guard: Conditions[0] == true && Abort == false,
+                    action: Module.RetractionOne)
                 .Transition(
                     from: ActionSequenceStates.State1,
                     to: ActionSequenceStates.State2,
-                    guard: Steps[1].Condition() && Abort == false,
-                    action: () => Steps[1].RunStatement())
+                    guard: Conditions[1] && Abort == false,
+                    action: Module.RetractionTwo)
                 .Transition(
                     from: ActionSequenceStates.State2,
                     to: ActionSequenceStates.State3,
-                    guard: Steps[2].Condition() && Abort == false,
-                    action: () => Steps[2].RunStatement())
+                    guard: Conditions[2] && Abort == false,
+                    action: Module.RetractionThree)
                 .Transition(
                     from: ActionSequenceStates.State3,
                     to: ActionSequenceStates.State4,
-                    guard: Steps[3].Condition() && Abort == false,
-                    action: () => Steps[3].RunStatement())
+                    guard: Conditions[3] && Abort == false,
+                    action: Module.RetractionFour)
                 .Transition(
                     from: ActionSequenceStates.State4,
                     to: ActionSequenceStates.State5,
-                    guard: Steps[4].Condition() && Abort == false,
-                    action: () => Steps[4].RunStatement())
+                    guard: Conditions[4] && Abort == false,
+                    action: Module.RetractionFive)
                 .Transition(
                     from: ActionSequenceStates.State5,
                     to: ActionSequenceStates.StateEnd)
                 .Transition(
                     from: ActionSequenceStates.State1,
                     to: ActionSequenceStates.State4,
-                    guard: Steps[5].Condition() == true,
-                    action: () => Steps[5].RunStatement())
+                    guard:Conditions[5] == true,
+                    action: Module.RetractionFour)
                 //Abort
                 .Transition(
                     from: ActionSequenceStates.StateStart,
