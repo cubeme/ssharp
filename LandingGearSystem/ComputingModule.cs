@@ -139,27 +139,20 @@ namespace LandingGearSystem
         public bool Anomaly { get; private set; }
 
         /// <summary>
-        /// Carries out the outgoing sequence of the landing gear.
+        /// Carries out the outgoing and retraction sequence of the landing gear.
         /// </summary>
-        private OutgoingSequence OutgoingSequence;
-
-        /// <summary>
-        /// Carries out the retraction sequence of the landing gear.
-        /// </summary>
-        private RetractionSequence RetractionSequence;
+        private ActionSequence _actionSequence;
 
         /// <summary>
         /// Monitors the system health by detecting anomalies.
         /// </summary>
-        private HealthMonitoring SystemHealth;
+        private HealthMonitoring _systemHealth;
 
         public ComputingModule()
         {
-            OutgoingSequence = new OutgoingSequence(this, new bool[] { GearsRetracted && HandleHasMoved && HandlePosition.Value == LandingGearSystem.HandlePosition.Down, DoorsOpen, GearsExtended, DoorsClosed });
+            _actionSequence = new ActionSequence(this);
 
-            RetractionSequence = new RetractionSequence(this, new bool[] { GearsExtended && DoorsClosed && HandlePosition.Value == LandingGearSystem.HandlePosition.Up, DoorsOpen && GearShockAbsorberRelaxed, GearsRetracted, true, DoorsClosed, DoorsOpen && GearShockAbsorberRelaxed == false });
-
-            SystemHealth = new HealthMonitoring(this);
+            _systemHealth = new HealthMonitoring(this);
         }
 
         /// <summary>
@@ -205,10 +198,10 @@ namespace LandingGearSystem
             _oldHandlePosition = HandlePosition.Value;
 
             //Compute new values
-            Update(OutgoingSequence, RetractionSequence, SystemHealth, HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, CircuitPressurized);
+            Update(_actionSequence, _systemHealth, HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, CircuitPressurized);
 
             //Look for anomaly
-            if (SystemHealth.AnomalyDetected)
+            if (_systemHealth.AnomalyDetected)
                 Anomaly = true;
 
             if (HandlePosition.Valid == false || AnalogicalSwitch.Valid == false || FrontGearExtented.Valid == false || FrontGearRetracted.Valid == false || FrontGearShockAbsorber.Valid == false || LeftGearExtented.Valid == false || LeftGearRetracted.Valid == false || LeftGearShockAbsorber.Valid == false || RightGearExtented.Valid == false || RightGearRetracted.Valid == false || RightGearShockAbsorber.Valid == false || FrontDoorClosed.Valid == false || FrontDoorOpen.Valid == false || LeftDoorClosed.Valid == false || LeftDoorOpen.Valid == false || RightDoorClosed.Valid == false || RightDoorOpen.Valid == false || CircuitPressurized.Valid == false)
@@ -226,12 +219,15 @@ namespace LandingGearSystem
 
         }
 
-        public void OutgoingOne()
+        public void One()
         {
             //Step 1
             GeneralEV = true;
             //Step 2
             OpenEV = true;
+
+            //Reverse
+            CloseEV = false;
         }
 
         //---> ?? ActionSequence.start(new Statement(OutgoingOne())
@@ -239,39 +235,27 @@ namespace LandingGearSystem
         {
             //Step 3
             ExtendEV = true;
+
+            //Reverse
+            RetractEV = false;
+        }
+
+
+        public void RetractionTwo()
+        {
+            //Step 3
+            RetractEV = true;
+
+            //Reverse
+            ExtendEV = false;
         }
 
         public void OutgoingThree()
         {
             //Step 4
             ExtendEV = false;
-            //Step 5
-            OpenEV = false;
-            //Step 6
-            CloseEV = true;
         }
 
-        public void OutgoingFour()
-        {
-            //Step 7
-            CloseEV = false;
-            //Step 8
-            GeneralEV = false;
-        }
-
-        public void RetractionOne()
-        {
-            //Step 1
-            GeneralEV = true;
-            //Step 2
-            OpenEV = true;
-        }
-
-        public void RetractionTwo()
-        {
-            //Step 3
-            RetractEV = true;
-        }
 
         public void RetractionThree()
         {
@@ -279,21 +263,24 @@ namespace LandingGearSystem
             RetractEV = false;
         }
 
-        public void RetractionFour()
-        { 
+
+        public void Four()
+        {
             //Step 5
             OpenEV = false;
             //Step 6
             CloseEV = true;
         }
+           
 
-        public void RetractionFive()
+        public void Zero()
         {
             //Step 7
             CloseEV = false;
             //Step 8
             GeneralEV = false;
         }
+
 
     }
 }

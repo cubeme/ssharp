@@ -70,12 +70,10 @@
     <Compile Include="Airplane.cs" />
     <Compile Include="PressureCircuit.cs" />
     <Compile Include="LatchingBox.cs" />
-    <Compile Include="OutgoingSequence.cs" />
     <Compile Include="PillotHandle.cs" />
     <Compile Include="Pilot.cs" />
     <Compile Include="PilotInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RetractionSequence.cs" />
     <Compile Include="Sensor.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TripleSensor.cs" />
