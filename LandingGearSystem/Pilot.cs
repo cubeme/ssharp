@@ -33,7 +33,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Gets the current handle position.
         /// </summary>
-        public HandlePosition GetHandlePosition() => _position;
+        public HandlePosition HandlePosition => _position;
 
         public override void Update()
         {

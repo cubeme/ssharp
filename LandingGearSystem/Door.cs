@@ -78,17 +78,17 @@ namespace LandingGearSystem
         /// <summary>
         /// Gets a value indicating which state the door cylinder is currently in.
         /// </summary>
-        public extern DoorStates GetDoorCylinderState();
+        public extern DoorStates GetDoorCylinderState { get;  }
 
         /// <summary>
         /// Gets a value indicating whether the door is open.
         /// </summary>
-        public bool DoorIsOpen() => StateMachine.State == DoorStates.Open;
+        public bool DoorIsOpen => StateMachine.State == DoorStates.Open;
 
         /// <summary>
         /// Gets a value indicating whether the door is closed.
         /// </summary>
-        public bool DoorIsClosed() => StateMachine.State == DoorStates.LockedClosed;
+        public bool DoorIsClosed => StateMachine.State == DoorStates.LockedClosed;
 
         /// <summary>
         /// Initializes a new instance.
@@ -106,72 +106,72 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.LockedClosed,
                     to: DoorStates.UnlockingClosed,
-                    guard: GetDoorCylinderState() == DoorStates.UnlockingClosed)
+                    guard: GetDoorCylinderState  == DoorStates.UnlockingClosed)
 
                 .Transition(
                     from: DoorStates.UnlockingClosed,
                     to: DoorStates.MoveOpening,
-                    guard: GetDoorCylinderState() == DoorStates.MoveOpening)
+                    guard: GetDoorCylinderState  == DoorStates.MoveOpening)
 
                 .Transition(
                     from: DoorStates.MoveOpening,
                     to: DoorStates.Open,
-                    guard: GetDoorCylinderState() == DoorStates.Open)
+                    guard: GetDoorCylinderState  == DoorStates.Open)
 
                 .Transition(
                     from: DoorStates.Open,
                     to: DoorStates.Open,
-                    guard: GetDoorCylinderState() == DoorStates.Open)
+                    guard: GetDoorCylinderState  == DoorStates.Open)
 
                 .Transition(
                     from: DoorStates.Open,
                     to: DoorStates.OpenLoose,
-                    guard: GetDoorCylinderState() == DoorStates.OpenLoose)
+                    guard: GetDoorCylinderState  == DoorStates.OpenLoose)
 
                 .Transition(
                     from: DoorStates.Open,
                     to: DoorStates.MoveClosing,
-                    guard: GetDoorCylinderState() == DoorStates.MoveClosing)
+                    guard: GetDoorCylinderState  == DoorStates.MoveClosing)
 
                 .Transition(
                     from: DoorStates.OpenLoose,
                     to: DoorStates.Open,
-                    guard: GetDoorCylinderState() == DoorStates.Open)
+                    guard: GetDoorCylinderState  == DoorStates.Open)
 
                 .Transition(
                     from: DoorStates.OpenLoose,
                     to: DoorStates.MoveClosing,
-                    guard: GetDoorCylinderState() == DoorStates.MoveClosing)
+                    guard: GetDoorCylinderState  == DoorStates.MoveClosing)
 
                 .Transition(
                     from: DoorStates.MoveClosing,
                     to: DoorStates.LockingClosed,
-                    guard: GetDoorCylinderState() == DoorStates.LockingClosed)
+                    guard: GetDoorCylinderState  == DoorStates.LockingClosed)
 
                 .Transition(
                     from: DoorStates.LockingClosed,
                     to: DoorStates.LockedClosed,
-                    guard: GetDoorCylinderState() == DoorStates.LockedClosed)
+                    guard: GetDoorCylinderState  == DoorStates.LockedClosed)
 
                 .Transition(
                     from: DoorStates.MoveClosing,
                     to: DoorStates.MoveOpening,
-                    guard: GetDoorCylinderState() == DoorStates.MoveOpening)
+                    guard: GetDoorCylinderState  == DoorStates.MoveOpening)
 
                 .Transition(
                     from: DoorStates.MoveOpening,
                     to: DoorStates.MoveClosing,
-                    guard: GetDoorCylinderState() == DoorStates.MoveClosing)
+                    guard: GetDoorCylinderState  == DoorStates.MoveClosing)
 
                 .Transition(
                     from: DoorStates.LockingClosed,
                     to: DoorStates.UnlockingClosed,
-                    guard: GetDoorCylinderState() == DoorStates.UnlockingClosed)
+                    guard: GetDoorCylinderState  == DoorStates.UnlockingClosed)
 
                 .Transition(
                     from: DoorStates.UnlockingClosed,
                     to: DoorStates.LockingClosed,
-                    guard: GetDoorCylinderState() == DoorStates.LockingClosed);
+                    guard: GetDoorCylinderState  == DoorStates.LockingClosed);
         }
     }
 }

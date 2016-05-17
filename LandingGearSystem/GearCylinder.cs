@@ -33,6 +33,8 @@ namespace LandingGearSystem
         /// </summary>
         private LatchingBox _latchingBoxRetracted = new LatchingBox(8, 4);
 
+        public GearStates GearCylinderState => StateMachine.State;
+
         public override void Update()
         {
             Update(_timer, _latchingBoxExtended, _latchingBoxRetracted);
@@ -41,7 +43,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.LockedExtended,
                     to: GearStates.UnlockingExtended,
-                    guard: CheckPressureRetractionCircuit() == true,
+                    guard: CheckPressureRetractionCircuit == true,
                     action: () =>
                     {
                         _latchingBoxExtended.Unlock = true;
@@ -50,7 +52,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.UnlockingExtended,
                     to: GearStates.MoveRetracting,
-                    guard: CheckPressureRetractionCircuit() == true && _latchingBoxExtended.StateMachine == LatchingBoxState.Unlocked,
+                    guard: CheckPressureRetractionCircuit == true && _latchingBoxExtended.StateMachine == LatchingBoxState.Unlocked,
                     action: () =>
                     {
                         _timer.SetTimeout(Position == CylinderPosition.Front ? 16 : 20);
@@ -60,7 +62,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.MoveRetracting,
                     to: GearStates.LockingRetracted,
-                    guard: CheckPressureRetractionCircuit() == true && _timer.HasElapsed,
+                    guard: CheckPressureRetractionCircuit == true && _timer.HasElapsed,
                     action: () =>
                     {
                         _latchingBoxRetracted.Lock = true;
@@ -69,12 +71,12 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.LockingRetracted,
                     to: GearStates.LockedRetracted,
-                    guard: CheckPressureRetractionCircuit() == true && _latchingBoxRetracted.StateMachine == LatchingBoxState.Locked)
+                    guard: CheckPressureRetractionCircuit == true && _latchingBoxRetracted.StateMachine == LatchingBoxState.Locked)
 
                 .Transition(
                     from: GearStates.LockedRetracted,
                     to: GearStates.UnlockingRetracted,
-                    guard: CheckPressureExtensionCircuit() == true,
+                    guard: CheckPressureExtensionCircuit == true,
                     action: () =>
                     {
                         _latchingBoxRetracted.Unlock = true;
@@ -83,7 +85,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.UnlockingRetracted,
                     to: GearStates.MoveExtending,
-                    guard: CheckPressureExtensionCircuit() == true && _latchingBoxRetracted.StateMachine == LatchingBoxState.Unlocked,
+                    guard: CheckPressureExtensionCircuit == true && _latchingBoxRetracted.StateMachine == LatchingBoxState.Unlocked,
                     action: () =>
                     {
                         _timer.SetTimeout(Position == CylinderPosition.Front ? 12 : 16);
@@ -93,7 +95,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.MoveExtending,
                     to: GearStates.LockingExtended,
-                    guard: CheckPressureExtensionCircuit() == true && _timer.HasElapsed,
+                    guard: CheckPressureExtensionCircuit == true && _timer.HasElapsed,
                     action: () =>
                     {
                         _latchingBoxExtended.Lock = true;
@@ -102,14 +104,14 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.LockingExtended,
                     to: GearStates.LockedExtended,
-                    guard: CheckPressureExtensionCircuit() == true && _latchingBoxExtended.StateMachine == LatchingBoxState.Locked)
+                    guard: CheckPressureExtensionCircuit == true && _latchingBoxExtended.StateMachine == LatchingBoxState.Locked)
 
             //Reverse Motion
 
                 .Transition(
                     from: GearStates.UnlockingExtended,
                     to: GearStates.LockingExtended,
-                    guard: CheckPressureExtensionCircuit() == true,
+                    guard: CheckPressureExtensionCircuit == true,
                     action: () =>
                     {
                         _latchingBoxExtended.Unlock = false;
@@ -119,7 +121,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.LockingExtended,
                     to: GearStates.UnlockingExtended,
-                    guard: CheckPressureRetractionCircuit() == true,
+                    guard: CheckPressureRetractionCircuit == true,
                     action: () =>
                     {
                         _latchingBoxExtended.Lock = false;
@@ -129,7 +131,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.MoveRetracting,
                     to: GearStates.MoveExtending,
-                    guard: CheckPressureExtensionCircuit() == true,
+                    guard: CheckPressureExtensionCircuit == true,
                     action: () =>
                     {
                         _timer.SetTimeout(Position == CylinderPosition.Front ? 12 - (3 * _timer.RemainingTime) / 4 : 16 - (4 * _timer.RemainingTime) / 5);
@@ -139,7 +141,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.MoveExtending,
                     to: GearStates.MoveRetracting,
-                    guard: CheckPressureRetractionCircuit() == true,
+                    guard: CheckPressureRetractionCircuit == true,
                     action: () =>
                     {
                         _timer.SetTimeout(Position == CylinderPosition.Front ? 16 - (4 * _timer.RemainingTime) / 3 : 20 - (5 * _timer.RemainingTime) / 4);
@@ -149,7 +151,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.LockingRetracted,
                     to: GearStates.UnlockingRetracted,
-                    guard: CheckPressureExtensionCircuit() == true,
+                    guard: CheckPressureExtensionCircuit == true,
                     action: () =>
                     {
                         _latchingBoxRetracted.Lock = false;
@@ -159,7 +161,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: GearStates.UnlockingRetracted,
                     to: GearStates.LockingRetracted,
-                    guard: CheckPressureRetractionCircuit() == true,
+                    guard: CheckPressureRetractionCircuit == true,
                     action: () =>
                     {
                         _latchingBoxRetracted.Unlock = false;

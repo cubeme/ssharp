@@ -19,7 +19,9 @@ namespace LandingGearSystem
         /// <summary>
         /// Gets the handle position chosen by the Pilot.
         /// </summary>
-        public extern HandlePosition PilotHandlePosition();
+        public extern HandlePosition GetPilotHandlePosition { get;  }
+
+        public HandlePosition PilotHandlePosition => StateMachine.State;
 
         /// <summary>
 		///   Gets the state machine that manages the state of the pilot handle.
@@ -32,25 +34,25 @@ namespace LandingGearSystem
                 .Transition(
                     from: HandlePosition.Down,
                     to: HandlePosition.Up,
-                    guard: PilotHandlePosition() == HandlePosition.Up,
+                    guard: GetPilotHandlePosition == HandlePosition.Up,
                     action: () => Moved = true)
 
                 .Transition(
                     from: HandlePosition.Down,
                     to: HandlePosition.Down,
-                    guard: PilotHandlePosition() == HandlePosition.Down,
+                    guard: GetPilotHandlePosition == HandlePosition.Down,
                     action: () => Moved = false)
 
                 .Transition(
                     from: HandlePosition.Up,
                     to: HandlePosition.Down,
-                    guard: PilotHandlePosition() == HandlePosition.Down,
+                    guard: GetPilotHandlePosition == HandlePosition.Down,
                     action: () => Moved = true)
 
                 .Transition(
                     from: HandlePosition.Up,
                     to: HandlePosition.Up,
-                    guard: PilotHandlePosition() == HandlePosition.Up,
+                    guard: GetPilotHandlePosition == HandlePosition.Up,
                     action: () => Moved = false);
                 
         }

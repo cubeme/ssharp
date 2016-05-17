@@ -13,12 +13,12 @@ namespace LandingGearSystem
         /// <summary>
         ///  Indicates the current sensor value.
         /// </summary>
-        public extern SensorType CheckValue();
+        public extern SensorType CheckValue { get;  }
 
         /// <summary>
         ///  Gets the value recorded by the sensor.
         /// </summary>
-        public SensorType Value => CheckValue();
+        public SensorType Value => CheckValue;
     }
 }
 

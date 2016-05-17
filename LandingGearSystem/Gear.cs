@@ -79,24 +79,19 @@ namespace LandingGearSystem
 		public readonly StateMachine<GearStates> StateMachine = GearStates.LockedExtended;
 
         /// <summary>
-        /// Indicates whether the airplane is on ground or in flight.
-        /// </summary>
-        private Airplane _shockAbsorber = new Airplane();
-
-        /// <summary>
         /// Gets a value indicating which state the gear cylinder is currently in.
         /// </summary>
-        public extern GearStates GetGearCylinderState();
+        public extern GearStates GetGearCylinderState { get;  }
 
         /// <summary>
         /// Gets a value indicating whether the gear is locked in extended position.
         /// </summary>
-        public bool GearIsExtended() => StateMachine.State == GearStates.LockedExtended;
+        public bool GearIsExtended => StateMachine.State == GearStates.LockedExtended;
 
         /// <summary>
         /// Gets a value indicating whether the gear is locked in retracted position.
         /// </summary>
-        public bool GearIsRetracted() => StateMachine.State == GearStates.LockedRetracted;
+        public bool GearIsRetracted => StateMachine.State == GearStates.LockedRetracted;
 
         /// <summary>
         /// Initializes a new instance.
@@ -109,78 +104,77 @@ namespace LandingGearSystem
 
         public override void Update()
         {
-            Update(_shockAbsorber);
 
             StateMachine
                 .Transition(
                     from: GearStates.LockedExtended,
                     to: GearStates.UnlockingExtended,
-                    guard: GetGearCylinderState() == GearStates.UnlockingExtended)
+                    guard: GetGearCylinderState == GearStates.UnlockingExtended)
 
                 .Transition(
                     from: GearStates.UnlockingExtended,
                     to: GearStates.MoveRetracting,
-                    guard: GetGearCylinderState() == GearStates.MoveRetracting)
+                    guard: GetGearCylinderState == GearStates.MoveRetracting)
 
                 .Transition(
                     from: GearStates.MoveRetracting,
                     to: GearStates.LockingRetracted,
-                    guard: GetGearCylinderState() == GearStates.LockingRetracted)
+                    guard: GetGearCylinderState == GearStates.LockingRetracted)
 
                 .Transition(
                     from: GearStates.LockingRetracted,
                     to: GearStates.LockedRetracted,
-                    guard: GetGearCylinderState() == GearStates.LockedRetracted)
+                    guard: GetGearCylinderState  == GearStates.LockedRetracted)
 
                 .Transition(
                     from: GearStates.LockedRetracted,
                     to: GearStates.UnlockingRetracted,
-                    guard: GetGearCylinderState() == GearStates.UnlockingRetracted)
+                    guard: GetGearCylinderState  == GearStates.UnlockingRetracted)
 
                 .Transition(
                     from: GearStates.UnlockingRetracted,
                     to: GearStates.MoveExtending,
-                    guard: GetGearCylinderState() == GearStates.MoveExtending)
+                    guard: GetGearCylinderState  == GearStates.MoveExtending)
 
                 .Transition(
                     from: GearStates.MoveExtending,
                     to: GearStates.LockingExtended,
-                    guard: GetGearCylinderState() == GearStates.LockingExtended)
+                    guard: GetGearCylinderState  == GearStates.LockingExtended)
 
                 .Transition(
                     from: GearStates.LockingExtended,
                     to: GearStates.LockedExtended,
-                    guard: GetGearCylinderState() == GearStates.LockedExtended)
+                    guard: GetGearCylinderState  == GearStates.LockedExtended)
 
                 .Transition(
                     from: GearStates.UnlockingExtended,
                     to: GearStates.LockingExtended,
-                    guard: GetGearCylinderState() == GearStates.LockingExtended)
+                    guard: GetGearCylinderState  == GearStates.LockingExtended)
 
                 .Transition(
                     from: GearStates.LockingExtended,
                     to: GearStates.UnlockingExtended,
-                    guard: GetGearCylinderState() == GearStates.UnlockingExtended)
+                    guard: GetGearCylinderState  == GearStates.UnlockingExtended)
 
                 .Transition(
                     from: GearStates.MoveRetracting,
                     to: GearStates.MoveExtending,
-                    guard: GetGearCylinderState() == GearStates.MoveExtending)
+                    guard: GetGearCylinderState  == GearStates.MoveExtending)
 
                 .Transition(
                     from: GearStates.MoveExtending,
                     to: GearStates.MoveRetracting,
-                    guard: GetGearCylinderState() == GearStates.MoveRetracting)
+                    guard: GetGearCylinderState  == GearStates.MoveRetracting)
 
                 .Transition(
                     from: GearStates.LockingRetracted,
                     to: GearStates.UnlockingRetracted,
-                    guard: GetGearCylinderState() == GearStates.UnlockingRetracted)
+                    guard: GetGearCylinderState  == GearStates.UnlockingRetracted)
 
                 .Transition(
                     from: GearStates.UnlockingRetracted,
                     to: GearStates.LockingRetracted,
-                    guard: GetGearCylinderState() == GearStates.LockingRetracted);
+                    guard: GetGearCylinderState  == GearStates.LockingRetracted);
 
         }
 

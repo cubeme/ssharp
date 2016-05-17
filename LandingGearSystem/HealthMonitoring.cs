@@ -141,12 +141,12 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Error,
-                    guard: _timerSwitch.RemainingTime == 19 && computingModule.analogicalSwitch.Value == AnalogicalSwitchStates.Open,
+                    guard: _timerSwitch.RemainingTime == 19 && computingModule.AnalogicalSwitch.Value == AnalogicalSwitchStates.Open,
                     action: () => AnomalyDetected = true)
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Wait,
-                    guard: computingModule.analogicalSwitch.Value == AnalogicalSwitchStates.Open && !computingModule.HandleHasMoved,
+                    guard: computingModule.AnalogicalSwitch.Value == AnalogicalSwitchStates.Open && !computingModule.HandleHasMoved,
                     action: () => _timerSwitch.Stop())
                 .Transition(
                     from: HealthMonitoringStates.End,
@@ -160,7 +160,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Error,
-                    guard: _timerSwitch.HasElapsed && !computingModule.HandleHasMoved && computingModule.analogicalSwitch.Value == AnalogicalSwitchStates.Closed,
+                    guard: _timerSwitch.HasElapsed && !computingModule.HandleHasMoved && computingModule.AnalogicalSwitch.Value == AnalogicalSwitchStates.Closed,
                     action: () => AnomalyDetected = true);
 
             //Pressure sensor monitoring
@@ -177,11 +177,11 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Intermediate,
-                    guard: computingModule.circuitPressurized.Value == true)
+                    guard: computingModule.CircuitPressurized.Value == true)
                 .Transition(
                     from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Error,
-                    guard: _timerPressure.HasElapsed && !computingModule.circuitPressurized.Value == true,
+                    guard: _timerPressure.HasElapsed && !computingModule.CircuitPressurized.Value == true,
                     action: () => AnomalyDetected = true)
                 .Transition(
                     from: HealthMonitoringStates.Intermediate,
@@ -195,7 +195,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Wait,
-                    guard: !computingModule.circuitPressurized.Value == true)
+                    guard: !computingModule.CircuitPressurized.Value == true)
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Start,
@@ -208,7 +208,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Error,
-                    guard: _timerPressure.HasElapsed && computingModule.circuitPressurized.Value == true,
+                    guard: _timerPressure.HasElapsed && computingModule.CircuitPressurized.Value == true,
                     action: () => AnomalyDetected = true);
 
             //Doors motion monitoring

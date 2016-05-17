@@ -37,20 +37,20 @@ namespace LandingGearSystem
 
         public AnalogicalSwitch AnalogicalSwitch = new AnalogicalSwitch();
 
-        public HydraulicCircuit FirstPressureCircuit;
-        public HydraulicCircuit RetractionCircuitDoors;
-        public HydraulicCircuit ExtensionCircuitDoors;
-        public HydraulicCircuit RetractionCircuitGears;
-        public HydraulicCircuit ExtensionCircuitGears;
+        public PressureCircuit FirstPressureCircuit;
+        public PressureCircuit RetractionCircuitDoors;
+        public PressureCircuit ExtensionCircuitDoors;
+        public PressureCircuit RetractionCircuitGears;
+        public PressureCircuit ExtensionCircuitGears;
 
         public MechanicalPart(int limit)
         {
             AircraftHydraulicCircuit = new AircraftHydraulicCircuit(limit);
-            FirstPressureCircuit = new HydraulicCircuit(limit);
-            RetractionCircuitDoors = new HydraulicCircuit(limit);
-            ExtensionCircuitDoors = new HydraulicCircuit(limit);
-            RetractionCircuitGears = new HydraulicCircuit(limit);
-            ExtensionCircuitGears = new HydraulicCircuit(limit);
+            FirstPressureCircuit = new PressureCircuit(limit);
+            RetractionCircuitDoors = new PressureCircuit(limit);
+            ExtensionCircuitDoors = new PressureCircuit(limit);
+            RetractionCircuitGears = new PressureCircuit(limit);
+            ExtensionCircuitGears = new PressureCircuit(limit);
         }
 
         public override void Update()

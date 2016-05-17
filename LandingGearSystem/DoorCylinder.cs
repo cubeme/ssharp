@@ -29,6 +29,8 @@ namespace LandingGearSystem
         private LatchingBox _latchingBoxClosedOne = new LatchingBox(4,3);
         private LatchingBox _latchingBoxClosedTwo = new LatchingBox(4,3);
 
+        public DoorStates DoorCylinderState => StateMachine.State;
+
         /// <summary>
         /// Updates the door cylinder
         /// </summary>
@@ -41,8 +43,8 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.LockedClosed,
                     to: DoorStates.UnlockingClosed,
-                    guard: CheckPressureExtensionCircuit() == true,
-                    action: () =>
+                    guard: CheckPressureExtensionCircuit == true,
+                    action: ()  =>
                     {
                         _latchingBoxClosedOne.Unlock = true;
                         _latchingBoxClosedTwo.Unlock = true;              
@@ -51,8 +53,8 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.UnlockingClosed,
                     to: DoorStates.MoveOpening,
-                    guard: CheckPressureExtensionCircuit() == true && _latchingBoxClosedOne.StateMachine == LatchingBoxState.Unlocked && _latchingBoxClosedTwo.StateMachine == LatchingBoxState.Unlocked,
-                    action: () =>
+                    guard: CheckPressureExtensionCircuit == true && _latchingBoxClosedOne.StateMachine == LatchingBoxState.Unlocked && _latchingBoxClosedTwo.StateMachine == LatchingBoxState.Unlocked,
+                    action:  () =>
                     {
                         _timer.SetTimeout(Position == CylinderPosition.Front ? 12 : 15);
                         _timer.Start();
@@ -61,18 +63,18 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.MoveOpening,
                     to: DoorStates.Open,
-                    guard: CheckPressureExtensionCircuit() == true && _timer.HasElapsed)
+                    guard: CheckPressureExtensionCircuit == true && _timer.HasElapsed)
 
                 .Transition(
                     from: DoorStates.Open,
                     to: DoorStates.Open,
-                    guard: CheckPressureExtensionCircuit() == true)
+                    guard: CheckPressureExtensionCircuit == true)
 
                 .Transition(
                     from: DoorStates.Open,
                     to: DoorStates.MoveClosing,
-                    guard: CheckPressureRetractionCircuit() == true,
-                    action: () =>
+                    guard: CheckPressureRetractionCircuit == true,
+                    action: ()  =>
                     {
                         _timer.SetTimeout(Position == CylinderPosition.Front ? 12 : 16);
                         _timer.Start();
@@ -81,17 +83,17 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.Open,
                     to: DoorStates.OpenLoose,
-                    guard: CheckPressureRetractionCircuit() == false && CheckPressureExtensionCircuit() == false)
+                    guard: CheckPressureRetractionCircuit == false && CheckPressureExtensionCircuit == false)
 
                 .Transition(
                     from: DoorStates.OpenLoose,
                     to: DoorStates.Open,
-                    guard: CheckPressureExtensionCircuit() == true)
+                    guard: CheckPressureExtensionCircuit == true)
 
                 .Transition(
                     from: DoorStates.OpenLoose,
                     to: DoorStates.MoveClosing,
-                    guard: CheckPressureRetractionCircuit() == true,
+                    guard: CheckPressureRetractionCircuit == true,
                     action: () =>
                     {
                         _timer.SetTimeout(Position == CylinderPosition.Front ? 12 : 16);
@@ -101,7 +103,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.MoveClosing,
                     to: DoorStates.LockingClosed,
-                    guard: CheckPressureRetractionCircuit() == true && _timer.HasElapsed,
+                    guard: CheckPressureRetractionCircuit == true && _timer.HasElapsed,
                     action: () =>
                     {
                         _latchingBoxClosedOne.Lock = true;
@@ -111,14 +113,14 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.LockingClosed,
                     to: DoorStates.LockedClosed,
-                    guard: CheckPressureRetractionCircuit() == true && _latchingBoxClosedOne.StateMachine == LatchingBoxState.Locked && _latchingBoxClosedTwo.StateMachine == LatchingBoxState.Locked)
+                    guard: CheckPressureRetractionCircuit == true && _latchingBoxClosedOne.StateMachine == LatchingBoxState.Locked && _latchingBoxClosedTwo.StateMachine == LatchingBoxState.Locked)
 
                 //Reverse Motion
                 .Transition(
                     from: DoorStates.MoveClosing,
                     to: DoorStates.MoveOpening,
-                    guard: CheckPressureExtensionCircuit() == true,
-                    action: () =>
+                    guard: CheckPressureExtensionCircuit == true,
+                    action: ()  =>
                     {
                         _timer.SetTimeout(Position == CylinderPosition.Front ? 12 - _timer.RemainingTime : 15 - (15 * _timer.RemainingTime) / 16);
                         _timer.Start();
@@ -127,7 +129,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.MoveOpening,
                     to: DoorStates.MoveClosing,
-                    guard: CheckPressureRetractionCircuit() == true,
+                    guard: CheckPressureRetractionCircuit == true,
                     action: () =>
                     {
                         _timer.SetTimeout(Position == CylinderPosition.Front ? 12 - _timer.RemainingTime : 16 - (16 * _timer.RemainingTime) / 15);
@@ -137,7 +139,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.LockingClosed,
                     to: DoorStates.UnlockingClosed,
-                    guard: CheckPressureRetractionCircuit() == true,
+                    guard: CheckPressureRetractionCircuit == true,
                     action: () =>
                     {
                         _latchingBoxClosedOne.Lock = false;
@@ -149,7 +151,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: DoorStates.UnlockingClosed,
                     to: DoorStates.LockingClosed,
-                    guard: CheckPressureExtensionCircuit() == true,
+                    guard: CheckPressureExtensionCircuit == true,
                     action: () =>
                     {
                         _latchingBoxClosedOne.Unlock = false;

@@ -38,12 +38,12 @@ namespace LandingGearSystem
         /// <summary>
         ///  Gets a value indicating whether the retraction circuit is pressurized.
         /// </summary>
-        public extern bool CheckPressureRetractionCircuit();
+        public extern bool CheckPressureRetractionCircuit { get;  }
 
         /// <summary>
         ///  Gets a value indictaing whether the extension circuit is pressurized.
         /// </summary>
-        public extern bool CheckPressureExtensionCircuit();
+        public extern bool CheckPressureExtensionCircuit { get; }
 
         /// <summary>
         /// Initializes a new instance.

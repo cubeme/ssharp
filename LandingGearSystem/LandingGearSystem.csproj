@@ -68,7 +68,7 @@
     <Compile Include="Gear.cs" />
     <Compile Include="GearCylinder.cs" />
     <Compile Include="Airplane.cs" />
-    <Compile Include="HydraulicCircuit.cs" />
+    <Compile Include="PressureCircuit.cs" />
     <Compile Include="LatchingBox.cs" />
     <Compile Include="OutgoingSequence.cs" />
     <Compile Include="PillotHandle.cs" />
