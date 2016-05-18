@@ -24,7 +24,7 @@ namespace LandingGearSystem
 
     class ActionSequence : Component
     {
-        private ComputingModule _module;
+        private readonly ComputingModule _module;
 
         /// <summary>
 		///   Gets the state machine that manages the state of the action sequence

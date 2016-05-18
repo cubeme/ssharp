@@ -36,17 +36,17 @@ namespace LandingGearSystem
         /// <summary>
         /// Indicates the duraction of time it takes to unlock the latching box.
         /// </summary>
-        public int DurationUnlock { private get;  set; }
+        public int DurationUnlock { get; }
 
-        /// <summary>
-        /// Indicates the duraction of time it takes to lock the latching box.
-        /// </summary>
-        public int DurationLock { private get; set; }
+		/// <summary>
+		/// Indicates the duraction of time it takes to lock the latching box.
+		/// </summary>
+		public int DurationLock { get; }
 
         /// <summary>
         /// Indicates whether the latching box is to be unlocked.
         /// </summary>
-        public bool Unlock { private get; set; }
+        public bool Unlock {  get; set; }
 
         /// <summary>
         /// Indicates whether the latching box is to be locked.
@@ -67,7 +67,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Times the unlocking/locking of the latching box.
         /// </summary>
-        private readonly Timer _timer = new Timer();
+        public readonly Timer _timer = new Timer();
 
         //IsLocked, IsUnlocked, Lock(){--Transition)
 
@@ -80,14 +80,14 @@ namespace LandingGearSystem
                     guard: Unlock == true,
                     action: () =>
                     {
-                        _timer.SetTimeout(DurationUnlock - (DurationUnlock / DurationLock) * _timer.RemainingTime);
-                        _timer.Start();
+                        _timer.Start(DurationUnlock - (DurationUnlock / DurationLock) * _timer.RemainingTime);
                     });
         }
 
         public override void Update()
         {
             //todo: Event, Transitionen zusammenfassen
+	        Update(_timer);
 
             StateMachine.
                 Transition(
@@ -96,8 +96,7 @@ namespace LandingGearSystem
                     guard: Unlock == true,
                     action: () =>
                     {
-                        _timer.SetTimeout(DurationUnlock);
-                        _timer.Start();
+                        _timer.Start(DurationUnlock);
                     })
                 .Transition(
                     from: LatchingBoxState.Unlocking,
@@ -110,8 +109,7 @@ namespace LandingGearSystem
                     guard: Lock == true,
                     action: () =>
                     {
-                        _timer.SetTimeout(DurationLock);
-                        _timer.Start();
+                        _timer.Start(DurationLock);
                     })
                 .Transition(
                     from: LatchingBoxState.Locking,
@@ -124,8 +122,7 @@ namespace LandingGearSystem
                     guard: Unlock = true && Lock == false,
                     action: () =>
                     {
-                        _timer.SetTimeout(DurationUnlock - (DurationUnlock/DurationLock)*_timer.RemainingTime);
-                        _timer.Start();
+                        _timer.Start(DurationUnlock - (DurationUnlock / DurationLock) * _timer.RemainingTime);
                     })
                 .Transition(
                     from: LatchingBoxState.Unlocking,
@@ -133,8 +130,7 @@ namespace LandingGearSystem
                     guard: Lock == true && Unlock == false,
                     action: () =>
                     {
-                        _timer.SetTimeout(DurationLock - (DurationLock/DurationUnlock)*_timer.RemainingTime);
-                        _timer.Start();
+                        _timer.Start(DurationLock - (DurationLock / DurationUnlock) * _timer.RemainingTime);
                     });           
                 
         }

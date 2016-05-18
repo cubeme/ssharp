@@ -75,8 +75,7 @@ namespace LandingGearSystem
                     guard: GetHandleHasBeenMoved == true,
                     action: () =>
                     {
-                        _timer.SetTimeout(8);
-                        _timer.Start();
+                        _timer.Start(8);
                     })
 
                 .Transition(
@@ -85,8 +84,7 @@ namespace LandingGearSystem
                     guard: _timer.HasElapsed,
                     action: () =>
                     {
-                        _timer.SetTimeout(200);
-                        _timer.Start();
+                        _timer.Start(200);
                     })
 
                 .Transition(
@@ -95,8 +93,7 @@ namespace LandingGearSystem
                     guard: GetHandleHasBeenMoved == true,
                     action: () =>
                     {
-                        _timer.SetTimeout(20);
-                        _timer.Start();
+                        _timer.Start(20);
                     })
 
                 .Transition(
@@ -105,8 +102,7 @@ namespace LandingGearSystem
                     guard: _timer.HasElapsed,
                     action: () =>
                     {
-                        _timer.SetTimeout(12);
-                        _timer.Start();
+                        _timer.Start(12);
                     })
 
                 .Transition(
@@ -115,8 +111,7 @@ namespace LandingGearSystem
                     guard: GetHandleHasBeenMoved == true,
                     action: () =>
                     {
-                        _timer.SetTimeout(8 - (2 * _timer.RemainingTime) / 3);
-                        _timer.Start();
+                        _timer.Start(8 - (2 * _timer.RemainingTime) / 3);
                     })
 
                 .Transition(

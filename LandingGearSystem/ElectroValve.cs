@@ -48,7 +48,7 @@ namespace LandingGearSystem
         ///<summary>
         /// Gets the hydraulic output pressure of the EV.
         /// </summary>
-        public int Hout => StateMachine == EVStates.Open ? Hin : 0;
+        public int Hout => StateMachine == EVStates.Closed ? Hin : 0;
 
         ///<summary>
         /// Gets the hydraulic input pressure of the EV.
@@ -75,8 +75,7 @@ namespace LandingGearSystem
                 guard: EOrder() == true,
                 action: () =>
                 {
-                    _timer.SetTimeout(10);
-                    _timer.Start();
+                    _timer.Start(10);
                 })
 
                 .Transition(
@@ -90,8 +89,7 @@ namespace LandingGearSystem
                     guard: EOrder() == false,
                     action: () =>
                     {
-                        _timer.SetTimeout(36);
-                        _timer.Start();
+                        _timer.Start(36);
                     })
 
                 .Transition(
@@ -106,8 +104,7 @@ namespace LandingGearSystem
                     guard: EOrder() == true,
                     action: () =>
                     {
-                        _timer.SetTimeout(10 - (_timer.RemainingTime * 5) / 18);
-                        _timer.Start();
+                        _timer.Start(10 - (_timer.RemainingTime * 5) / 18);
                     })
 
                 .Transition(
@@ -116,8 +113,7 @@ namespace LandingGearSystem
                     guard: EOrder() == false,
                     action: () =>
                     {
-                        _timer.SetTimeout(36 - (_timer.RemainingTime * 36) / 10);
-                        _timer.Start();
+                        _timer.Start(36 - (_timer.RemainingTime * 36) / 10);
                     });
         }
     }

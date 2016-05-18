@@ -35,17 +35,17 @@ namespace LandingGearSystem
         ///<summary>
         /// Gets a value indicating whether the hydraulic circuit is currently enabled.
         /// </summary>
-        public bool IsEnabled => _pressureLevel == _maxPressure;
+        public bool IsEnabled => _pressureLevel >= _maxPressure;
 
         ///<summary>
         /// Gets the value of the pressure put into the hydraulic circuit.
         /// </summary>
         public extern int GetInputPressure { get;  }
 
-        ///<summary>
-        /// Gets the value of the pressure put into the hydraulic circuit.
-        /// </summary>
-        public int Pressure => IsEnabled ? _pressureLevel : 0;
+	    ///<summary>
+	    /// Gets the value of the pressure put into the hydraulic circuit.
+	    /// </summary>
+	    public int Pressure => IsEnabled ? _pressureLevel : 0;
 
         /// <summary>
         ///   Updates the hydraulic circuit's internal state.
@@ -56,8 +56,8 @@ namespace LandingGearSystem
 
             if (input > 0)
                 _pressureLevel += input;
-
-            _pressureLevel -= 1;            
+			else
+				_pressureLevel -= 1;            
         }
     }
 }

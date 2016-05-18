@@ -10,13 +10,13 @@ namespace LandingGearSystem
 
     class PilotInterface : Component
     {
-        public Pilot Pilot = new Pilot();
+        public readonly Pilot Pilot = new Pilot();
 
-        public PilotHandle Handle = new PilotHandle();
+        public readonly PilotHandle Handle = new PilotHandle();
 
-        public Light GreenLight = new Light();
-        public Light OrangeLight = new Light();
-        public Light RedLight = new Light();
+        public readonly Light GreenLight = new Light();
+        public readonly Light OrangeLight = new Light();
+        public readonly Light RedLight = new Light();
 
         public override void Update()
         {

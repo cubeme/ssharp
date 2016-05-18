@@ -29,14 +29,6 @@ namespace LandingGearSystem
     /// </summary>
     public class Timer : Component
     {
-
-        /// <summary>
-        ///   The timeout signaled by the timer.
-        /// </summary>
-        private int _timeout = -1;
-
-        public void SetTimeout(int timeout) => _timeout = timeout;
-
         public Timer()
         {
             Range.Restrict(_remainingTime, -1, 200, OverflowBehavior.Clamp);
@@ -66,9 +58,9 @@ namespace LandingGearSystem
         /// <summary>
         ///   Starts or restarts the timer.
         /// </summary>
-        public void Start()
+        public void Start(int timeout)
         {
-            _remainingTime = _timeout;
+            _remainingTime = timeout;
         }
 
         /// <summary>

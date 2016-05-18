@@ -13,37 +13,37 @@ namespace LandingGearSystem
         //todo: Unterteilung, evtl Arrays mit doors, getEnvironmentCompenents in Module
 
        
-        public Door DoorFront = new Door(DoorPosition.Front);
-        public Door DoorLeft = new Door(DoorPosition.Left);
-        public Door DoorRight = new Door(DoorPosition.Right);
-
-        public Gear GearFront = new Gear(GearPosition.Front);
-        public Gear GearLeft = new Gear(GearPosition.Left);
-        public Gear GearRight = new Gear(GearPosition.Right);
-
-        public ElectroValve GeneralEV = new ElectroValve();
-        public ElectroValve OpenEV = new ElectroValve();
-        public ElectroValve CloseEV = new ElectroValve();
-        public ElectroValve ExtendEV = new ElectroValve();
-        public ElectroValve RetractEV = new ElectroValve();
-
-        public AircraftHydraulicCircuit AircraftHydraulicCircuit;
-
-        public DoorCylinder FrontDoorCylinder = new DoorCylinder(CylinderPosition.Front);
-        public DoorCylinder LeftDoorCylinder = new DoorCylinder(CylinderPosition.Left);
-        public DoorCylinder RightDoorCylinder = new DoorCylinder(CylinderPosition.Right);
-
-        public GearCylinder FrontGearCylinder = new GearCylinder(CylinderPosition.Front);
-        public GearCylinder LeftGearCylinder = new GearCylinder(CylinderPosition.Left);
-        public GearCylinder RightGearCylinder = new GearCylinder(CylinderPosition.Right);
-
-        public AnalogicalSwitch AnalogicalSwitch = new AnalogicalSwitch();
-
-        public PressureCircuit FirstPressureCircuit;
-        public PressureCircuit RetractionCircuitDoors;
-        public PressureCircuit ExtensionCircuitDoors;
-        public PressureCircuit RetractionCircuitGears;
-        public PressureCircuit ExtensionCircuitGears;
+        public readonly Door DoorFront = new Door(DoorPosition.Front);
+        public readonly Door DoorLeft = new Door(DoorPosition.Left);
+        public readonly Door DoorRight = new Door(DoorPosition.Right);
+			    
+        public readonly Gear GearFront = new Gear(GearPosition.Front);
+        public readonly Gear GearLeft = new Gear(GearPosition.Left);
+        public readonly Gear GearRight = new Gear(GearPosition.Right);
+			    
+        public readonly ElectroValve GeneralEV = new ElectroValve();
+        public readonly ElectroValve OpenEV = new ElectroValve();
+        public readonly ElectroValve CloseEV = new ElectroValve();
+        public readonly ElectroValve ExtendEV = new ElectroValve();
+        public readonly ElectroValve RetractEV = new ElectroValve();
+			    
+        public readonly AircraftHydraulicCircuit AircraftHydraulicCircuit;
+			    
+        public readonly DoorCylinder FrontDoorCylinder = new DoorCylinder(CylinderPosition.Front);
+        public readonly DoorCylinder LeftDoorCylinder = new DoorCylinder(CylinderPosition.Left);
+        public readonly DoorCylinder RightDoorCylinder = new DoorCylinder(CylinderPosition.Right);
+			    
+        public readonly GearCylinder FrontGearCylinder = new GearCylinder(CylinderPosition.Front);
+        public readonly GearCylinder LeftGearCylinder = new GearCylinder(CylinderPosition.Left);
+        public readonly GearCylinder RightGearCylinder = new GearCylinder(CylinderPosition.Right);
+			    
+        public readonly AnalogicalSwitch AnalogicalSwitch = new AnalogicalSwitch();
+			    
+        public readonly PressureCircuit FirstPressureCircuit;
+        public readonly PressureCircuit RetractionCircuitDoors;
+        public readonly PressureCircuit ExtensionCircuitDoors;
+        public readonly PressureCircuit RetractionCircuitGears;
+        public readonly PressureCircuit ExtensionCircuitGears;
 
         public MechanicalPart(int limit)
         {

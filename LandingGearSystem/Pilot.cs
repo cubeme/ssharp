@@ -35,9 +35,17 @@ namespace LandingGearSystem
         /// </summary>
         public HandlePosition HandlePosition => _position;
 
+		//[Range(0, 500, OverflowBehavior.Clamp)]
+	    private int f;
+
         public override void Update()
         {
-            _position = Choose(HandlePosition.Up, HandlePosition.Down);
+		//	if (f == 0)
+	        _position = (HandlePosition.Up);
+
+			if (f <600)
+	       ++f;
+
         }
     }
 }

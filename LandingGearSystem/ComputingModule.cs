@@ -14,94 +14,94 @@ namespace LandingGearSystem
         /// <summary>
         /// Indicates the pilot handle position and the validity of the pilot handle sensor.
         /// </summary>
-        public TripleSensor<HandlePosition> HandlePosition { get; private set; } = new TripleSensor<HandlePosition>();
+        public TripleSensor<HandlePosition> HandlePosition { get; } = new TripleSensor<HandlePosition>();
 
         /// <summary>
         /// Indicates the analogical switch position and the validity of the analogical switch sensor.
         /// </summary>
-        public TripleSensor<AnalogicalSwitchStates> AnalogicalSwitch { get; private set; } = new TripleSensor<AnalogicalSwitchStates>();
+        public TripleSensor<AnalogicalSwitchStates> AnalogicalSwitch { get; } = new TripleSensor<AnalogicalSwitchStates>();
 
         /// <summary>
         /// Indicates whether the front gear is extended and whether the sensor monitoring the front gear extension is valid.
         /// </summary>
-        public TripleSensor<bool> FrontGearExtented { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> FrontGearExtented { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates whether the front gear is retracted and whether the sensor monitoring the front gear retraction is valid.
         /// </summary>
-        public TripleSensor<bool> FrontGearRetracted { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> FrontGearRetracted { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates the value of the front gear shock absorber and the validity of the front gear shock absorber sensor.
         /// </summary>
-        public TripleSensor<AirplaneStates> FrontGearShockAbsorber { get; private set; } = new TripleSensor<AirplaneStates>();
+        public TripleSensor<AirplaneStates> FrontGearShockAbsorber { get; } = new TripleSensor<AirplaneStates>();
 
         /// <summary>
         /// Indicates whether the left gear is extended and whether the sensor monitoring the left gear extension is valid.
         /// </summary>
-        public TripleSensor<bool> LeftGearExtented { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> LeftGearExtented { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates whether the left gear is retracted and whether the sensor monitoring the left gear retraction is valid.
         /// </summary>
-        public TripleSensor<bool> LeftGearRetracted { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> LeftGearRetracted { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates the value of the left gear shock absorber and the validity of the left shock absorber sensor.
         /// </summary>
-        public TripleSensor<AirplaneStates> LeftGearShockAbsorber { get; private set; } = new TripleSensor<AirplaneStates>();
+        public TripleSensor<AirplaneStates> LeftGearShockAbsorber { get; } = new TripleSensor<AirplaneStates>();
 
         /// <summary>
         /// Indicates whether the right gear is extended and whether the sensor monitoring the right gear extension is valid.
         /// </summary>
-        public TripleSensor<bool> RightGearExtented { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> RightGearExtented { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates whether the right gear is retracted and whether the sensor monitoring the right gear retraction is valid.
         /// </summary>
-        public TripleSensor<bool> RightGearRetracted { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> RightGearRetracted { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates the value of the right gear shock absorber and the validity of the rightgear shock absorber sensor.
         /// </summary>
-        public TripleSensor<AirplaneStates> RightGearShockAbsorber { get; private set; } = new TripleSensor<AirplaneStates>();
+        public TripleSensor<AirplaneStates> RightGearShockAbsorber { get; } = new TripleSensor<AirplaneStates>();
 
 
         /// <summary>
         /// Indicates whether the front door is closed and whether the sensor monitoring the front door closure is valid.
         /// </summary>
-        public TripleSensor<bool> FrontDoorClosed { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> FrontDoorClosed { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates whether the front door is open and whether the sensor monitoring the front door opening is valid.
         /// </summary>
-        public TripleSensor<bool> FrontDoorOpen { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> FrontDoorOpen { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates whether the left door is closed and whether the sensor monitoring the left door closure is valid.
         /// </summary>
-        public TripleSensor<bool> LeftDoorClosed { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> LeftDoorClosed { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates whether the left door is open and whether the sensor monitoring the left door opening is valid.
         /// </summary>
-        public TripleSensor<bool> LeftDoorOpen { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> LeftDoorOpen { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates whether the right door is closed and whether the sensor monitoring the right door closure is valid.
         /// </summary>
-        public TripleSensor<bool> RightDoorClosed { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> RightDoorClosed { get; } = new TripleSensor<bool>();
 
         /// <summary>
         /// Indicates whether the right door is open and whether the sensor monitoring the right door opening is valid.
         /// </summary>
-        public TripleSensor<bool> RightDoorOpen { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> RightDoorOpen { get; } = new TripleSensor<bool>();
 
 
         /// <summary>
         ///  Indicates whether the hydraulic circuit is pressurized and the validity of the sensor monitoring the pressurization of the hydraulic circuit.
         /// </summary>
-        public TripleSensor<bool> CircuitPressurized { get; private set; } = new TripleSensor<bool>();
+        public TripleSensor<bool> CircuitPressurized { get; } = new TripleSensor<bool>();
 
         //Output values
         /// <summary>
@@ -141,12 +141,12 @@ namespace LandingGearSystem
         /// <summary>
         /// Carries out the outgoing and retraction sequence of the landing gear.
         /// </summary>
-        private ActionSequence _actionSequence;
+        public readonly ActionSequence _actionSequence;
 
         /// <summary>
         /// Monitors the system health by detecting anomalies.
         /// </summary>
-        private HealthMonitoring _systemHealth;
+        private readonly HealthMonitoring _systemHealth;
 
         public ComputingModule()
         {
@@ -158,6 +158,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Value indicating the old pilot handle position to determine whether the pilot handle has been moved.
         /// </summary>
+        [Hidden]
         private HandlePosition _oldHandlePosition;
 
         /// <summary>
@@ -193,12 +194,12 @@ namespace LandingGearSystem
         /// <summary>
         /// Updates the computing model according to the computed values and received inputs.
         /// </summary
-        public void update()
+        public override void Update()
         { 
             _oldHandlePosition = HandlePosition.Value;
 
             //Compute new values
-            Update(_actionSequence, _systemHealth, HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, CircuitPressurized);
+            Update(HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, RightGearShockAbsorber, CircuitPressurized, _actionSequence, _systemHealth);
 
             //Look for anomaly
             if (_systemHealth.AnomalyDetected)

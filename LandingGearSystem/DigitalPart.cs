@@ -34,12 +34,12 @@ namespace LandingGearSystem
         /// <summary>
         /// Indicates the modus the digital part is operating in.
         /// </summary>
-        private Mode _mode;
+        private readonly Mode _mode;
 
         /// <summary>
         /// Array with computing modules the digital part is composed of.
         /// </summary>
-        public ComputingModule[] ComputingModules;
+        public readonly ComputingModule[] ComputingModules;
 
         //private Func<IEnumerable<ComputingModule>,Func<ComputingModule,bool>, bool> _comparisonFunction;
 

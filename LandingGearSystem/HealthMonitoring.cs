@@ -56,7 +56,7 @@ namespace LandingGearSystem
         /// <summary>
         /// An instance of the associated computing module.
         /// </summary>
-        private ComputingModule computingModule;
+        private readonly ComputingModule computingModule;
 
         /// <summary>
         /// Indicates whether an anomaly has been detected.
@@ -87,22 +87,22 @@ namespace LandingGearSystem
         /// <summary>
         /// Timer used for health monitoring of the pressure sensor.
         /// </summary>
-        private Timer _timerPressure = new Timer();
+        private readonly Timer _timerPressure = new Timer();
 
         /// <summary>
         /// Timer used for health monitoring of the analogical switch.
         /// </summary>
-        private Timer _timerSwitch = new Timer();
+        private readonly Timer _timerSwitch = new Timer();
 
         /// <summary>
         /// Timer used for health monitoring of the doors motion.
         /// </summary>
-        private Timer _timerDoors = new Timer();
+        private readonly Timer _timerDoors = new Timer();
 
         /// <summary>
         /// Timer used for health monitoring of the gears motion.
         /// </summary>
-        private Timer _timerGears = new Timer();
+        private readonly Timer _timerGears = new Timer();
 
         /// <summary>
         /// Initializes a new instance.
@@ -127,8 +127,7 @@ namespace LandingGearSystem
                     guard: computingModule.HandleHasMoved,
                     action: () =>
                     {
-                        _timerSwitch.SetTimeout(200);
-                        _timerSwitch.Start();
+                        _timerSwitch.Start(200);
                     })
                 .Transition(
                     from: HealthMonitoringStates.Start,
@@ -136,8 +135,7 @@ namespace LandingGearSystem
                     guard: _timerSwitch.HasElapsed,
                     action: () =>
                     {
-                        _timerSwitch.SetTimeout(15);
-                        _timerSwitch.Start();
+                        _timerSwitch.Start(15);
                     })
                 .Transition(
                     from: HealthMonitoringStates.Start,
@@ -155,8 +153,7 @@ namespace LandingGearSystem
                     guard: computingModule.HandleHasMoved,
                     action: () =>
                     {
-                        _timerSwitch.SetTimeout(200);
-                        _timerSwitch.Start();
+                        _timerSwitch.Start(200);
                     })
                 .Transition(
                     from: HealthMonitoringStates.End,
@@ -172,8 +169,7 @@ namespace LandingGearSystem
                     guard:  computingModule.GeneralEV,
                     action: () =>
                     {
-                        _timerPressure.SetTimeout(20);
-                        _timerPressure.Start();
+                        _timerPressure.Start(20);
                     })
                 .Transition(
                     from: HealthMonitoringStates.Start,
@@ -190,8 +186,7 @@ namespace LandingGearSystem
                     guard: !computingModule.GeneralEV,
                     action: () =>
                     {
-                        _timerPressure.SetTimeout(100);
-                        _timerPressure.Start();
+                        _timerPressure.Start(100);
                     })
                 .Transition(
                     from: HealthMonitoringStates.End,
@@ -203,8 +198,7 @@ namespace LandingGearSystem
                     guard: computingModule.GeneralEV,
                     action: () =>
                     {
-                        _timerPressure.SetTimeout(20);
-                        _timerPressure.Start();
+                        _timerPressure.Start(20);
                     })
                 .Transition(
                     from: HealthMonitoringStates.End,
@@ -220,8 +214,7 @@ namespace LandingGearSystem
                     guard: computingModule.OpenEV,
                     action: () =>
                     {
-                        _timerDoors.SetTimeout(70);
-                        _timerDoors.Start();
+                        _timerDoors.Start(70);
                     })
                 .Transition(
                     from: HealthMonitoringStates.Open,
@@ -238,8 +231,7 @@ namespace LandingGearSystem
                     guard: computingModule.CloseEV,
                     action: () =>
                     {
-                        _timerDoors.SetTimeout(70);
-                        _timerDoors.Start();
+                        _timerDoors.Start(70);
                     })
                 .Transition(
                     from: HealthMonitoringStates.Close,
@@ -259,8 +251,7 @@ namespace LandingGearSystem
                     guard: computingModule.ExtendEV,
                     action: () =>
                     {
-                        _timerGears.SetTimeout(100);
-                        _timerGears.Start();
+                        _timerGears.Start(100);
                     })
                 .Transition(
                     from: HealthMonitoringStates.Extend,
@@ -277,8 +268,7 @@ namespace LandingGearSystem
                     guard: computingModule.RetractEV,
                     action: () =>
                     {
-                        _timerGears.SetTimeout(100);
-                        _timerGears.Start();
+                        _timerGears.Start(100);
                     })
                 .Transition(
                     from: HealthMonitoringStates.Retract,

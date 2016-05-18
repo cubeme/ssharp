@@ -13,7 +13,7 @@ namespace LandingGearSystem
         /// <summary>
         ///  Indicates the pressure of the aircraft hydraulic circuit.
         /// </summary>
-        public int Pressure { get; private set; }
+        public int Pressure { get; }
 
         /// <summary>
         ///   Initializes a new instance.

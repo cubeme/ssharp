@@ -25,7 +25,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Nondeterministically chooses an airplane status.
         /// </summary>
-        public AirplaneStates AirPlaneStatus { get; private set; }
+        public AirplaneStates AirPlaneStatus { get; }
 
         public Airplane(AirplaneStates state)
         {
