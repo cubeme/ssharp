@@ -9,8 +9,15 @@ namespace LandingGearSystem
     using SafetySharp.Modeling;
     using SafetySharp.Analysis;
 
+
+    
+
     class Model : ModelBase
     {
+        //--> Pilot / PilotHandle
+        //--> ???
+        public static TimeSpan Step = new TimeSpan(0, 0, 0, 0, 100);
+
         public const int PressureLimit = 60;
 
         public const AirplaneStates AirplaneState = AirplaneStates.Ground;
