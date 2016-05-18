@@ -16,7 +16,7 @@ namespace LandingGearSystem
     {
         //--> Pilot / PilotHandle
         //--> ???
-        public static TimeSpan Step = new TimeSpan(0, 0, 0, 0, 100);
+        public static TimeSpan Step = TimeSpan.FromSeconds(0.1);
 
         public const int PressureLimit = 60;
 
@@ -26,7 +26,7 @@ namespace LandingGearSystem
 
         public const int Count = 2;
 
-//--> Roles? Rootkind.Controller?
+        //--> Roles? Rootkind.Controller?
         [Root(Role.System)]
         public DigitalPart DigitalPart = new DigitalPart(Modus, Count);
 
@@ -79,9 +79,9 @@ namespace LandingGearSystem
             Bind(nameof(PilotInterface.Handle.GetPilotHandlePosition), nameof(PilotInterface.Pilot.HandlePosition));
             Bind(nameof(MechanicalPart.AnalogicalSwitch.GetHandleHasBeenMoved), nameof(PilotInterface.Handle.Moved));
 
-            Bind(nameof(DigitalPart.GearsLockedDownComposition), nameof(PilotInterface.GreenLight.LightValue));
-            Bind(nameof(DigitalPart.GearsManeuveringComposition), nameof(PilotInterface.OrangeLight.LightValue));
-            Bind(nameof(DigitalPart.AnomalyComposition), nameof(PilotInterface.RedLight.LightValue));
+            Bind(nameof(PilotInterface.GreenLight.LightValue), nameof(DigitalPart.GearsLockedDownComposition));
+            Bind(nameof(PilotInterface.OrangeLight.LightValue), nameof(DigitalPart.GearsManeuveringComposition));
+            Bind(nameof(PilotInterface.RedLight.LightValue), nameof(DigitalPart.AnomalyComposition));
 
             Bind(nameof(MechanicalPart.ExtendEV.EOrder), nameof(DigitalPart.ExtendEVComposition));
             Bind(nameof(MechanicalPart.RetractEV.EOrder), nameof(DigitalPart.RetractEVComposition));
