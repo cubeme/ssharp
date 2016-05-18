@@ -107,7 +107,7 @@ namespace LandingGearSystem
                     guard: Unlock = true && Lock == false,
                     action: () =>
                     {
-                        _timer.SetTimeout(DurationUnlock - (DurationLock/DurationUnlock)*_timer.RemainingTime);
+                        _timer.SetTimeout(DurationUnlock - (DurationUnlock/DurationLock)*_timer.RemainingTime);
                         _timer.Start();
                     })
                 .Transition(
