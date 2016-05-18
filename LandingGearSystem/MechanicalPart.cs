@@ -10,6 +10,8 @@ namespace LandingGearSystem
 
     class MechanicalPart : Component
     {
+        //todo: Unterteilung, evtl Arrays mit doors, getEnvironmentCompenents in Module
+
        
         public Door DoorFront = new Door(DoorPosition.Front);
         public Door DoorLeft = new Door(DoorPosition.Left);

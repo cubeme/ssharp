@@ -14,7 +14,7 @@ class FirstSafetySharpModel
 
 class Model : ModelBase
 {
-    [Root(Role.Environment)]
+    [Root(RootKind.Plant)]
     public C C = new C();
 }
 

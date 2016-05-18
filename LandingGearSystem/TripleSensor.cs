@@ -46,7 +46,7 @@ namespace LandingGearSystem
         {
             Valid = true;
             Value = default(SensorType);
-            for (int i = 3; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Sensors[i] = new Sensor<SensorType>();
                 _channels[i] = new ChannelIsValidPair<SensorType>();

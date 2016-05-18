@@ -33,6 +33,7 @@ namespace LandingGearSystem
 
     class ElectroValve : Component
     {
+        //todo: EOrder --> event: beweg dich
 
         /// <summary>
         ///   Gets the state machine that manages the state of the gear cylinder.
@@ -47,7 +48,7 @@ namespace LandingGearSystem
         ///<summary>
         /// Gets the hydraulic output pressure of the EV.
         /// </summary>
-        public int Hout => StateMachine == EVStates.Closed ? Hin : 0;
+        public int Hout => StateMachine == EVStates.Open ? Hin : 0;
 
         ///<summary>
         /// Gets the hydraulic input pressure of the EV.
@@ -62,8 +63,9 @@ namespace LandingGearSystem
         ///<summary>
         /// Updates the EV.
         /// </summary>
-        public void update()
+        public override void Update()
         {
+            //todo: drucksteigerung
             Update(_timer);
 
             StateMachine

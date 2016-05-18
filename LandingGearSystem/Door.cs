@@ -63,7 +63,7 @@ namespace LandingGearSystem
     }
 
     class Door : Component
-    {
+    { //todo: statemachine weglassen, in update state setzen
 
         /// <summary>
         /// Indicates the position of the door, i.e. whether it is located in the front, on the left or right side of the plane.
@@ -79,6 +79,8 @@ namespace LandingGearSystem
         /// Gets a value indicating which state the door cylinder is currently in.
         /// </summary>
         public extern DoorStates GetDoorCylinderState { get;  }
+        //bei properties kein get/set im namen
+
 
         /// <summary>
         /// Gets a value indicating whether the door is open.

@@ -69,8 +69,25 @@ namespace LandingGearSystem
         /// </summary>
         private readonly Timer _timer = new Timer();
 
+        //IsLocked, IsUnlocked, Lock(){--Transition)
+
+       public void Unlock2()
+        {
+            StateMachine
+                .Transition(
+                    from: new[] { LatchingBoxState.Locked, LatchingBoxState.Locking },
+                    to: LatchingBoxState.Unlocking,
+                    guard: Unlock == true,
+                    action: () =>
+                    {
+                        _timer.SetTimeout(DurationUnlock - (DurationUnlock / DurationLock) * _timer.RemainingTime);
+                        _timer.Start();
+                    });
+        }
+
         public override void Update()
         {
+            //todo: Event, Transitionen zusammenfassen
 
             StateMachine.
                 Transition(

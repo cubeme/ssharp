@@ -26,8 +26,6 @@ namespace LandingGearSystem
     {
         private ComputingModule _module;
 
-        public bool IsRunning() => StateMachine.State != ActionSequenceStates.WaitOutgoing && StateMachine.State != ActionSequenceStates.WaitRetract;
-
         /// <summary>
 		///   Gets the state machine that manages the state of the action sequence
 		/// </summary>
@@ -39,24 +37,18 @@ namespace LandingGearSystem
         }
 
         public override void Update()
-        {
+        {//Klammern weg
             StateMachine
                 .Transition(
                     from: ActionSequenceStates.WaitOutgoing,
                     to: ActionSequenceStates.OutgoingOne,
                     guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Down,
-                    action: () => _module.One())
-                //--> Necessary??
-                .Transition(
-                    from: ActionSequenceStates.WaitOutgoing,
-                    to: ActionSequenceStates.RetractOne,
-                    guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Up,
-                    action: () => _module.One())
+                    action: _module.One)
                 .Transition(
                     from: ActionSequenceStates.OutgoingOne,
                     to: ActionSequenceStates.OutgoingTwo,
                     guard: _module.DoorsOpen,
-                    action: () => _module.OutgoingTwo())
+                    action: _module.OutgoingTwo)
                 .Transition(
                     from: ActionSequenceStates.OutgoingOne,
                     to: ActionSequenceStates.RetractFour,
@@ -96,12 +88,6 @@ namespace LandingGearSystem
                     from: ActionSequenceStates.WaitRetract,
                     to: ActionSequenceStates.RetractOne,
                     guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Up,
-                    action: () => _module.One())
-                //--> Necessary?
-                .Transition(
-                    from: ActionSequenceStates.WaitRetract,
-                    to: ActionSequenceStates.OutgoingOne,
-                    guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Down,
                     action: () => _module.One())
                 .Transition(
                     from: ActionSequenceStates.RetractOne,

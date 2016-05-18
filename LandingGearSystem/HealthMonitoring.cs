@@ -66,7 +66,8 @@ namespace LandingGearSystem
         /// <summary>
         ///   Gets the state machine that manages the healthmonitoring of the analogical switch.
         /// </summary>
-        public readonly StateMachine<HealthMonitoringStates> StateMachineSwitch = HealthMonitoringStates.Wait;
+        private readonly StateMachine<HealthMonitoringStates> StateMachineSwitch = HealthMonitoringStates.Wait;
+        //todo: private!!!
 
         /// <summary>
         ///   Gets the state machine that manages the healthmonitoring of the pressure sensor.

@@ -29,10 +29,6 @@ namespace LandingGearSystem
     /// </summary>
     public class Timer : Component
     {
-        /// <summary>
-        ///   The fault that prevents the timer from reporting a timeout.
-        /// </summary>
-        public readonly Fault SuppressTimeout = new PermanentFault();
 
         /// <summary>
         ///   The timeout signaled by the timer.
@@ -65,7 +61,7 @@ namespace LandingGearSystem
         /// <summary>
         ///   Gets the remaining time before the timeout occurs.
         /// </summary>
-        public int RemainingTime => _remainingTime;
+        public int RemainingTime => _remainingTime == -1 ? 0 : _remainingTime;
 
         /// <summary>
         ///   Starts or restarts the timer.
@@ -91,13 +87,5 @@ namespace LandingGearSystem
             --_remainingTime;
         }
 
-        /// <summary>
-        ///   Prevents the timer from reporting a timeout.
-        /// </summary>
-        [FaultEffect(Fault = nameof(SuppressTimeout))]
-        public class SuppressTimeoutEffect : Timer
-        {
-            public override bool HasElapsed => false;
-        }
     }
 }

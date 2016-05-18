@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace LandingGearSystem
 {
@@ -20,21 +21,39 @@ namespace LandingGearSystem
 
         public const int PressureLimit = 60;
 
-        public const AirplaneStates AirplaneState = AirplaneStates.Ground;
+        //Im Konstruktor des Modells instanziieren
+        public const AirplaneStates AirplaneState = AirplaneStates.Flight;
 
         public const Mode Modus = Mode.Any;
 
         public const int Count = 2;
 
         //--> Roles? Rootkind.Controller?
-        [Root(Role.System)]
+        [Root(RootKind.Controller)]
         public DigitalPart DigitalPart = new DigitalPart(Modus, Count);
 
+        [Root(RootKind.Controller)]
         public MechanicalPart MechanicalPart = new MechanicalPart(PressureLimit);
 
+        [Root(RootKind.Controller)]
         public PilotInterface PilotInterface = new PilotInterface();
 
+        [Root(RootKind.Plant)]
         public Airplane Airplane = new Airplane(AirplaneState);
+
+        [NUnit.Framework. Test]
+        public void Main()
+        {
+            var model = new Model();
+
+            var modelchecker = new SSharpChecker() { Configuration = { StateCapacity = 1 << 16 } };
+
+            // var result = modelchecker.CheckInvariant(model, !model.DigitalPart.ComputingModules.Any(element => element.Anomaly) );
+
+            var result = modelchecker.CheckInvariant(model, !model.MechanicalPart.DoorFront.DoorIsOpen);
+
+            Assert.IsTrue(result.FormulaHolds);
+        }
      
         public Model()
         {
@@ -67,10 +86,10 @@ namespace LandingGearSystem
             Bind(nameof(MechanicalPart.ExtensionCircuitDoors.GetInputPressure), nameof(MechanicalPart.OpenEV.Hout));
             Bind(nameof(MechanicalPart.RetractionCircuitDoors.GetInputPressure), nameof(MechanicalPart.CloseEV.Hout));
 
-            Bind(nameof(MechanicalPart.ExtendEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.GetPressure));
-            Bind(nameof(MechanicalPart.RetractEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.GetPressure));
-            Bind(nameof(MechanicalPart.OpenEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.GetPressure));
-            Bind(nameof(MechanicalPart.CloseEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.GetPressure));
+            Bind(nameof(MechanicalPart.ExtendEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.Pressure));
+            Bind(nameof(MechanicalPart.RetractEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.Pressure));
+            Bind(nameof(MechanicalPart.OpenEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.Pressure));
+            Bind(nameof(MechanicalPart.CloseEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.Pressure));
 
             Bind(nameof(MechanicalPart.FirstPressureCircuit.GetInputPressure), nameof(MechanicalPart.GeneralEV.Hout));
 
@@ -93,7 +112,8 @@ namespace LandingGearSystem
 
             foreach(ComputingModule module in DigitalPart.ComputingModules)
             {
-                foreach (Sensor<HandlePosition> sensor in module.HandlePosition.Sensors)
+                //var --> compiler sucht type selbst
+                foreach (var sensor in module.HandlePosition.Sensors)
                     Bind(nameof(sensor.CheckValue), nameof(PilotInterface.Handle.PilotHandlePosition));
 
                 foreach (Sensor<AnalogicalSwitchStates> sensor in module.AnalogicalSwitch.Sensors)

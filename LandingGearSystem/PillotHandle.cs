@@ -10,6 +10,7 @@ namespace LandingGearSystem
 
     class PilotHandle : Component
     {
+        //todo: event mit moved aufruf
 
         // <summary>
         ///  Indicates whether the pilot handle has been moved.

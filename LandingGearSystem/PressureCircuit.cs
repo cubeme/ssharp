@@ -10,7 +10,7 @@ namespace LandingGearSystem
 
     public class PressureCircuit : Component
     {
-
+        //todo: gets vernichten bei properties
         ///<summary>
         /// Indicates current pressure levell.
         /// </summary>
@@ -45,7 +45,7 @@ namespace LandingGearSystem
         ///<summary>
         /// Gets the value of the pressure put into the hydraulic circuit.
         /// </summary>
-        public int GetPressure => IsEnabled ? _pressureLevel : 0;
+        public int Pressure => IsEnabled ? _pressureLevel : 0;
 
         /// <summary>
         ///   Updates the hydraulic circuit's internal state.

@@ -211,12 +211,6 @@ namespace LandingGearSystem
             GearsLockedDown = GearsExtended;
             GearsManeuvering = !GearsExtended && !GearsRetracted;
 
-            if (Anomaly)
-            {
-                Console.WriteLine("An anomaly has been detected!");
-                System.Environment.Exit(1);
-            }  
-
         }
 
         public void One()

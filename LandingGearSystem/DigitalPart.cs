@@ -21,11 +21,12 @@ namespace LandingGearSystem
         /// All values of the computing module has to be true to return a true value (logical AND).
         /// </summary>
         All,
-// --> Necessary??
+// --> Necessary?? --> Nein! Default Konstruktor mit einem 
         /// <summary>
         /// Only one computing module is to be used.
         /// </summary>
         One
+        
     }
 
     class DigitalPart : Component
@@ -40,6 +41,8 @@ namespace LandingGearSystem
         /// </summary>
         public ComputingModule[] ComputingModules;
 
+        //private Func<IEnumerable<ComputingModule>,Func<ComputingModule,bool>, bool> _comparisonFunction;
+
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
@@ -53,18 +56,22 @@ namespace LandingGearSystem
             {
                 ComputingModules[i] = new ComputingModule();
             }
+
+            //if (_mode == Mode.All)
+            //    _comparisonFunction = Enumerable.All;
+            //else
+            //    _comparisonFunction = Enumerable.Any;
         }
 
         public override void Update()
         {
-            foreach (ComputingModule module in ComputingModules)
-                Update(module);           
+            Update(ComputingModules);      
         }
 
         /// <summary>
         /// Gets a value indicating whether the general electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
         /// </summary>
-        public bool GeneralEVComposition()
+        public bool GeneralEVComposition()  //=>  _comparisonFunction(ComputingModules, element => element.GeneralEV == true);
         {
             switch ((int)_mode)
             {

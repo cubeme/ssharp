@@ -26,12 +26,12 @@ namespace LandingGearSystem
         /// <summary>
         /// Latching box locking the gear cylinder in extended position.
         /// </summary>
-        private LatchingBox _latchingBoxExtended = new LatchingBox(8, 4);
+        private readonly LatchingBox _latchingBoxExtended = new LatchingBox(8, 4);
 
         /// <summary>
         /// Latching box locking the gear cylinder in retracted position.
         /// </summary>
-        private LatchingBox _latchingBoxRetracted = new LatchingBox(8, 4);
+        private readonly LatchingBox _latchingBoxRetracted = new LatchingBox(8, 4);
 
         public GearStates GearCylinderState => StateMachine.State;
 

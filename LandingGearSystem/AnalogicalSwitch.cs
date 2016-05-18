@@ -59,7 +59,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Gets the value of the outgoing electrical order if the switch is closed.
         /// </summary>
-        public bool OutgoingEOrder() => StateMachine.State == AnalogicalSwitchStates.Closed ? IncomingEOrder() : false;
+        public bool OutgoingEOrder() => StateMachine == AnalogicalSwitchStates.Closed ? IncomingEOrder() : false;
 
         /// <summary>
         /// Updates the analogical switch.
