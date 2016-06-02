@@ -112,6 +112,7 @@ namespace LandingGearSystem
         /// Value indicating whether the door closure electro valve is to be stimulated.
         /// </summary>
         public bool CloseEV { get; private set; }
+
         /// <summary>
         /// Value indicating whether the door opening electro valve is to be stimulated.
         /// </summary>
@@ -143,16 +144,15 @@ namespace LandingGearSystem
         /// </summary>
         public readonly ActionSequence _actionSequence;
 
-        /// <summary>
-        /// Monitors the system health by detecting anomalies.
-        /// </summary>
-        private readonly HealthMonitoring _systemHealth;
+        private readonly HealthMonitoring[] _systemHealth;
 
         public ComputingModule()
         {
             _actionSequence = new ActionSequence(this);
 
-            _systemHealth = new HealthMonitoring(this);
+            _systemHealth = new HealthMonitoring[]
+            {new HealthSwitch(this), new HealthPressureSensor(this), new HealthDoors(this), new HealthGears(this)};
+
         }
 
         /// <summary>
@@ -199,11 +199,20 @@ namespace LandingGearSystem
             _oldHandlePosition = HandlePosition.Value;
 
             //Compute new values
-            Update(HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, RightGearShockAbsorber, CircuitPressurized, _actionSequence, _systemHealth);
+            Update(HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, RightGearShockAbsorber, CircuitPressurized, _actionSequence);
+            //Update(_systemHealth);
+            foreach (var healthMonitor in _systemHealth)
+            {
+                Update(healthMonitor);
+            }
+            
 
             //Look for anomaly
-            if (_systemHealth.AnomalyDetected)
-                Anomaly = true;
+            foreach (var healthMonitor in _systemHealth)
+            {
+                if (healthMonitor.AnomalyDetected)
+                    Anomaly = true;
+            }
 
             if (HandlePosition.Valid == false || AnalogicalSwitch.Valid == false || FrontGearExtented.Valid == false || FrontGearRetracted.Valid == false || FrontGearShockAbsorber.Valid == false || LeftGearExtented.Valid == false || LeftGearRetracted.Valid == false || LeftGearShockAbsorber.Valid == false || RightGearExtented.Valid == false || RightGearRetracted.Valid == false || RightGearShockAbsorber.Valid == false || FrontDoorClosed.Valid == false || FrontDoorOpen.Valid == false || LeftDoorClosed.Valid == false || LeftDoorOpen.Valid == false || RightDoorClosed.Valid == false || RightDoorOpen.Valid == false || CircuitPressurized.Valid == false)
                 Anomaly = true;
@@ -216,33 +225,38 @@ namespace LandingGearSystem
 
         public void One()
         {
+
+            //Reverse
+            CloseEV = false;
+
             //Step 1
             GeneralEV = true;
             //Step 2
             OpenEV = true;
 
-            //Reverse
-            CloseEV = false;
         }
 
         //---> ?? ActionSequence.start(new Statement(OutgoingOne())
         public void OutgoingTwo()
         {
-            //Step 3
-            ExtendEV = true;
 
             //Reverse
             RetractEV = false;
+
+            //Step 3
+            ExtendEV = true;
+
         }
 
 
         public void RetractionTwo()
         {
+            //Reverse
+            ExtendEV = false;
+
             //Step 3
             RetractEV = true;
 
-            //Reverse
-            ExtendEV = false;
         }
 
         public void OutgoingThree()

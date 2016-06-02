@@ -6,151 +6,165 @@
 	using SafetySharp.Analysis;
 	using SafetySharp.Modeling;
 
-	class Model : ModelBase
+    [TestFixture(60, AirplaneStates.Flight, Mode.Any, 1)]
+    class Model : ModelBase
 	{
-		public const int PressureLimit = 60;
+	    [Root(RootKind.Plant)]
+        public Airplane Airplane;
 
-		//Im Konstruktor des Modells instanziieren
-		public const AirplaneStates AirplaneState = AirplaneStates.Flight;
+	    [Root(RootKind.Controller)]
+        public DigitalPart DigitalPart;
 
-		public const Mode Modus = Mode.Any;
+	    [Root(RootKind.Controller)]
+        public MechanicalPartControllers MechanicalPartControllers;
 
-		public const int Count = 1;
-		//--> Pilot / PilotHandle
-		//--> ???
-		public static TimeSpan Step = TimeSpan.FromSeconds(0.1);
+	    [Root(RootKind.Plant)]
+        public MechanicalPartPlants MechanicalPartPlants;
 
-		[Root(RootKind.Plant)]
-		public Airplane Airplane = new Airplane(AirplaneState);
+	    public MechanicalPartActuators MechanicalActuators => MechanicalPartPlants.Actuators;
 
-		//--> Roles? Rootkind.Controller?
-		[Root(RootKind.Controller)]
-		public DigitalPart DigitalPart = new DigitalPart(Modus, Count);
+	    public Cockpit Cockpit => Pilot.Cockpit;
 
-		[Root(RootKind.Controller)]
-		public MechanicalPart MechanicalPart = new MechanicalPart(PressureLimit);
+	    [Root(RootKind.Plant)]
+        public Pilot Pilot;
 
-		[Root(RootKind.Controller)]
-		public PilotInterface PilotInterface = new PilotInterface();
-
-		public Model()
+        public Model(int limit, AirplaneStates state, Mode modus, int number) : base()
 		{
-			Bind(nameof(MechanicalPart.GearFront.GetGearCylinderState), nameof(MechanicalPart.FrontGearCylinder.GearCylinderState));
-			Bind(nameof(MechanicalPart.GearRight.GetGearCylinderState), nameof(MechanicalPart.RightGearCylinder.GearCylinderState));
-			Bind(nameof(MechanicalPart.GearLeft.GetGearCylinderState), nameof(MechanicalPart.LeftGearCylinder.GearCylinderState));
+		    var pressureLimit = limit;
+		    var airplaneStates = state;
+		    var mode = modus;
+		    var count = number;
 
-			Bind(nameof(MechanicalPart.DoorFront.GetDoorCylinderState), nameof(MechanicalPart.FrontDoorCylinder.DoorCylinderState));
-			Bind(nameof(MechanicalPart.DoorRight.GetDoorCylinderState), nameof(MechanicalPart.RightDoorCylinder.DoorCylinderState));
-			Bind(nameof(MechanicalPart.DoorLeft.GetDoorCylinderState), nameof(MechanicalPart.LeftDoorCylinder.DoorCylinderState));
+            Airplane = new Airplane(airplaneStates);
 
-			Bind(nameof(MechanicalPart.FrontGearCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPart.ExtensionCircuitGears.IsEnabled));
-			Bind(nameof(MechanicalPart.RightGearCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPart.ExtensionCircuitGears.IsEnabled));
-			Bind(nameof(MechanicalPart.LeftGearCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPart.ExtensionCircuitGears.IsEnabled));
+            DigitalPart = new DigitalPart(mode, count);
 
-			Bind(nameof(MechanicalPart.FrontGearCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPart.RetractionCircuitGears.IsEnabled));
-			Bind(nameof(MechanicalPart.RightGearCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPart.RetractionCircuitGears.IsEnabled));
-			Bind(nameof(MechanicalPart.LeftGearCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPart.RetractionCircuitGears.IsEnabled));
+            MechanicalPartControllers = new MechanicalPartControllers(pressureLimit);
 
-			Bind(nameof(MechanicalPart.FrontDoorCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPart.ExtensionCircuitDoors.IsEnabled));
-			Bind(nameof(MechanicalPart.RightDoorCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPart.ExtensionCircuitDoors.IsEnabled));
-			Bind(nameof(MechanicalPart.LeftDoorCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPart.ExtensionCircuitDoors.IsEnabled));
+            Pilot = new Pilot
+            {
+                Cockpit = new Cockpit()
+            };
 
-			Bind(nameof(MechanicalPart.FrontDoorCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPart.RetractionCircuitDoors.IsEnabled));
-			Bind(nameof(MechanicalPart.RightDoorCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPart.RetractionCircuitDoors.IsEnabled));
-			Bind(nameof(MechanicalPart.LeftDoorCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPart.RetractionCircuitDoors.IsEnabled));
+            MechanicalPartPlants = new MechanicalPartPlants()
+            {
+                Actuators = new MechanicalPartActuators()
+            };
 
-			Bind(nameof(MechanicalPart.ExtensionCircuitGears.GetInputPressure), nameof(MechanicalPart.ExtendEV.Hout));
-			Bind(nameof(MechanicalPart.RetractionCircuitGears.GetInputPressure), nameof(MechanicalPart.RetractEV.Hout));
-			Bind(nameof(MechanicalPart.ExtensionCircuitDoors.GetInputPressure), nameof(MechanicalPart.OpenEV.Hout));
-			Bind(nameof(MechanicalPart.RetractionCircuitDoors.GetInputPressure), nameof(MechanicalPart.CloseEV.Hout));
+            Bind(nameof(MechanicalPartPlants.GearFront.GearCylinderState), nameof(MechanicalActuators.FrontGearCylinder.GearCylinderState));
+			Bind(nameof(MechanicalPartPlants.GearRight.GearCylinderState), nameof(MechanicalActuators.RightGearCylinder.GearCylinderState));
+			Bind(nameof(MechanicalPartPlants.GearLeft.GearCylinderState), nameof(MechanicalActuators.LeftGearCylinder.GearCylinderState));
 
-			Bind(nameof(MechanicalPart.ExtendEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.Pressure));
-			Bind(nameof(MechanicalPart.RetractEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.Pressure));
-			Bind(nameof(MechanicalPart.OpenEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.Pressure));
-			Bind(nameof(MechanicalPart.CloseEV.Hin), nameof(MechanicalPart.FirstPressureCircuit.Pressure));
+            Bind(nameof(MechanicalPartPlants.DoorFront.DoorCylinderState), nameof(MechanicalActuators.FrontDoorCylinder.DoorCylinderState));
+			Bind(nameof(MechanicalPartPlants.DoorRight.DoorCylinderState), nameof(MechanicalActuators.RightDoorCylinder.DoorCylinderState));
+			Bind(nameof(MechanicalPartPlants.DoorLeft.DoorCylinderState), nameof(MechanicalActuators.LeftDoorCylinder.DoorCylinderState));
 
-			Bind(nameof(MechanicalPart.FirstPressureCircuit.GetInputPressure), nameof(MechanicalPart.GeneralEV.Hout));
+			Bind(nameof(MechanicalActuators.FrontGearCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
+			Bind(nameof(MechanicalActuators.RightGearCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
+			Bind(nameof(MechanicalActuators.LeftGearCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
 
-			Bind(nameof(MechanicalPart.GeneralEV.Hin), nameof(MechanicalPart.AircraftHydraulicCircuit.Pressure));
+            Bind(nameof(MechanicalActuators.FrontGearCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
+			Bind(nameof(MechanicalActuators.RightGearCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
+			Bind(nameof(MechanicalActuators.LeftGearCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
 
-			Bind(nameof(PilotInterface.Handle.GetPilotHandlePosition), nameof(PilotInterface.Pilot.HandlePosition));
-			Bind(nameof(MechanicalPart.AnalogicalSwitch.GetHandleHasBeenMoved), nameof(PilotInterface.Handle.Moved));
+			Bind(nameof(MechanicalActuators.FrontDoorCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
+			Bind(nameof(MechanicalActuators.RightDoorCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
+			Bind(nameof(MechanicalActuators.LeftDoorCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
 
-			Bind(nameof(PilotInterface.GreenLight.LightValue), nameof(DigitalPart.GearsLockedDownComposition));
-			Bind(nameof(PilotInterface.OrangeLight.LightValue), nameof(DigitalPart.GearsManeuveringComposition));
-			Bind(nameof(PilotInterface.RedLight.LightValue), nameof(DigitalPart.AnomalyComposition));
+            Bind(nameof(MechanicalActuators.FrontDoorCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
+			Bind(nameof(MechanicalActuators.RightDoorCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
+			Bind(nameof(MechanicalActuators.LeftDoorCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
 
-			Bind(nameof(MechanicalPart.ExtendEV.EOrder), nameof(DigitalPart.ExtendEVComposition));
-			Bind(nameof(MechanicalPart.RetractEV.EOrder), nameof(DigitalPart.RetractEVComposition));
-			Bind(nameof(MechanicalPart.OpenEV.EOrder), nameof(DigitalPart.OpenEVComposition));
-			Bind(nameof(MechanicalPart.CloseEV.EOrder), nameof(DigitalPart.CloseEVComposition));
+			Bind(nameof(MechanicalPartControllers.ExtensionCircuitGears.InputPressure), nameof(MechanicalPartControllers.ExtendEV.Hout));
+			Bind(nameof(MechanicalPartControllers.RetractionCircuitGears.InputPressure), nameof(MechanicalPartControllers.RetractEV.Hout));
+			Bind(nameof(MechanicalPartControllers.ExtensionCircuitDoors.InputPressure), nameof(MechanicalPartControllers.OpenEV.Hout));
+			Bind(nameof(MechanicalPartControllers.RetractionCircuitDoors.InputPressure), nameof(MechanicalPartControllers.CloseEV.Hout));
 
-			Bind(nameof(MechanicalPart.AnalogicalSwitch.IncomingEOrder), nameof(DigitalPart.GeneralEVComposition));
-			Bind(nameof(MechanicalPart.GeneralEV.EOrder), nameof(MechanicalPart.AnalogicalSwitch.OutgoingEOrder));
+			Bind(nameof(MechanicalPartControllers.ExtendEV.Hin), nameof(MechanicalPartControllers.FirstPressureCircuit.Pressure));
+			Bind(nameof(MechanicalPartControllers.RetractEV.Hin), nameof(MechanicalPartControllers.FirstPressureCircuit.Pressure));
+			Bind(nameof(MechanicalPartControllers.OpenEV.Hin), nameof(MechanicalPartControllers.FirstPressureCircuit.Pressure));
+			Bind(nameof(MechanicalPartControllers.CloseEV.Hin), nameof(MechanicalPartControllers.FirstPressureCircuit.Pressure));
+
+			Bind(nameof(MechanicalPartControllers.FirstPressureCircuit.InputPressure), nameof(MechanicalPartControllers.GeneralEV.Hout));
+
+			Bind(nameof(MechanicalPartControllers.GeneralEV.Hin), nameof(MechanicalPartControllers.AircraftHydraulicCircuit.Pressure));
+
+			Bind(nameof(MechanicalPartControllers.AnalogicalSwitch.GetHandleHasBeenMoved), nameof(Cockpit.PilotHandle.Moved));
+
+			Bind(nameof(Cockpit.GreenLight.LightValue), nameof(DigitalPart.GearsLockedDownComposition));
+			Bind(nameof(Cockpit.OrangeLight.LightValue), nameof(DigitalPart.GearsManeuveringComposition));
+			Bind(nameof(Cockpit.RedLight.LightValue), nameof(DigitalPart.AnomalyComposition));
+
+			Bind(nameof(MechanicalPartControllers.ExtendEV.EOrder), nameof(DigitalPart.ExtendEVComposition));
+			Bind(nameof(MechanicalPartControllers.RetractEV.EOrder), nameof(DigitalPart.RetractEVComposition));
+			Bind(nameof(MechanicalPartControllers.OpenEV.EOrder), nameof(DigitalPart.OpenEVComposition));
+			Bind(nameof(MechanicalPartControllers.CloseEV.EOrder), nameof(DigitalPart.CloseEVComposition));
+
+			Bind(nameof(MechanicalPartControllers.AnalogicalSwitch.IncomingEOrder), nameof(DigitalPart.GeneralEVComposition));
+			Bind(nameof(MechanicalPartControllers.GeneralEV.EOrder), nameof(MechanicalPartControllers.AnalogicalSwitch.OutgoingEOrder));
 
 			foreach (ComputingModule module in DigitalPart.ComputingModules)
-			{
-				//var --> compiler sucht type selbst
+			{		
 				foreach (var sensor in module.HandlePosition.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(PilotInterface.Handle.PilotHandlePosition));
+					Bind(nameof(sensor.CheckValue), nameof(Cockpit.PilotHandle.PilotHandlePosition));
 
-				foreach (Sensor<AnalogicalSwitchStates> sensor in module.AnalogicalSwitch.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.AnalogicalSwitch.SwitchPosition));
+				foreach (var sensor in module.AnalogicalSwitch.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartControllers.AnalogicalSwitch.SwitchPosition));
 
-				foreach (Sensor<bool> sensor in module.FrontGearExtented.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.GearFront.GearIsExtended));
+				foreach (var sensor in module.FrontGearExtented.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.GearFront.GearIsExtended));
 
-				foreach (Sensor<bool> sensor in module.FrontGearRetracted.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.GearFront.GearIsRetracted));
+				foreach (var sensor in module.FrontGearRetracted.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.GearFront.GearIsRetracted));
 
-				foreach (Sensor<AirplaneStates> sensor in module.FrontGearShockAbsorber.Sensors)
+				foreach (var sensor in module.FrontGearShockAbsorber.Sensors)
 					Bind(nameof(sensor.CheckValue), nameof(Airplane.AirPlaneStatus));
 
-				foreach (Sensor<bool> sensor in module.LeftGearExtented.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.GearLeft.GearIsExtended));
+				foreach (var sensor in module.LeftGearExtented.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.GearLeft.GearIsExtended));
 
-				foreach (Sensor<bool> sensor in module.LeftGearRetracted.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.GearLeft.GearIsRetracted));
+				foreach (var sensor in module.LeftGearRetracted.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.GearLeft.GearIsRetracted));
 
-				foreach (Sensor<AirplaneStates> sensor in module.LeftGearShockAbsorber.Sensors)
+				foreach (var sensor in module.LeftGearShockAbsorber.Sensors)
 					Bind(nameof(sensor.CheckValue), nameof(Airplane.AirPlaneStatus));
 
-				foreach (Sensor<bool> sensor in module.RightGearExtented.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.GearRight.GearIsExtended));
+				foreach (var sensor in module.RightGearExtented.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.GearRight.GearIsExtended));
 
-				foreach (Sensor<bool> sensor in module.RightGearRetracted.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.GearRight.GearIsRetracted));
+				foreach (var sensor in module.RightGearRetracted.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.GearRight.GearIsRetracted));
 
-				foreach (Sensor<AirplaneStates> sensor in module.RightGearShockAbsorber.Sensors)
+				foreach (var sensor in module.RightGearShockAbsorber.Sensors)
 					Bind(nameof(sensor.CheckValue), nameof(Airplane.AirPlaneStatus));
 
-				foreach (Sensor<bool> sensor in module.FrontDoorOpen.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.DoorFront.DoorIsOpen));
+				foreach (var sensor in module.FrontDoorOpen.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.DoorFront.DoorIsOpen));
 
-				foreach (Sensor<bool> sensor in module.FrontDoorClosed.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.DoorFront.DoorIsClosed));
+				foreach (var sensor in module.FrontDoorClosed.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.DoorFront.DoorIsClosed));
 
-				foreach (Sensor<bool> sensor in module.LeftDoorOpen.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.DoorLeft.DoorIsOpen));
+				foreach (var sensor in module.LeftDoorOpen.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.DoorLeft.DoorIsOpen));
 
-				foreach (Sensor<bool> sensor in module.LeftDoorClosed.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.DoorLeft.DoorIsClosed));
+				foreach (var sensor in module.LeftDoorClosed.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.DoorLeft.DoorIsClosed));
 
-				foreach (Sensor<bool> sensor in module.RightDoorOpen.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.DoorRight.DoorIsOpen));
+				foreach (var sensor in module.RightDoorOpen.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.DoorRight.DoorIsOpen));
 
-				foreach (Sensor<bool> sensor in module.RightDoorClosed.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.DoorRight.DoorIsClosed));
+				foreach (var sensor in module.RightDoorClosed.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartPlants.DoorRight.DoorIsClosed));
 				//--> nur FirstPressureCircuit oder alle?
-				foreach (Sensor<bool> sensor in module.CircuitPressurized.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(MechanicalPart.FirstPressureCircuit.IsEnabled));
+				foreach (var sensor in module.CircuitPressurized.Sensors)
+					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartControllers.FirstPressureCircuit.IsEnabled));
 			}
 		}
 
 		[Test]
 		public void EnumerateAllStates()
 		{
-			var model = new Model();
+			var model = new Model(60, AirplaneStates.Flight, Mode.Any, 1);
 
 			var modelchecker = new SSharpChecker() { Configuration = { CpuCount = 1, StateCapacity = 1 << 26, StackCapacity = 1 << 22 } };
 
@@ -164,13 +178,13 @@
 		[Test]
 		public void Main()
 		{
-			var model = new Model();
+			var model = new Model(60, AirplaneStates.Flight, Mode.Any, 1);
 
 			var modelchecker = new SSharpChecker() { Configuration = { StateCapacity = 1 << 16, CpuCount = 1 } };
 
 			// var result = modelchecker.CheckInvariant(model, !model.DigitalPart.ComputingModules.Any(element => element.Anomaly) );
 
-			var result = modelchecker.CheckInvariant(model, !model.MechanicalPart.DoorFront.DoorIsOpen);
+			var result = modelchecker.CheckInvariant(model, !model.MechanicalPartPlants.DoorFront.DoorIsOpen);
 
 			Assert.IsTrue(result.FormulaHolds);
 		}
@@ -178,7 +192,7 @@
 		[Test]
 		public void Simulation()
 		{
-			var model = new Model();
+			var model = new Model(60, AirplaneStates.Flight, Mode.Any, 1);
 
 			var simulator = new Simulator(model);
 			model = (Model)simulator.Model;
@@ -187,34 +201,40 @@
 			{
 				simulator.SimulateStep();
 
-				Debug.WriteLine($"Pilot: {model.PilotInterface.Pilot.HandlePosition}");
-				Debug.WriteLine($"Handle Moved: {model.PilotInterface.Handle.Moved}");
+				Debug.WriteLine($"Pilot: {model.Pilot.Position}");
+				Debug.WriteLine($"Handle Moved: {model.Cockpit.PilotHandle.Moved}");
 				Debug.WriteLine($"HandleMoved: {model.DigitalPart.ComputingModules[0].HandleHasMoved}");
 				Debug.WriteLine($"OpenEV DigiPart: {model.DigitalPart.ComputingModules[0].OpenEV}");
 				Debug.WriteLine($"GeneralEV DigiPart: {model.DigitalPart.ComputingModules[0].GeneralEV}");
 				Debug.WriteLine($"RetractEV DigiPart: {model.DigitalPart.ComputingModules[0].RetractEV}");
 				Debug.WriteLine($"GearShockAbsorberRelaxed DigiPart: {model.DigitalPart.ComputingModules[0].GearShockAbsorberRelaxed}");
 				Debug.WriteLine($"ActSeq State: {model.DigitalPart.ComputingModules[0]._actionSequence.StateMachine.State}");
-				Debug.WriteLine($"AnalogicalSwitch: {model.MechanicalPart.AnalogicalSwitch.StateMachine.State}");
-				Debug.WriteLine($"GeneralEV: {model.MechanicalPart.GeneralEV.StateMachine.State}");
-				Debug.WriteLine($"OpenEV: {model.MechanicalPart.OpenEV.StateMachine.State}");
-				Debug.WriteLine($"Extension Pressure: {model.MechanicalPart.ExtensionCircuitDoors.Pressure}");
-				Debug.WriteLine($"Extension Enabled: {model.MechanicalPart.ExtensionCircuitDoors.IsEnabled}");
-				Debug.WriteLine($"General Hin: {model.MechanicalPart.GeneralEV.Hin}");
-				Debug.WriteLine($"General Hout: {model.MechanicalPart.GeneralEV.Hout}");
-				Debug.WriteLine($"Open Hin: {model.MechanicalPart.OpenEV.Hin}");
-				Debug.WriteLine($"Open Hout: {model.MechanicalPart.OpenEV.Hout}");
-				Debug.WriteLine($"First Pressure: {model.MechanicalPart.FirstPressureCircuit.Pressure}");
-				Debug.WriteLine($"First Enabled: {model.MechanicalPart.FirstPressureCircuit.IsEnabled}");
-				Debug.WriteLine($"Door: {model.MechanicalPart.FrontDoorCylinder.StateMachine.State}");
-				Debug.WriteLine($"Door Ext Pressure: {model.MechanicalPart.FrontDoorCylinder.CheckPressureExtensionCircuit}");
-				Debug.WriteLine($"Gear Retract Pressure: {model.MechanicalPart.FrontGearCylinder.CheckPressureRetractionCircuit}");
-				Debug.WriteLine($"Latching: {model.MechanicalPart.FrontDoorCylinder._latchingBoxClosedOne.StateMachine.State}");
-				Debug.WriteLine($"Latching timer: {model.MechanicalPart.FrontDoorCylinder._latchingBoxClosedOne._timer.HasElapsed}");
-				Debug.WriteLine($"Latching timer time: {model.MechanicalPart.FrontDoorCylinder._latchingBoxClosedOne._timer.RemainingTime}");
-				Debug.WriteLine($"Latching unlocked: {model.MechanicalPart.FrontDoorCylinder._latchingBoxClosedOne.Unlock}");
-				Debug.WriteLine($"Gear: {model.MechanicalPart.GearFront.StateMachine.State}");
-				Debug.WriteLine($"================== (step: {i}) ==========================================");
+				Debug.WriteLine($"AnalogicalSwitch: {model.MechanicalPartControllers.AnalogicalSwitch.StateMachine.State}");
+				Debug.WriteLine($"GeneralEV: {model.MechanicalPartControllers.GeneralEV.StateMachine.State}");
+				Debug.WriteLine($"OpenEV: {model.MechanicalPartControllers.OpenEV.StateMachine.State}");
+				Debug.WriteLine($"Extension Pressure: {model.MechanicalPartControllers.ExtensionCircuitDoors.Pressure}");
+				Debug.WriteLine($"Extension Enabled: {model.MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled}");
+				Debug.WriteLine($"General Hin: {model.MechanicalPartControllers.GeneralEV.Hin}");
+				Debug.WriteLine($"General Hout: {model.MechanicalPartControllers.GeneralEV.Hout}");
+				Debug.WriteLine($"Open Hin: {model.MechanicalPartControllers.OpenEV.Hin}");
+				Debug.WriteLine($"Open Hout: {model.MechanicalPartControllers.OpenEV.Hout}");
+				Debug.WriteLine($"First Pressure: {model.MechanicalPartControllers.FirstPressureCircuit.Pressure}");
+				Debug.WriteLine($"First Enabled: {model.MechanicalPartControllers.FirstPressureCircuit.IsEnabled}");
+				Debug.WriteLine($"Door: {model.MechanicalActuators.FrontDoorCylinder.StateMachine.State}");
+				Debug.WriteLine($"Door Ext Pressure: {model.MechanicalActuators.FrontDoorCylinder.CheckPressureExtensionCircuit}");
+				Debug.WriteLine($"Gear Retract Pressure: {model.MechanicalActuators.FrontGearCylinder.CheckPressureRetractionCircuit}");
+				Debug.WriteLine($"Latching: {model.MechanicalActuators.FrontDoorCylinder._latchingBoxClosedOne.StateMachine.State}");
+				Debug.WriteLine($"Latching timer: {model.MechanicalActuators.FrontDoorCylinder._latchingBoxClosedOne._timer.HasElapsed}");
+				Debug.WriteLine($"Latching timer time: {model.MechanicalActuators.FrontDoorCylinder._latchingBoxClosedOne._timer.RemainingTime}");
+				Debug.WriteLine($"GearFront: {model.MechanicalPartPlants.GearFront.State}");
+                Debug.WriteLine($"GearLeft: {model.MechanicalPartPlants.GearLeft.State}");
+                Debug.WriteLine($"GearRight: {model.MechanicalPartPlants.GearRight.State}");
+                Debug.WriteLine($"Sensor GearFront: {model.DigitalPart.ComputingModules[0].FrontGearRetracted.Value}");
+                Debug.WriteLine($"Sensor GearLeft: {model.DigitalPart.ComputingModules[0].LeftGearRetracted.Value}");
+                Debug.WriteLine($"Sensor GearRight: {model.DigitalPart.ComputingModules[0].RightGearRetracted.Value}");
+                Debug.WriteLine($"GearsRetracted: {model.DigitalPart.ComputingModules[0].GearsRetracted}");
+                Debug.WriteLine($"F: {model.Pilot.f}");
+                Debug.WriteLine($"================== (step: {i}) ==========================================");
 			}
 
 			// var result = modelchecker.CheckInvariant(model, !model.DigitalPart.ComputingModules.Any(element => element.Anomaly) );

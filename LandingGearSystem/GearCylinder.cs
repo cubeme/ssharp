@@ -46,7 +46,7 @@ namespace LandingGearSystem
 			        guard: CheckPressureRetractionCircuit == true,
 			        action: () =>
 			        {
-						_latchingBoxExtended.Unlock = true;
+			            _latchingBoxExtended.Unlock();
 			        })
 
 				.Transition(
@@ -64,7 +64,7 @@ namespace LandingGearSystem
 					guard: CheckPressureRetractionCircuit == true && _timer.HasElapsed,
 					action: () =>
 					{
-						_latchingBoxRetracted.Lock = true;
+						_latchingBoxRetracted.Lock();
 					})
 
 				.Transition(
@@ -78,7 +78,7 @@ namespace LandingGearSystem
 					guard: CheckPressureExtensionCircuit == true,
 					action: () =>
 					{
-						_latchingBoxRetracted.Unlock = true;
+						_latchingBoxRetracted.Unlock();
 					})
 
 				.Transition(
@@ -96,7 +96,7 @@ namespace LandingGearSystem
 					guard: CheckPressureExtensionCircuit == true && _timer.HasElapsed,
 					action: () =>
 					{
-						_latchingBoxExtended.Lock = true;
+						_latchingBoxExtended.Lock();
 					})
 
 				.Transition(
@@ -112,8 +112,7 @@ namespace LandingGearSystem
 					guard: CheckPressureExtensionCircuit == true,
 					action: () =>
 					{
-						_latchingBoxExtended.Unlock = false;
-						_latchingBoxExtended.Lock = true;
+						_latchingBoxExtended.Lock();
 					})
 
 				.Transition(
@@ -122,8 +121,7 @@ namespace LandingGearSystem
 					guard: CheckPressureRetractionCircuit == true,
 					action: () =>
 					{
-						_latchingBoxExtended.Lock = false;
-						_latchingBoxExtended.Unlock = true;
+						_latchingBoxExtended.Unlock();
 					})
 
 				.Transition(
@@ -142,27 +140,25 @@ namespace LandingGearSystem
 					action: () =>
 					{
 						_timer.Start(Position == CylinderPosition.Front ? 16 - (4 * _timer.RemainingTime) / 3 : 20 - (5 * _timer.RemainingTime) / 4);
-					});
+					})
 
-//                .Transition(
-//                    from: GearStates.LockingRetracted,
-//                    to: GearStates.UnlockingRetracted,
-//                    guard: CheckPressureExtensionCircuit == true,
-//                    action: () =>
-//                    {
-//                        _latchingBoxRetracted.Lock = false;
-//                        _latchingBoxRetracted.Unlock = true;
-//                    })
-//
-//                .Transition(
-//                    from: GearStates.UnlockingRetracted,
-//                    to: GearStates.LockingRetracted,
-//                    guard: CheckPressureRetractionCircuit == true,
-//                    action: () =>
-//                    {
-//                        _latchingBoxRetracted.Unlock = false;
-//                        _latchingBoxRetracted.Lock = true;
-//                    });
+                .Transition(
+                    from: GearStates.LockingRetracted,
+                    to: GearStates.UnlockingRetracted,
+                    guard: CheckPressureExtensionCircuit == true,
+                    action: () =>
+                    {
+                        _latchingBoxRetracted.Unlock();
+                    })
+
+                .Transition(
+                    from: GearStates.UnlockingRetracted,
+                    to: GearStates.LockingRetracted,
+                    guard: CheckPressureRetractionCircuit == true,
+                    action: () =>
+                    {
+                        _latchingBoxRetracted.Lock();
+                    });
 
         }
 

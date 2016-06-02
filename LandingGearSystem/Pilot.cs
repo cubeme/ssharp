@@ -25,26 +25,46 @@ namespace LandingGearSystem
 
     class Pilot : Component
     {
+
         /// <summary>
-        /// Nondeterministically chooses a handle position.
+        /// The instance of the pilot handle being controlled by the pilot.
         /// </summary>
-        private HandlePosition _position;
+        public Cockpit Cockpit { get; set;  }
+
+
+        /// <summary>
+        /// Remembers the old handle position to determine whether or not the handle has been moved.
+        /// </summary>
+        [Hidden]
+        private HandlePosition _oldPosition;
 
         /// <summary>
         /// Gets the current handle position.
         /// </summary>
-        public HandlePosition HandlePosition => _position;
+        public HandlePosition Position { get; private set; } = HandlePosition.Down;
 
-		//[Range(0, 500, OverflowBehavior.Clamp)]
-	    private int f;
+
+        [Range(0, 500, OverflowBehavior.Clamp)]
+	    public int f;
 
         public override void Update()
         {
-		//	if (f == 0)
-	        _position = (HandlePosition.Up);
+            Update(Cockpit);
 
-			if (f <600)
-	       ++f;
+            _oldPosition = Position;
+            //Position = Choose(HandlePosition.Up, HandlePosition.Down);
+            Position = (HandlePosition.Up);
+
+            if (_oldPosition != Position)
+                Cockpit.PilotHandle.HasMoved();
+
+            //if (f == 0)
+            //    Position = (HandlePosition.Up);
+
+            //if (f < 500)
+                ++f;
+
+
 
         }
     }

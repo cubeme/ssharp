@@ -53,56 +53,30 @@ namespace LandingGearSystem
 
     class HealthMonitoring : Component
     {
+
+        //Health monitoring
+        //Generic monitoring -> see ComputingModule
+
         /// <summary>
         /// An instance of the associated computing module.
         /// </summary>
-        private readonly ComputingModule computingModule;
+        protected readonly ComputingModule ComputingModule;
 
         /// <summary>
         /// Indicates whether an anomaly has been detected.
         /// </summary>
-        public bool AnomalyDetected { get; private set; }
+        public bool AnomalyDetected { get; protected set; }
 
         /// <summary>
         ///   Gets the state machine that manages the healthmonitoring of the analogical switch.
         /// </summary>
-        private readonly StateMachine<HealthMonitoringStates> StateMachineSwitch = HealthMonitoringStates.Wait;
-        //todo: private!!!
-
-        /// <summary>
-        ///   Gets the state machine that manages the healthmonitoring of the pressure sensor.
-        /// </summary>
-        public readonly StateMachine<HealthMonitoringStates> StateMachinePressureSensor = HealthMonitoringStates.Wait;
-
-        /// <summary>
-        ///   Gets the state machine that manages the healthmonitoring of the doors motion.
-        /// </summary>
-        public readonly StateMachine<HealthMonitoringStates> StateMachineDoors = HealthMonitoringStates.Wait;
-
-        /// <summary>
-        ///   Gets the state machine that manages the healthmonitoring of the gears motion.
-        /// </summary>
-        public readonly StateMachine<HealthMonitoringStates> StateMachineGears = HealthMonitoringStates.Wait;
-
-        /// <summary>
-        /// Timer used for health monitoring of the pressure sensor.
-        /// </summary>
-        private readonly Timer _timerPressure = new Timer();
+        protected readonly StateMachine<HealthMonitoringStates> StateMachine = HealthMonitoringStates.Wait;
+        //todo: private
 
         /// <summary>
         /// Timer used for health monitoring of the analogical switch.
         /// </summary>
-        private readonly Timer _timerSwitch = new Timer();
-
-        /// <summary>
-        /// Timer used for health monitoring of the doors motion.
-        /// </summary>
-        private readonly Timer _timerDoors = new Timer();
-
-        /// <summary>
-        /// Timer used for health monitoring of the gears motion.
-        /// </summary>
-        private readonly Timer _timerGears = new Timer();
+        protected readonly Timer Timer = new Timer();
 
         /// <summary>
         /// Initializes a new instance.
@@ -110,175 +84,7 @@ namespace LandingGearSystem
         /// <param name="module"></param>
         public HealthMonitoring(ComputingModule module)
         {
-            computingModule = module;
-        }
-
-        public override void Update()
-        {
-            Update(_timerSwitch, _timerPressure, _timerDoors, _timerGears);
-
-            //Health monitoring
-            //Generic monitoring -> see ComputingModule
-            //Analogical switch monitoring
-            StateMachineSwitch
-                .Transition(
-                    from: HealthMonitoringStates.Wait,
-                    to: HealthMonitoringStates.Start,
-                    guard: computingModule.HandleHasMoved,
-                    action: () =>
-                    {
-                        _timerSwitch.Start(200);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.Start,
-                    to: HealthMonitoringStates.End,
-                    guard: _timerSwitch.HasElapsed,
-                    action: () =>
-                    {
-                        _timerSwitch.Start(15);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.Start,
-                    to: HealthMonitoringStates.Error,
-                    guard: _timerSwitch.RemainingTime == 19 && computingModule.AnalogicalSwitch.Value == AnalogicalSwitchStates.Open,
-                    action: () => AnomalyDetected = true)
-                .Transition(
-                    from: HealthMonitoringStates.End,
-                    to: HealthMonitoringStates.Wait,
-                    guard: computingModule.AnalogicalSwitch.Value == AnalogicalSwitchStates.Open && !computingModule.HandleHasMoved,
-                    action: () => _timerSwitch.Stop())
-                .Transition(
-                    from: HealthMonitoringStates.End,
-                    to: HealthMonitoringStates.Start,
-                    guard: computingModule.HandleHasMoved,
-                    action: () =>
-                    {
-                        _timerSwitch.Start(200);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.End,
-                    to: HealthMonitoringStates.Error,
-                    guard: _timerSwitch.HasElapsed && !computingModule.HandleHasMoved && computingModule.AnalogicalSwitch.Value == AnalogicalSwitchStates.Closed,
-                    action: () => AnomalyDetected = true);
-
-            //Pressure sensor monitoring
-            StateMachinePressureSensor
-                .Transition(
-                    from: HealthMonitoringStates.Wait,
-                    to: HealthMonitoringStates.Start,
-                    guard:  computingModule.GeneralEV,
-                    action: () =>
-                    {
-                        _timerPressure.Start(20);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.Start,
-                    to: HealthMonitoringStates.Intermediate,
-                    guard: computingModule.CircuitPressurized.Value == true)
-                .Transition(
-                    from: HealthMonitoringStates.Start,
-                    to: HealthMonitoringStates.Error,
-                    guard: _timerPressure.HasElapsed && !computingModule.CircuitPressurized.Value == true,
-                    action: () => AnomalyDetected = true)
-                .Transition(
-                    from: HealthMonitoringStates.Intermediate,
-                    to: HealthMonitoringStates.End,
-                    guard: !computingModule.GeneralEV,
-                    action: () =>
-                    {
-                        _timerPressure.Start(100);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.End,
-                    to: HealthMonitoringStates.Wait,
-                    guard: !computingModule.CircuitPressurized.Value == true)
-                .Transition(
-                    from: HealthMonitoringStates.End,
-                    to: HealthMonitoringStates.Start,
-                    guard: computingModule.GeneralEV,
-                    action: () =>
-                    {
-                        _timerPressure.Start(20);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.End,
-                    to: HealthMonitoringStates.Error,
-                    guard: _timerPressure.HasElapsed && computingModule.CircuitPressurized.Value == true,
-                    action: () => AnomalyDetected = true);
-
-            //Doors motion monitoring
-            StateMachineDoors
-                .Transition(
-                    from: HealthMonitoringStates.Wait,
-                    to: HealthMonitoringStates.Open,
-                    guard: computingModule.OpenEV,
-                    action: () =>
-                    {
-                        _timerDoors.Start(70);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.Open,
-                    to: HealthMonitoringStates.Error,
-                    guard: (_timerDoors.HasElapsed && computingModule.DoorsClosed) || (_timerDoors.HasElapsed && !computingModule.DoorsOpen),
-                    action: () => AnomalyDetected = true)
-                .Transition(
-                    from: HealthMonitoringStates.Open,
-                    to: HealthMonitoringStates.Wait,
-                    guard: !computingModule.DoorsClosed && computingModule.DoorsOpen)
-                .Transition(
-                    from: HealthMonitoringStates.Wait,
-                    to: HealthMonitoringStates.Close,
-                    guard: computingModule.CloseEV,
-                    action: () =>
-                    {
-                        _timerDoors.Start(70);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.Close,
-                    to: HealthMonitoringStates.Error,
-                    guard: (_timerDoors.HasElapsed && computingModule.DoorsOpen) || (_timerDoors.HasElapsed && !computingModule.DoorsClosed),
-                    action: () => AnomalyDetected = true)
-                .Transition(
-                    from: HealthMonitoringStates.Close,
-                    to: HealthMonitoringStates.Wait,
-                    guard: computingModule.DoorsClosed && !computingModule.DoorsOpen);
-
-            //Gears motion monitoring
-            StateMachineGears
-                .Transition(
-                    from: HealthMonitoringStates.Wait,
-                    to: HealthMonitoringStates.Extend,
-                    guard: computingModule.ExtendEV,
-                    action: () =>
-                    {
-                        _timerGears.Start(100);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.Extend,
-                    to: HealthMonitoringStates.Error,
-                    guard: (_timerGears.RemainingTime == 30 && computingModule.GearsRetracted) || (_timerGears.HasElapsed && !computingModule.GearsExtended),
-                    action: () => AnomalyDetected = true)
-                .Transition(
-                    from: HealthMonitoringStates.Extend,
-                    to: HealthMonitoringStates.Wait,
-                    guard: computingModule.GearsExtended && !computingModule.GearsRetracted)
-                .Transition(
-                    from: HealthMonitoringStates.Wait,
-                    to: HealthMonitoringStates.Retract,
-                    guard: computingModule.RetractEV,
-                    action: () =>
-                    {
-                        _timerGears.Start(100);
-                    })
-                .Transition(
-                    from: HealthMonitoringStates.Retract,
-                    to: HealthMonitoringStates.Error,
-                    guard: (_timerGears.RemainingTime == 30 && computingModule.GearsExtended) || (_timerGears.HasElapsed && !computingModule.GearsRetracted),
-                    action: () => AnomalyDetected = true)
-                .Transition(
-                    from: HealthMonitoringStates.Retract,
-                    to: HealthMonitoringStates.Wait,
-                    guard: computingModule.GearsRetracted && !computingModule.GearsExtended);
+            ComputingModule = module;
         }
     }
 }

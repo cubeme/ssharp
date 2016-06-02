@@ -10,52 +10,50 @@ namespace LandingGearSystem
 
     class PilotHandle : Component
     {
-        //todo: event mit moved aufruf
-
-        // <summary>
+        /// <summary>
         ///  Indicates whether the pilot handle has been moved.
         /// </summary>
         public bool Moved { get; private set; }
 
         /// <summary>
-        /// Gets the handle position chosen by the Pilot.
+        /// Gets the current position of the pilot handle.
         /// </summary>
-        public extern HandlePosition GetPilotHandlePosition { get;  }
-
         public HandlePosition PilotHandlePosition => StateMachine.State;
 
         /// <summary>
 		///   Gets the state machine that manages the state of the pilot handle.
 		/// </summary>
 		public readonly StateMachine<HandlePosition> StateMachine = HandlePosition.Down;
+
+        /// <summary>
+        /// Is called by the pilot if the handle position has changed.
+        /// </summary>
+        public void HasMoved()
+        {
+            StateMachine
+                .Transition(
+                    from: HandlePosition.Down,
+                    to: HandlePosition.Up,
+                    action: () => Moved = true)
+
+                .Transition(
+                    from: HandlePosition.Up,
+                    to: HandlePosition.Down,
+                    action: () => Moved = true);
+        }
     
         public override void Update()
         {
             StateMachine
                 .Transition(
                     from: HandlePosition.Down,
-                    to: HandlePosition.Up,
-                    guard: GetPilotHandlePosition == HandlePosition.Up,
-                    action: () => Moved = true)
-
-                .Transition(
-                    from: HandlePosition.Down,
                     to: HandlePosition.Down,
-                    guard: GetPilotHandlePosition == HandlePosition.Down,
                     action: () => Moved = false)
 
                 .Transition(
                     from: HandlePosition.Up,
-                    to: HandlePosition.Down,
-                    guard: GetPilotHandlePosition == HandlePosition.Down,
-                    action: () => Moved = true)
-
-                .Transition(
-                    from: HandlePosition.Up,
                     to: HandlePosition.Up,
-                    guard: GetPilotHandlePosition == HandlePosition.Up,
-                    action: () => Moved = false);
-                
+                    action: () => Moved = false);               
         }
     }
 }

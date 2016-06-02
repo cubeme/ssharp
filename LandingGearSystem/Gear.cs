@@ -74,24 +74,24 @@ namespace LandingGearSystem
         public GearPosition Position { get; private set; }
 
         /// <summary>
-		///   Gets the state machine that manages the state of the pilot handle.
-		/// </summary>
-		public readonly StateMachine<GearStates> StateMachine = GearStates.LockedExtended;
+        ///  Indicates the current state of the gears.
+        /// </summary>
+        public GearStates State { get; private set; }
 
         /// <summary>
         /// Gets a value indicating which state the gear cylinder is currently in.
         /// </summary>
-        public extern GearStates GetGearCylinderState { get;  }
+        public extern GearStates GearCylinderState { get;  }
 
         /// <summary>
         /// Gets a value indicating whether the gear is locked in extended position.
         /// </summary>
-        public bool GearIsExtended => StateMachine.State == GearStates.LockedExtended;
+        public bool GearIsExtended => State == GearStates.LockedExtended;
 
         /// <summary>
         /// Gets a value indicating whether the gear is locked in retracted position.
         /// </summary>
-        public bool GearIsRetracted => StateMachine.State == GearStates.LockedRetracted;
+        public bool GearIsRetracted => State == GearStates.LockedRetracted;
 
         /// <summary>
         /// Initializes a new instance.
@@ -104,78 +104,7 @@ namespace LandingGearSystem
 
         public override void Update()
         {
-
-            StateMachine
-                .Transition(
-                    from: GearStates.LockedExtended,
-                    to: GearStates.UnlockingExtended,
-                    guard: GetGearCylinderState == GearStates.UnlockingExtended)
-
-                .Transition(
-                    from: GearStates.UnlockingExtended,
-                    to: GearStates.MoveRetracting,
-                    guard: GetGearCylinderState == GearStates.MoveRetracting)
-
-                .Transition(
-                    from: GearStates.MoveRetracting,
-                    to: GearStates.LockingRetracted,
-                    guard: GetGearCylinderState == GearStates.LockingRetracted)
-
-                .Transition(
-                    from: GearStates.LockingRetracted,
-                    to: GearStates.LockedRetracted,
-                    guard: GetGearCylinderState  == GearStates.LockedRetracted)
-
-                .Transition(
-                    from: GearStates.LockedRetracted,
-                    to: GearStates.UnlockingRetracted,
-                    guard: GetGearCylinderState  == GearStates.UnlockingRetracted)
-
-                .Transition(
-                    from: GearStates.UnlockingRetracted,
-                    to: GearStates.MoveExtending,
-                    guard: GetGearCylinderState  == GearStates.MoveExtending)
-
-                .Transition(
-                    from: GearStates.MoveExtending,
-                    to: GearStates.LockingExtended,
-                    guard: GetGearCylinderState  == GearStates.LockingExtended)
-
-                .Transition(
-                    from: GearStates.LockingExtended,
-                    to: GearStates.LockedExtended,
-                    guard: GetGearCylinderState  == GearStates.LockedExtended)
-
-                .Transition(
-                    from: GearStates.UnlockingExtended,
-                    to: GearStates.LockingExtended,
-                    guard: GetGearCylinderState  == GearStates.LockingExtended)
-
-                .Transition(
-                    from: GearStates.LockingExtended,
-                    to: GearStates.UnlockingExtended,
-                    guard: GetGearCylinderState  == GearStates.UnlockingExtended)
-
-                .Transition(
-                    from: GearStates.MoveRetracting,
-                    to: GearStates.MoveExtending,
-                    guard: GetGearCylinderState  == GearStates.MoveExtending)
-
-                .Transition(
-                    from: GearStates.MoveExtending,
-                    to: GearStates.MoveRetracting,
-                    guard: GetGearCylinderState  == GearStates.MoveRetracting)
-
-                .Transition(
-                    from: GearStates.LockingRetracted,
-                    to: GearStates.UnlockingRetracted,
-                    guard: GetGearCylinderState  == GearStates.UnlockingRetracted)
-
-                .Transition(
-                    from: GearStates.UnlockingRetracted,
-                    to: GearStates.LockingRetracted,
-                    guard: GetGearCylinderState  == GearStates.LockingRetracted);
-
+            State = GearCylinderState;
         }
 
     }

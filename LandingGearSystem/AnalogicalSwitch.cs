@@ -43,8 +43,7 @@ namespace LandingGearSystem
         /// <summary>
         ///  Times the movement of the analogical switch.
         /// </summary>
-        [Hidden]
-        private Timer _timer = new Timer();
+        private readonly Timer _timer = new Timer();
 
         /// <summary>
         /// Gets a value indicating whether the pilot handle has been moved.

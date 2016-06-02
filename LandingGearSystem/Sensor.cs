@@ -30,4 +30,4 @@ namespace LandingGearSystem
 ///-> GearLockedExtended (true)
 ///-> GearLockedRetracted (true)
 ///-> GearShockAbsorber (AirplaneStates)
-///-> PilotHandle (HandlePosition)
+///-> PilotHandle (Position)

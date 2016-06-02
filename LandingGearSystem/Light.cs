@@ -18,7 +18,7 @@ namespace LandingGearSystem
         /// <summary>
         ///  Gets a value indicating whether the gears are locked down (green), the gears are maneuvering (orange) or an anomlay has been detected (red).
         /// </summary>
-        public extern bool LightValue { private get;  set; }
+        public extern bool LightValue {  get; }
 
     }
 }

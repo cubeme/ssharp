@@ -10,7 +10,6 @@ namespace LandingGearSystem
 
     public class PressureCircuit : Component
     {
-        //todo: gets vernichten bei properties
         ///<summary>
         /// Indicates current pressure levell.
         /// </summary>
@@ -40,7 +39,7 @@ namespace LandingGearSystem
         ///<summary>
         /// Gets the value of the pressure put into the hydraulic circuit.
         /// </summary>
-        public extern int GetInputPressure { get;  }
+        public extern int InputPressure { get;  }
 
 	    ///<summary>
 	    /// Gets the value of the pressure put into the hydraulic circuit.
@@ -52,12 +51,7 @@ namespace LandingGearSystem
         /// </summary>
         public override void Update()
         {
-            int input = GetInputPressure;
-
-            if (input > 0)
-                _pressureLevel += input;
-			else
-				_pressureLevel -= 1;            
+            _pressureLevel = InputPressure;
         }
     }
 }

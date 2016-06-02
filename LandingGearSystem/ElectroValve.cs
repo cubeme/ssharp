@@ -14,107 +14,88 @@ namespace LandingGearSystem
     public enum EVStates
     {
         /// <summary>
-        /// State indicating the EV is open.
-        /// </summary>
-        Open,
-        /// <summary>
         /// State indicating the EV is closed.
         /// </summary>
         Closed,
         /// <summary>
-        /// State indicating the EV is opening.
+        /// State indicating the EV is open.
         /// </summary>
-        MoveOpening,
-        /// <summary>
-        /// State indicating the EV is closing.
-        /// </summary>
-        MoveClosing
+        Open
     }
 
     class ElectroValve : Component
     {
-        //todo: EOrder --> event: beweg dich
-
         /// <summary>
         ///   Gets the state machine that manages the state of the gear cylinder.
         /// </summary>
-        public readonly StateMachine<EVStates> StateMachine = EVStates.Open;
+        public readonly StateMachine<EVStates> StateMachine = EVStates.Closed;
 
         /// <summary>
-        ///  Timer to time the pressure increase.
+        /// Indicates the output pressure of the EV.
         /// </summary>
-        private readonly Timer _timer = new Timer();
+        private int _hout = 0;
+
+        /// <summary>
+        /// Initilializes a new instance.
+        /// </summary>
+        /// <param name="maxHin"> The maximum input pressure of the EV. </param>
+        public ElectroValve(int maxHin)
+        {
+            Range.Restrict(_hout, 0, maxHin, OverflowBehavior.Clamp);
+        }
 
         ///<summary>
         /// Gets the hydraulic output pressure of the EV.
         /// </summary>
-        public int Hout => StateMachine == EVStates.Closed ? Hin : 0;
+        public int Hout => StateMachine == EVStates.Open ? _hout : 0;
 
-        ///<summary>
-        /// Gets the hydraulic input pressure of the EV.
+        /// <summary>
+        ///   Gets the hydraulic input pressure of the EV.
         /// </summary>
         public extern int Hin { get; }
 
         ///<summary>
         /// Gets the electric order.
         /// </summary>
-        public extern bool EOrder();
+        public extern bool EOrder { get; }
+
+        ///<summary>
+        /// Transitions to be executed when EOrder == true.
+        /// </summary>
+        public void EOrderIsTrue()
+        {
+            StateMachine
+                .Transition(
+                    from: EVStates.Closed,
+                    to: EVStates.Open);
+        }
+
+        ///<summary>
+        /// Transitions to be executed when EOrder == false.
+        /// </summary>
+        public void EOrderIsFalse()
+        {
+            StateMachine
+                .Transition(
+                    from: EVStates.Open,
+                    to: EVStates.Closed);
+        }
 
         ///<summary>
         /// Updates the EV.
         /// </summary>
         public override void Update()
         {
-            //todo: drucksteigerung
-            Update(_timer);
+            //todo: Mit Port oder irgendwie Methode direkt aufrufen? Hin lassen oder lieber einfach ansteigen lassen?
+            if (EOrder)
+                EOrderIsTrue();
+            else
+                EOrderIsFalse();
 
-            StateMachine
-                .Transition(
-                from: EVStates.Open,
-                to: EVStates.MoveClosing,
-                guard: EOrder() == true,
-                action: () =>
-                {
-                    _timer.Start(10);
-                })
-
-                .Transition(
-                    from: EVStates.MoveClosing,
-                    to: EVStates.Closed,
-                    guard: _timer.HasElapsed && EOrder() == true)
-
-                .Transition(
-                    from: EVStates.Closed,
-                    to: EVStates.MoveOpening,
-                    guard: EOrder() == false,
-                    action: () =>
-                    {
-                        _timer.Start(36);
-                    })
-
-                .Transition(
-                    from: EVStates.MoveOpening,
-                    to: EVStates.Open,
-                    guard: _timer.HasElapsed && EOrder() == false)
-
-
-                .Transition(
-                    from: EVStates.MoveOpening,
-                    to: EVStates.MoveClosing,
-                    guard: EOrder() == true,
-                    action: () =>
-                    {
-                        _timer.Start(10 - (_timer.RemainingTime * 5) / 18);
-                    })
-
-                .Transition(
-                    from: EVStates.MoveClosing,
-                    to: EVStates.MoveOpening,
-                    guard: EOrder() == false,
-                    action: () =>
-                    {
-                        _timer.Start(36 - (_timer.RemainingTime * 36) / 10);
-                    });
+            if (StateMachine.State == EVStates.Open)
+                _hout += Hin/10; //Needs 1sec to fill; 1 Step = 0.1sec
+            else
+                _hout -= Hin / 36; //Needs 3.6sec to go down; 1 Step = 0.1sec
         }
     }
 }

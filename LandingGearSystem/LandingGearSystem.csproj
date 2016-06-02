@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\ISSE.SafetySharp.1.2.2\build\ISSE.SafetySharp.props" Condition="Exists('..\packages\ISSE.SafetySharp.1.2.2\build\ISSE.SafetySharp.props')" />
   <Import Project="..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.props" Condition="Exists('..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -40,8 +41,8 @@
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SafetySharp.Modeling, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ISSE.SafetySharp.1.2.1\lib\net45\SafetySharp.Modeling.dll</HintPath>
+    <Reference Include="SafetySharp.Modeling, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ISSE.SafetySharp.1.2.2\lib\net45\SafetySharp.Modeling.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -54,9 +55,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cockpit.cs" />
+    <Compile Include="HealthDoors.cs" />
+    <Compile Include="HealthGears.cs" />
+    <Compile Include="HealthPressureSensor.cs" />
     <Compile Include="HealthMonitoring.cs" />
+    <Compile Include="HealthSwitch.cs" />
     <Compile Include="Light.cs" />
-    <Compile Include="MechanicalPart.cs" />
+    <Compile Include="MechanicalPartActuators.cs" />
+    <Compile Include="MechanicalPartControllers.cs" />
+    <Compile Include="MechanicalPartPlants.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ActionSequence.cs" />
     <Compile Include="AircraftHydraulicCircuit.cs" />
@@ -75,7 +83,6 @@
     <Compile Include="LatchingBox.cs" />
     <Compile Include="PillotHandle.cs" />
     <Compile Include="Pilot.cs" />
-    <Compile Include="PilotInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sensor.cs" />
     <Compile Include="Timer.cs" />
@@ -88,18 +95,21 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\ISSE.SafetySharp.1.2.1\analyzers\dotnet\cs\SafetySharp.Compiler.dll" />
-    <Analyzer Include="..\packages\ISSE.SafetySharp.1.2.1\analyzers\dotnet\cs\SafetySharp.Modeling.dll" />
+    <Analyzer Include="..\packages\ISSE.SafetySharp.1.2.2\analyzers\dotnet\cs\SafetySharp.Compiler.dll" />
+    <Analyzer Include="..\packages\ISSE.SafetySharp.1.2.2\analyzers\dotnet\cs\SafetySharp.Modeling.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.props'))" />
     <Error Condition="!Exists('..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.targets'))" />
+    <Error Condition="!Exists('..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.props'))" />
+    <Error Condition="!Exists('..\packages\ISSE.SafetySharp.1.2.2\build\ISSE.SafetySharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ISSE.SafetySharp.1.2.2\build\ISSE.SafetySharp.props'))" />
+    <Error Condition="!Exists('..\packages\ISSE.SafetySharp.1.2.2\build\ISSE.SafetySharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ISSE.SafetySharp.1.2.2\build\ISSE.SafetySharp.targets'))" />
   </Target>
   <Import Project="..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.targets" Condition="Exists('..\packages\ISSE.SafetySharp.1.2.1\build\ISSE.SafetySharp.targets')" />
+  <Import Project="..\packages\ISSE.SafetySharp.1.2.2\build\ISSE.SafetySharp.targets" Condition="Exists('..\packages\ISSE.SafetySharp.1.2.2\build\ISSE.SafetySharp.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

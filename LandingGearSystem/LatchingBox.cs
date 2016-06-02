@@ -43,16 +43,6 @@ namespace LandingGearSystem
 		/// </summary>
 		public int DurationLock { get; }
 
-        /// <summary>
-        /// Indicates whether the latching box is to be unlocked.
-        /// </summary>
-        public bool Unlock {  get; set; }
-
-        /// <summary>
-        /// Indicates whether the latching box is to be locked.
-        /// </summary>
-        public bool Lock { private get; set; }
-
         public LatchingBox(int durationUnlock, int durationLock)
         {
             DurationUnlock = durationUnlock;
@@ -69,70 +59,46 @@ namespace LandingGearSystem
         /// </summary>
         public readonly Timer _timer = new Timer();
 
-        //IsLocked, IsUnlocked, Lock(){--Transition)
-
-       public void Unlock2()
+       public void Unlock()
         {
             StateMachine
                 .Transition(
                     from: new[] { LatchingBoxState.Locked, LatchingBoxState.Locking },
                     to: LatchingBoxState.Unlocking,
-                    guard: Unlock == true,
                     action: () =>
                     {
                         _timer.Start(DurationUnlock - (DurationUnlock / DurationLock) * _timer.RemainingTime);
                     });
         }
 
-        public override void Update()
+        public void Lock()
         {
-            //todo: Event, Transitionen zusammenfassen
-	        Update(_timer);
-
-            StateMachine.
-                Transition(
-                    from: LatchingBoxState.Locked,
-                    to: LatchingBoxState.Unlocking,
-                    guard: Unlock == true,
+            StateMachine
+                .Transition(
+                    from: new[] {LatchingBoxState.Unlocked, LatchingBoxState.Unlocking},
+                    to: LatchingBoxState.Locking,
                     action: () =>
                     {
-                        _timer.Start(DurationUnlock);
-                    })
+                        _timer.Start(DurationLock - (DurationLock/DurationUnlock)*_timer.RemainingTime);
+                    });
+        }
+
+        public override void Update()
+        {
+	        Update(_timer);
+
+            StateMachine
+
                 .Transition(
                     from: LatchingBoxState.Unlocking,
                     to: LatchingBoxState.Unlocked,
-                    guard: Unlock == true && _timer.HasElapsed,
-                    action: () => Unlock = false)
-                .Transition(
-                    from: LatchingBoxState.Unlocked,
-                    to: LatchingBoxState.Locking,
-                    guard: Lock == true,
-                    action: () =>
-                    {
-                        _timer.Start(DurationLock);
-                    })
+                    guard: _timer.HasElapsed)
+
                 .Transition(
                     from: LatchingBoxState.Locking,
                     to: LatchingBoxState.Locked,
-                    guard: Lock == true && _timer.HasElapsed,
-                    action: () => Lock = false)
-                .Transition(
-                    from: LatchingBoxState.Locking,
-                    to: LatchingBoxState.Unlocking,
-                    guard: Unlock = true && Lock == false,
-                    action: () =>
-                    {
-                        _timer.Start(DurationUnlock - (DurationUnlock / DurationLock) * _timer.RemainingTime);
-                    })
-                .Transition(
-                    from: LatchingBoxState.Unlocking,
-                    to: LatchingBoxState.Locking,
-                    guard: Lock == true && Unlock == false,
-                    action: () =>
-                    {
-                        _timer.Start(DurationLock - (DurationLock / DurationUnlock) * _timer.RemainingTime);
-                    });           
-                
+                    guard: _timer.HasElapsed);
+
         }
     }
 }

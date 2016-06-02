@@ -8,27 +8,26 @@ namespace LandingGearSystem
 {
     using SafetySharp.Modeling;
 
-    /// <summary>
-    ///  Class with channel and validity of the channel.
-    /// </summary>
-    class ChannelIsValidPair<T>
-    {
-        public bool Valid = true;
-    }
-
-    class TripleSensor<SensorType> : Component
+    class TripleSensor<TSensorType> : Component
     {
         /// <summary>
         /// Array of three micro sensors the triple sensor is made up out of.
         /// </summary>
         [Hidden(HideElements = true)]
-        public Sensor<SensorType>[] Sensors { get; } = new Sensor<SensorType>[3];
+        public Sensor<TSensorType>[] Sensors { get; } = new Sensor<TSensorType>[3];
 
-		/// <summary>
-		/// Array with value for computing and validity of all three micro sensors.
-		/// </summary>
-		[Hidden(HideElements = true)]
-		private readonly ChannelIsValidPair<SensorType>[] _channels = new ChannelIsValidPair<SensorType>[3];       
+        /// <summary>
+        /// Indicates whether the micro sensor on channel one is valid.
+        /// </summary>
+        private bool _validOne = true;
+        /// <summary>
+        /// Indicates whether the micro sensor on channel two is valid.
+        /// </summary>
+        private bool _validTwo = true;
+        /// <summary>
+        /// Indicates whether the micro sensor on channel three is valid.
+        /// </summary>
+        private bool _validThree = true;      
 
         /// <summary>
         /// Indicates whether the sensor is valid.
@@ -38,7 +37,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Indicates the value of the sensor.
         /// </summary>
-        public SensorType Value { get; private set; }
+        public TSensorType Value { get; private set; }
 
         /// <summary>
         /// Initializes a new instance.
@@ -46,11 +45,10 @@ namespace LandingGearSystem
         public TripleSensor()
         {
             Valid = true;
-            Value = default(SensorType);
+            Value = default(TSensorType);
             for (int i = 0; i < 3; i++)
             {
-                Sensors[i] = new Sensor<SensorType>();
-                _channels[i] = new ChannelIsValidPair<SensorType>();
+                Sensors[i] = new Sensor<TSensorType>();
             }
         }
 
@@ -60,10 +58,8 @@ namespace LandingGearSystem
 			var channel1 = Sensors[1].Value;
 			var channel2 = Sensors[2].Value;
 
-			/// <summary>
-			///  All channels are valid.
-			/// </summary
-			if (_channels[0].Valid && _channels[1].Valid && _channels[2].Valid)
+			//  All channels are valid.
+			if (_validOne && _validTwo && _validThree)
             {
               
 
@@ -73,31 +69,30 @@ namespace LandingGearSystem
 
                 else if (channel0.Equals(channel1) && !channel1.Equals(channel2))
                 {
-                    _channels[2].Valid = false;
+                    _validThree = false;
                     Value = channel0;
                 }
 
                 else if (channel0.Equals(channel2) && !channel0.Equals(channel1))
                 {
-                    _channels[1].Valid = false;
+                    _validTwo = false;
                     Value = channel0;
                 }
 
                 else if (channel1.Equals(channel2) && !channel1.Equals(channel0))
                 {
-                    _channels[0].Valid = false;
+                    _validOne = false;
                     Value = channel1;
                 }
                 else //all are different
                 {
                     Valid = false;
-                    Value = default(SensorType);
+                    Value = default(TSensorType);
                 }
             }
-            /// <summary>
-            /// Only channels one and two are valid.
-            /// </summary
-            else if (_channels[0].Valid && _channels[1].Valid)
+
+            // Only channels one and two are valid.
+            else if (_validOne && _validTwo)
             {
                 channel0 = Sensors[0].Value;
                 channel1 = Sensors[1].Value;
@@ -108,13 +103,11 @@ namespace LandingGearSystem
                 else //if (!channel0.Equals(channel1))
                 {
                     Valid = false;
-                    Value = default(SensorType);
+                    Value = default(TSensorType);
                 }
             }
-            /// <summary>
-            /// Only channels one and three are valid.
-            /// </summary
-            else if (_channels[0].Valid && _channels[2].Valid)
+            // Only channels one and three are valid.
+            else if (_validOne && _validThree)
             {
                 channel0 = Sensors[0].Value;
                 channel2 = Sensors[2].Value;
@@ -125,13 +118,12 @@ namespace LandingGearSystem
                 else //if (!channel0.Equals(channel2))
                 {
                     Valid = false;
-                    Value = default(SensorType);
+                    Value = default(TSensorType);
                 }
             }
-            /// <summary>
-            /// Only channels two and three are valid.
-            /// </summary
-            else if (_channels[1].Valid && _channels[2].Valid)
+
+            // Only channels two and three are valid.
+            else if (_validTwo && _validThree)
             {
                 channel1 = Sensors[1].Value;
                 channel2 = Sensors[2].Value;
@@ -142,14 +134,13 @@ namespace LandingGearSystem
                 else //if (!channel1.Equals(channel2))
                 {
                     Valid = false;
-                    Value = default(SensorType);
+                    Value = default(TSensorType);
                 }
             }
-            /// <summary>
-            /// Alls channelsare valid.
-            /// </summary
+
+            // Alls channels are imvalid.
             else
-                Value = default(SensorType);
+                Value = default(TSensorType);
         }
 
     }

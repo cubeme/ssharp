@@ -46,8 +46,8 @@ namespace LandingGearSystem
 			        guard: CheckPressureExtensionCircuit == true,
 			        action: () =>
 			        {
-						_latchingBoxClosedOne.Unlock = true;
-						_latchingBoxClosedTwo.Unlock = true;
+			            _latchingBoxClosedOne.Unlock();
+						_latchingBoxClosedTwo.Unlock();
 			        })
 
 				.Transition(
@@ -105,8 +105,8 @@ namespace LandingGearSystem
 					guard: CheckPressureRetractionCircuit == true && _timer.HasElapsed,
 					action: () =>
 					{
-						_latchingBoxClosedOne.Lock = true;
-						_latchingBoxClosedTwo.Lock = true;
+						_latchingBoxClosedOne.Lock();
+						_latchingBoxClosedTwo.Lock();
 					})
 
 				.Transition(
@@ -133,31 +133,27 @@ namespace LandingGearSystem
 					action: () =>
 					{
 						_timer.Start(Position == CylinderPosition.Front ? 12 - _timer.RemainingTime : 16 - (16 * _timer.RemainingTime) / 15);
-					});
+					})
 
-	        /*   .Transition(
+	             .Transition(
                     from: DoorStates.LockingClosed,
                     to: DoorStates.UnlockingClosed,
-                    guard: CheckPressureRetractionCircuit == true,
+                    guard: CheckPressureExtensionCircuit == true,
                     action: () =>
                     {
-                        _latchingBoxClosedOne.Lock = false;
-                        _latchingBoxClosedOne.Unlock = true;
-                        _latchingBoxClosedTwo.Lock = false;
-                        _latchingBoxClosedTwo.Unlock = true;
+                        _latchingBoxClosedOne.Unlock();
+                        _latchingBoxClosedTwo.Unlock();
                     })
                     
                 .Transition(
                     from: DoorStates.UnlockingClosed,
                     to: DoorStates.LockingClosed,
-                    guard: CheckPressureExtensionCircuit == true,
+                    guard: CheckPressureRetractionCircuit == true,
                     action: () =>
                     {
-                        _latchingBoxClosedOne.Unlock = false;
-                        _latchingBoxClosedOne.Lock = true;
-                        _latchingBoxClosedTwo.Unlock = false;
-                        _latchingBoxClosedTwo.Lock = true;
-                    });*/
+                        _latchingBoxClosedOne.Lock();
+                        _latchingBoxClosedTwo.Lock();
+                    });
 
         }
 
