@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace LandingGearSystem
 {
-    using SafetySharp.Modeling;
 
     class HealthPressureSensor : HealthMonitoring
     {
@@ -34,11 +29,11 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Intermediate,
-                    guard: ComputingModule.CircuitPressurized.Value == true)
+                    guard: ComputingModule.CircuitPressurized.Value)
                 .Transition(
                     from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Error,
-                    guard: Timer.HasElapsed && !ComputingModule.CircuitPressurized.Value == true,
+                    guard: Timer.HasElapsed && !ComputingModule.CircuitPressurized.Value ,
                     action: () => AnomalyDetected = true)
                 .Transition(
                     from: HealthMonitoringStates.Intermediate,
@@ -51,7 +46,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Wait,
-                    guard: !ComputingModule.CircuitPressurized.Value == true)
+                    guard: !ComputingModule.CircuitPressurized.Value)
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Start,
@@ -63,7 +58,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Error,
-                    guard: Timer.HasElapsed && ComputingModule.CircuitPressurized.Value == true,
+                    guard: Timer.HasElapsed && ComputingModule.CircuitPressurized.Value,
                     action: () => AnomalyDetected = true);
 
            

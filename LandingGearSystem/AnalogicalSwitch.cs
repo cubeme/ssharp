@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace LandingGearSystem
 {
@@ -36,9 +32,12 @@ namespace LandingGearSystem
         /// <summary>
 		///   Gets the state machine that manages the state of the analogical switch.
 		/// </summary>
-		public readonly StateMachine<AnalogicalSwitchStates> StateMachine = AnalogicalSwitchStates.Open;
+		private readonly StateMachine<AnalogicalSwitchStates> _stateMachine = AnalogicalSwitchStates.Open;
 
-        public AnalogicalSwitchStates SwitchPosition => StateMachine.State;
+        /// <summary>
+		///   Gets the current position of the analogical switch.
+		/// </summary>
+        public AnalogicalSwitchStates SwitchPosition => _stateMachine.State;
 
         /// <summary>
         ///  Times the movement of the analogical switch.
@@ -48,7 +47,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Gets a value indicating whether the pilot handle has been moved.
         /// </summary>
-        public extern bool GetHandleHasBeenMoved { get;  }
+        public extern bool HandleHasBeenMoved { get;  }
 
         /// <summary>
         /// Gets the value of the incoming electrical order.
@@ -58,7 +57,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Gets the value of the outgoing electrical order if the switch is closed.
         /// </summary>
-        public bool OutgoingEOrder() => StateMachine == AnalogicalSwitchStates.Closed ? IncomingEOrder() : false;
+        public bool OutgoingEOrder() => _stateMachine == AnalogicalSwitchStates.Closed ? IncomingEOrder() : false;
 
         /// <summary>
         /// Updates the analogical switch.
@@ -67,11 +66,11 @@ namespace LandingGearSystem
         {
             Update(_timer);
 
-            StateMachine
+            _stateMachine
                 .Transition(
                     from: AnalogicalSwitchStates.Open,
                     to: AnalogicalSwitchStates.MoveClosing,
-                    guard: GetHandleHasBeenMoved == true,
+                    guard: HandleHasBeenMoved,
                     action: () =>
                     {
                         _timer.Start(8);
@@ -89,15 +88,15 @@ namespace LandingGearSystem
                 .Transition(
                     from: AnalogicalSwitchStates.Closed,
                     to: AnalogicalSwitchStates.Closed,
-                    guard: GetHandleHasBeenMoved == true,
+                    guard: HandleHasBeenMoved,
                     action: () =>
                     {
-                        _timer.Start(20);
+                        _timer.Start(200);
                     })
 
                 .Transition(
                     from: AnalogicalSwitchStates.Closed,
-                    to: AnalogicalSwitchStates.MoveClosing,
+                    to: AnalogicalSwitchStates.MoveOpening,
                     guard: _timer.HasElapsed,
                     action: () =>
                     {
@@ -107,7 +106,7 @@ namespace LandingGearSystem
                 .Transition(
                     from: AnalogicalSwitchStates.MoveOpening,
                     to: AnalogicalSwitchStates.MoveClosing,
-                    guard: GetHandleHasBeenMoved == true,
+                    guard: HandleHasBeenMoved,
                     action: () =>
                     {
                         _timer.Start(8 - (2 * _timer.RemainingTime) / 3);

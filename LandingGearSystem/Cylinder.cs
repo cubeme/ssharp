@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace LandingGearSystem
 {
@@ -38,12 +34,12 @@ namespace LandingGearSystem
         /// <summary>
         ///  Gets a value indicating whether the retraction circuit is pressurized.
         /// </summary>
-        public extern bool CheckPressureRetractionCircuit { get;  }
+        public extern bool RetractionCurcuitIsPressurized { get;  }
 
         /// <summary>
         ///  Gets a value indictaing whether the extension circuit is pressurized.
         /// </summary>
-        public extern bool CheckPressureExtensionCircuit { get; }
+        public extern bool ExtensionCircuitIsPressurized { get; }
 
         /// <summary>
         /// Initializes a new instance.

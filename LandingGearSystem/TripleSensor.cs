@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace LandingGearSystem
 {
@@ -61,12 +57,10 @@ namespace LandingGearSystem
 			//  All channels are valid.
 			if (_validOne && _validTwo && _validThree)
             {
-              
-
                 if (channel0.Equals(channel1) && channel1.Equals(channel2))
-
-                    Value = channel0;
-
+                {
+                    Value = channel0;             
+                }
                 else if (channel0.Equals(channel1) && !channel1.Equals(channel2))
                 {
                     _validThree = false;

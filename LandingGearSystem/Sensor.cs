@@ -8,26 +8,26 @@ namespace LandingGearSystem
 {
     using SafetySharp.Modeling;
 
-    class Sensor<SensorType> : Component
+    class Sensor<TSensorType> : Component
     {
         /// <summary>
         ///  Indicates the current sensor value.
         /// </summary>
-        public extern SensorType CheckValue { get;  }
+        public extern TSensorType CheckValue { get;  }
 
         /// <summary>
         ///  Gets the value recorded by the sensor.
         /// </summary>
-        public SensorType Value => CheckValue;
+        public TSensorType Value => CheckValue;
     }
 }
 
-///Needed Sensors:
-///-> AnalogicalSwitch (AnalogicalSwitchStates)
-///-> CircuitPressurized (bool)
-///-> DoorLockedClosed (bool)
-///-> DoorOpen (bool)
-///-> GearLockedExtended (true)
-///-> GearLockedRetracted (true)
-///-> GearShockAbsorber (AirplaneStates)
-///-> PilotHandle (Position)
+//Needed Sensors:
+//-> AnalogicalSwitch (AnalogicalSwitchStates)
+//-> CircuitPressurized (bool)
+//-> DoorLockedClosed (bool)
+//-> DoorOpen (bool)
+//-> GearLockedExtended (true)
+//-> GearLockedRetracted (true)
+//-> GearShockAbsorber (AirplaneStates)
+//-> PilotHandle (Position)

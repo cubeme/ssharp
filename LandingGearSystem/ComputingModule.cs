@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace LandingGearSystem
 {
@@ -104,6 +103,7 @@ namespace LandingGearSystem
         public TripleSensor<bool> CircuitPressurized { get; } = new TripleSensor<bool>();
 
         //Output values
+        //todo: Rename?
         /// <summary>
         /// Value indicating whether the general electro valve is to be stimulated.
         /// </summary>
@@ -142,7 +142,7 @@ namespace LandingGearSystem
         /// <summary>
         /// Carries out the outgoing and retraction sequence of the landing gear.
         /// </summary>
-        public readonly ActionSequence _actionSequence;
+        private readonly ActionSequence _actionSequence;
 
         private readonly HealthMonitoring[] _systemHealth;
 
@@ -193,26 +193,26 @@ namespace LandingGearSystem
 
         /// <summary>
         /// Updates the computing model according to the computed values and received inputs.
-        /// </summary
+        /// </summary>
         public override void Update()
         { 
             _oldHandlePosition = HandlePosition.Value;
 
             //Compute new values
-            Update(HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, RightGearShockAbsorber, CircuitPressurized, _actionSequence);
-            //Update(_systemHealth);
-            foreach (var healthMonitor in _systemHealth)
-            {
-                Update(healthMonitor);
-            }
-            
+            Update(HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, RightGearExtented, RightGearRetracted, RightGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, CircuitPressurized, _actionSequence);
+
+            Array.ForEach(_systemHealth, element => element.Update());
 
             //Look for anomaly
-            foreach (var healthMonitor in _systemHealth)
-            {
-                if (healthMonitor.AnomalyDetected)
-                    Anomaly = true;
-            }
+            if (_systemHealth.Any(element => element.AnomalyDetected))
+                Anomaly = true;
+
+            //oben??
+            //foreach (var healthMonitor in _systemHealth)
+            //{
+            //    if (healthMonitor.AnomalyDetected)
+            //        Anomaly = true;
+            //}
 
             if (HandlePosition.Valid == false || AnalogicalSwitch.Valid == false || FrontGearExtented.Valid == false || FrontGearRetracted.Valid == false || FrontGearShockAbsorber.Valid == false || LeftGearExtented.Valid == false || LeftGearRetracted.Valid == false || LeftGearShockAbsorber.Valid == false || RightGearExtented.Valid == false || RightGearRetracted.Valid == false || RightGearShockAbsorber.Valid == false || FrontDoorClosed.Valid == false || FrontDoorOpen.Valid == false || LeftDoorClosed.Valid == false || LeftDoorOpen.Valid == false || RightDoorClosed.Valid == false || RightDoorOpen.Valid == false || CircuitPressurized.Valid == false)
                 Anomaly = true;

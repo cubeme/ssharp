@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace LandingGearSystem
 {
     using SafetySharp.Modeling;
 
     /// <summary>
     ///  Describes the position of the pilot handle.
-    /// </summary
+    /// </summary>
     public enum HandlePosition
     {
         /// <summary>
@@ -45,7 +40,7 @@ namespace LandingGearSystem
 
 
         [Range(0, 500, OverflowBehavior.Clamp)]
-	    public int f;
+	    public int F;
 
         public override void Update()
         {
@@ -53,18 +48,18 @@ namespace LandingGearSystem
 
             _oldPosition = Position;
             //Position = Choose(HandlePosition.Up, HandlePosition.Down);
-            Position = (HandlePosition.Up);
+            //Position = (HandlePosition.Up);
+            if (F%50 == 0)
+            {
+                //Position = Position == HandlePosition.Down ? HandlePosition.Up : HandlePosition.Down;
+                Position = Choose(HandlePosition.Up, HandlePosition.Down);
+            }
 
             if (_oldPosition != Position)
                 Cockpit.PilotHandle.HasMoved();
 
-            //if (f == 0)
-            //    Position = (HandlePosition.Up);
-
-            //if (f < 500)
-                ++f;
-
-
+           //if (f < 500)
+            ++F;
 
         }
     }

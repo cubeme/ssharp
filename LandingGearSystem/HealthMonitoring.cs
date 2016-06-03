@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace LandingGearSystem
 {
@@ -71,7 +67,6 @@ namespace LandingGearSystem
         ///   Gets the state machine that manages the healthmonitoring of the analogical switch.
         /// </summary>
         protected readonly StateMachine<HealthMonitoringStates> StateMachine = HealthMonitoringStates.Wait;
-        //todo: private
 
         /// <summary>
         /// Timer used for health monitoring of the analogical switch.

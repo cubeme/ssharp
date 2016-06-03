@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace LandingGearSystem
 {
@@ -18,19 +14,19 @@ namespace LandingGearSystem
         /// <summary>
         /// Gets the current position of the pilot handle.
         /// </summary>
-        public HandlePosition PilotHandlePosition => StateMachine.State;
+        public HandlePosition PilotHandlePosition => _stateMachine.State;
 
         /// <summary>
 		///   Gets the state machine that manages the state of the pilot handle.
 		/// </summary>
-		public readonly StateMachine<HandlePosition> StateMachine = HandlePosition.Down;
+		private readonly StateMachine<HandlePosition> _stateMachine = HandlePosition.Down;
 
         /// <summary>
         /// Is called by the pilot if the handle position has changed.
         /// </summary>
         public void HasMoved()
         {
-            StateMachine
+            _stateMachine
                 .Transition(
                     from: HandlePosition.Down,
                     to: HandlePosition.Up,
@@ -44,7 +40,7 @@ namespace LandingGearSystem
     
         public override void Update()
         {
-            StateMachine
+            _stateMachine
                 .Transition(
                     from: HandlePosition.Down,
                     to: HandlePosition.Down,

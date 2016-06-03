@@ -1,6 +1,5 @@
 ﻿namespace LandingGearSystem
 {
-	using System;
 	using System.Diagnostics;
 	using NUnit.Framework;
 	using SafetySharp.Analysis;
@@ -28,7 +27,7 @@
 	    [Root(RootKind.Plant)]
         public Pilot Pilot;
 
-        public Model(int limit, AirplaneStates state, Mode modus, int number) : base()
+        public Model(int limit, AirplaneStates state, Mode modus, int number)
 		{
 		    var pressureLimit = limit;
 		    var airplaneStates = state;
@@ -59,21 +58,21 @@
 			Bind(nameof(MechanicalPartPlants.DoorRight.DoorCylinderState), nameof(MechanicalActuators.RightDoorCylinder.DoorCylinderState));
 			Bind(nameof(MechanicalPartPlants.DoorLeft.DoorCylinderState), nameof(MechanicalActuators.LeftDoorCylinder.DoorCylinderState));
 
-			Bind(nameof(MechanicalActuators.FrontGearCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
-			Bind(nameof(MechanicalActuators.RightGearCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
-			Bind(nameof(MechanicalActuators.LeftGearCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
+			Bind(nameof(MechanicalActuators.FrontGearCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
+			Bind(nameof(MechanicalActuators.RightGearCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
+			Bind(nameof(MechanicalActuators.LeftGearCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
 
-            Bind(nameof(MechanicalActuators.FrontGearCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
-			Bind(nameof(MechanicalActuators.RightGearCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
-			Bind(nameof(MechanicalActuators.LeftGearCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
+            Bind(nameof(MechanicalActuators.FrontGearCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
+			Bind(nameof(MechanicalActuators.RightGearCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
+			Bind(nameof(MechanicalActuators.LeftGearCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
 
-			Bind(nameof(MechanicalActuators.FrontDoorCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
-			Bind(nameof(MechanicalActuators.RightDoorCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
-			Bind(nameof(MechanicalActuators.LeftDoorCylinder.CheckPressureExtensionCircuit), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
+			Bind(nameof(MechanicalActuators.FrontDoorCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
+			Bind(nameof(MechanicalActuators.RightDoorCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
+			Bind(nameof(MechanicalActuators.LeftDoorCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
 
-            Bind(nameof(MechanicalActuators.FrontDoorCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
-			Bind(nameof(MechanicalActuators.RightDoorCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
-			Bind(nameof(MechanicalActuators.LeftDoorCylinder.CheckPressureRetractionCircuit), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
+            Bind(nameof(MechanicalActuators.FrontDoorCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
+			Bind(nameof(MechanicalActuators.RightDoorCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
+			Bind(nameof(MechanicalActuators.LeftDoorCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
 
 			Bind(nameof(MechanicalPartControllers.ExtensionCircuitGears.InputPressure), nameof(MechanicalPartControllers.ExtendEV.Hout));
 			Bind(nameof(MechanicalPartControllers.RetractionCircuitGears.InputPressure), nameof(MechanicalPartControllers.RetractEV.Hout));
@@ -89,7 +88,7 @@
 
 			Bind(nameof(MechanicalPartControllers.GeneralEV.Hin), nameof(MechanicalPartControllers.AircraftHydraulicCircuit.Pressure));
 
-			Bind(nameof(MechanicalPartControllers.AnalogicalSwitch.GetHandleHasBeenMoved), nameof(Cockpit.PilotHandle.Moved));
+			Bind(nameof(MechanicalPartControllers.AnalogicalSwitch.HandleHasBeenMoved), nameof(Cockpit.PilotHandle.Moved));
 
 			Bind(nameof(Cockpit.GreenLight.LightValue), nameof(DigitalPart.GearsLockedDownComposition));
 			Bind(nameof(Cockpit.OrangeLight.LightValue), nameof(DigitalPart.GearsManeuveringComposition));
@@ -103,7 +102,7 @@
 			Bind(nameof(MechanicalPartControllers.AnalogicalSwitch.IncomingEOrder), nameof(DigitalPart.GeneralEVComposition));
 			Bind(nameof(MechanicalPartControllers.GeneralEV.EOrder), nameof(MechanicalPartControllers.AnalogicalSwitch.OutgoingEOrder));
 
-			foreach (ComputingModule module in DigitalPart.ComputingModules)
+			foreach (var module in DigitalPart.ComputingModules)
 			{		
 				foreach (var sensor in module.HandlePosition.Sensors)
 					Bind(nameof(sensor.CheckValue), nameof(Cockpit.PilotHandle.PilotHandlePosition));
@@ -201,39 +200,19 @@
 			{
 				simulator.SimulateStep();
 
-				Debug.WriteLine($"Pilot: {model.Pilot.Position}");
-				Debug.WriteLine($"Handle Moved: {model.Cockpit.PilotHandle.Moved}");
-				Debug.WriteLine($"HandleMoved: {model.DigitalPart.ComputingModules[0].HandleHasMoved}");
+                Debug.WriteLine($"Pilot: {model.Pilot.Position}");
+				Debug.WriteLine($"PilotHandle Moved: {model.Cockpit.PilotHandle.Moved}");
+				Debug.WriteLine($"DigiPart HandleHasMoved: {model.DigitalPart.ComputingModules[0].HandleHasMoved}");
 				Debug.WriteLine($"OpenEV DigiPart: {model.DigitalPart.ComputingModules[0].OpenEV}");
 				Debug.WriteLine($"GeneralEV DigiPart: {model.DigitalPart.ComputingModules[0].GeneralEV}");
 				Debug.WriteLine($"RetractEV DigiPart: {model.DigitalPart.ComputingModules[0].RetractEV}");
-				Debug.WriteLine($"GearShockAbsorberRelaxed DigiPart: {model.DigitalPart.ComputingModules[0].GearShockAbsorberRelaxed}");
-				Debug.WriteLine($"ActSeq State: {model.DigitalPart.ComputingModules[0]._actionSequence.StateMachine.State}");
-				Debug.WriteLine($"AnalogicalSwitch: {model.MechanicalPartControllers.AnalogicalSwitch.StateMachine.State}");
-				Debug.WriteLine($"GeneralEV: {model.MechanicalPartControllers.GeneralEV.StateMachine.State}");
-				Debug.WriteLine($"OpenEV: {model.MechanicalPartControllers.OpenEV.StateMachine.State}");
-				Debug.WriteLine($"Extension Pressure: {model.MechanicalPartControllers.ExtensionCircuitDoors.Pressure}");
-				Debug.WriteLine($"Extension Enabled: {model.MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled}");
-				Debug.WriteLine($"General Hin: {model.MechanicalPartControllers.GeneralEV.Hin}");
-				Debug.WriteLine($"General Hout: {model.MechanicalPartControllers.GeneralEV.Hout}");
-				Debug.WriteLine($"Open Hin: {model.MechanicalPartControllers.OpenEV.Hin}");
-				Debug.WriteLine($"Open Hout: {model.MechanicalPartControllers.OpenEV.Hout}");
-				Debug.WriteLine($"First Pressure: {model.MechanicalPartControllers.FirstPressureCircuit.Pressure}");
-				Debug.WriteLine($"First Enabled: {model.MechanicalPartControllers.FirstPressureCircuit.IsEnabled}");
-				Debug.WriteLine($"Door: {model.MechanicalActuators.FrontDoorCylinder.StateMachine.State}");
-				Debug.WriteLine($"Door Ext Pressure: {model.MechanicalActuators.FrontDoorCylinder.CheckPressureExtensionCircuit}");
-				Debug.WriteLine($"Gear Retract Pressure: {model.MechanicalActuators.FrontGearCylinder.CheckPressureRetractionCircuit}");
-				Debug.WriteLine($"Latching: {model.MechanicalActuators.FrontDoorCylinder._latchingBoxClosedOne.StateMachine.State}");
-				Debug.WriteLine($"Latching timer: {model.MechanicalActuators.FrontDoorCylinder._latchingBoxClosedOne._timer.HasElapsed}");
-				Debug.WriteLine($"Latching timer time: {model.MechanicalActuators.FrontDoorCylinder._latchingBoxClosedOne._timer.RemainingTime}");
-				Debug.WriteLine($"GearFront: {model.MechanicalPartPlants.GearFront.State}");
+				Debug.WriteLine($"GearShockAbsorberRelaxed DigiPart: {model.DigitalPart.ComputingModules[0].GearShockAbsorberRelaxed}");				
+                Debug.WriteLine($"AnalogicalSwitch HandleHasBeenMoved: {model.MechanicalPartControllers.AnalogicalSwitch.HandleHasBeenMoved}");
+                Debug.WriteLine($"GearFront: {model.MechanicalPartPlants.GearFront.State}");
                 Debug.WriteLine($"GearLeft: {model.MechanicalPartPlants.GearLeft.State}");
                 Debug.WriteLine($"GearRight: {model.MechanicalPartPlants.GearRight.State}");
-                Debug.WriteLine($"Sensor GearFront: {model.DigitalPart.ComputingModules[0].FrontGearRetracted.Value}");
-                Debug.WriteLine($"Sensor GearLeft: {model.DigitalPart.ComputingModules[0].LeftGearRetracted.Value}");
-                Debug.WriteLine($"Sensor GearRight: {model.DigitalPart.ComputingModules[0].RightGearRetracted.Value}");
                 Debug.WriteLine($"GearsRetracted: {model.DigitalPart.ComputingModules[0].GearsRetracted}");
-                Debug.WriteLine($"F: {model.Pilot.f}");
+                //Debug.WriteLine($"F: {model.Pilot.f}");
                 Debug.WriteLine($"================== (step: {i}) ==========================================");
 			}
 

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace LandingGearSystem
 {
@@ -41,7 +40,7 @@ namespace LandingGearSystem
         public DigitalPart(Mode mode, int count)
         {
             ComputingModules = new ComputingModule[count];
-            for(int i = 0; i< count; i++)
+            for(var i = 0; i< count; i++)
             {
                 ComputingModules[i] = new ComputingModule();
             }
@@ -54,13 +53,14 @@ namespace LandingGearSystem
 
         public DigitalPart()
         {
-            ComputingModules = new ComputingModule[1] {new ComputingModule()};
+            ComputingModules = new[] {new ComputingModule()};
             _comparisonFunction = Enumerable.Any;
         }
 
         public override void Update()
         {
-            Update(ComputingModules);      
+            //todo: Doch Elemente einzeln aufrufen?
+            Array.ForEach(ComputingModules, element => element.Update());            
         }
 
         /// <summary>

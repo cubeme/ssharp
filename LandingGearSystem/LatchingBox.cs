@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace LandingGearSystem
 {
     using SafetySharp.Modeling;
@@ -52,16 +47,26 @@ namespace LandingGearSystem
         /// <summary>
 		///   Gets the state machine that manages the state of the latching box.
 		/// </summary>
-		public readonly StateMachine<LatchingBoxState> StateMachine = LatchingBoxState.Locked;
+		private readonly StateMachine<LatchingBoxState> _stateMachine = LatchingBoxState.Locked;
+
+        /// <summary>
+        ///   Gets a value indicating whether the latching box is locked.
+        /// </summary>
+        public bool IsLocked => _stateMachine.State == LatchingBoxState.Locked;
+
+        /// <summary>
+		///   Gets a value indicating whether the latching box is unlocked.
+		/// </summary>
+        public bool IsUnlocked => _stateMachine.State == LatchingBoxState.Unlocked;
 
         /// <summary>
         /// Times the unlocking/locking of the latching box.
         /// </summary>
-        public readonly Timer _timer = new Timer();
+        private readonly Timer _timer = new Timer();
 
-       public void Unlock()
+        public void Unlock()
         {
-            StateMachine
+            _stateMachine
                 .Transition(
                     from: new[] { LatchingBoxState.Locked, LatchingBoxState.Locking },
                     to: LatchingBoxState.Unlocking,
@@ -73,7 +78,7 @@ namespace LandingGearSystem
 
         public void Lock()
         {
-            StateMachine
+            _stateMachine
                 .Transition(
                     from: new[] {LatchingBoxState.Unlocked, LatchingBoxState.Unlocking},
                     to: LatchingBoxState.Locking,
@@ -87,7 +92,7 @@ namespace LandingGearSystem
         {
 	        Update(_timer);
 
-            StateMachine
+            _stateMachine
 
                 .Transition(
                     from: LatchingBoxState.Unlocking,

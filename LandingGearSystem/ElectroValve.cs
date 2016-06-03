@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace LandingGearSystem
 {
@@ -10,7 +6,7 @@ namespace LandingGearSystem
 
     /// <summary>
     ///  Describes the state of the electro valve.
-    /// </summary
+    /// </summary>
     public enum EVStates
     {
         /// <summary>
@@ -28,7 +24,7 @@ namespace LandingGearSystem
         /// <summary>
         ///   Gets the state machine that manages the state of the gear cylinder.
         /// </summary>
-        public readonly StateMachine<EVStates> StateMachine = EVStates.Closed;
+        private readonly StateMachine<EVStates> _stateMachine = EVStates.Closed;
 
         /// <summary>
         /// Indicates the output pressure of the EV.
@@ -47,7 +43,7 @@ namespace LandingGearSystem
         ///<summary>
         /// Gets the hydraulic output pressure of the EV.
         /// </summary>
-        public int Hout => StateMachine == EVStates.Open ? _hout : 0;
+        public int Hout => _stateMachine == EVStates.Open ? _hout : 0;
 
         /// <summary>
         ///   Gets the hydraulic input pressure of the EV.
@@ -64,7 +60,7 @@ namespace LandingGearSystem
         /// </summary>
         public void EOrderIsTrue()
         {
-            StateMachine
+            _stateMachine
                 .Transition(
                     from: EVStates.Closed,
                     to: EVStates.Open);
@@ -75,7 +71,7 @@ namespace LandingGearSystem
         /// </summary>
         public void EOrderIsFalse()
         {
-            StateMachine
+            _stateMachine
                 .Transition(
                     from: EVStates.Open,
                     to: EVStates.Closed);
@@ -92,7 +88,7 @@ namespace LandingGearSystem
             else
                 EOrderIsFalse();
 
-            if (StateMachine.State == EVStates.Open)
+            if (_stateMachine.State == EVStates.Open)
                 _hout += Hin/10; //Needs 1sec to fill; 1 Step = 0.1sec
             else
                 _hout -= Hin / 36; //Needs 3.6sec to go down; 1 Step = 0.1sec

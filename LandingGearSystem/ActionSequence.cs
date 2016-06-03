@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace LandingGearSystem
 {
@@ -29,7 +25,7 @@ namespace LandingGearSystem
         /// <summary>
 		///   Gets the state machine that manages the state of the action sequence
 		/// </summary>
-		public readonly StateMachine<ActionSequenceStates> StateMachine = ActionSequenceStates.WaitRetract;     
+		private readonly StateMachine<ActionSequenceStates> _stateMachine = ActionSequenceStates.WaitRetract;     
         
         public ActionSequence(ComputingModule module)
         {
@@ -38,7 +34,7 @@ namespace LandingGearSystem
 
         public override void Update()
         {
-            StateMachine
+            _stateMachine
                 .Transition(
                     from: new[] {ActionSequenceStates.WaitOutgoing, ActionSequenceStates.RetractFour},
                     to: ActionSequenceStates.OutgoingOne,
