@@ -42,7 +42,8 @@ namespace LandingGearSystem
         /// <summary>
         ///  Times the movement of the analogical switch.
         /// </summary>
-        private readonly Timer _timer = new Timer();
+        public readonly Timer _timer = new Timer();
+        //todo: private
 
         /// <summary>
         /// Gets a value indicating whether the pilot handle has been moved.
@@ -60,35 +61,44 @@ namespace LandingGearSystem
         public bool OutgoingEOrder() => _stateMachine == AnalogicalSwitchStates.Closed ? IncomingEOrder() : false;
 
         /// <summary>
+        /// Closes the analogcial switch.
+        /// </summary>
+        public void Close()
+        {
+            _stateMachine
+                .Transition(
+                    from: new[] {AnalogicalSwitchStates.Open, AnalogicalSwitchStates.MoveOpening},
+                    to: AnalogicalSwitchStates.MoveClosing,
+                    action: () =>
+                    {
+                        _timer.Start(8 - (2*_timer.RemainingTime)/3);
+                    })
+
+                .Transition(
+                    from: AnalogicalSwitchStates.Closed,
+                    to: AnalogicalSwitchStates.Closed,
+                    action: () =>
+                    {
+                        _timer.Start(200);
+                    });
+        }
+
+        /// <summary>
         /// Updates the analogical switch.
         /// </summary>
         public override void Update()
         {
             Update(_timer);
 
-            _stateMachine
-                .Transition(
-                    from: AnalogicalSwitchStates.Open,
-                    to: AnalogicalSwitchStates.MoveClosing,
-                    guard: HandleHasBeenMoved,
-                    action: () =>
-                    {
-                        _timer.Start(8);
-                    })
+            //todo: sinnvoll?
+            if(HandleHasBeenMoved)
+                Close();
 
+            _stateMachine
                 .Transition(
                     from: AnalogicalSwitchStates.MoveClosing,
                     to: AnalogicalSwitchStates.Closed,
                     guard: _timer.HasElapsed,
-                    action: () =>
-                    {
-                        _timer.Start(200);
-                    })
-
-                .Transition(
-                    from: AnalogicalSwitchStates.Closed,
-                    to: AnalogicalSwitchStates.Closed,
-                    guard: HandleHasBeenMoved,
                     action: () =>
                     {
                         _timer.Start(200);
@@ -101,15 +111,6 @@ namespace LandingGearSystem
                     action: () =>
                     {
                         _timer.Start(12);
-                    })
-
-                .Transition(
-                    from: AnalogicalSwitchStates.MoveOpening,
-                    to: AnalogicalSwitchStates.MoveClosing,
-                    guard: HandleHasBeenMoved,
-                    action: () =>
-                    {
-                        _timer.Start(8 - (2 * _timer.RemainingTime) / 3);
                     })
 
                 .Transition(

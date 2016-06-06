@@ -142,7 +142,8 @@ namespace LandingGearSystem
         /// <summary>
         /// Carries out the outgoing and retraction sequence of the landing gear.
         /// </summary>
-        private readonly ActionSequence _actionSequence;
+        public readonly ActionSequence _actionSequence;
+        //todo: private
 
         private readonly HealthMonitoring[] _systemHealth;
 

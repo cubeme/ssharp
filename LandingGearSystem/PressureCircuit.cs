@@ -9,8 +9,8 @@ namespace LandingGearSystem
         ///<summary>
         /// Indicates current pressure levell.
         /// </summary>
-        private int _pressureLevel;
-
+        public int _pressureLevel;
+        //todo: private
         ///<summary>
         /// Indicates the maximum pressure.
         /// </summary>
@@ -47,7 +47,13 @@ namespace LandingGearSystem
         /// </summary>
         public override void Update()
         {
-            _pressureLevel = InputPressure;
+            //todo: So oder einfach nur 0, wenn kein Inputpressure mehr?
+            if(InputPressure > 0)
+                _pressureLevel = InputPressure;
+            else
+            {
+                _pressureLevel--;
+            }
         }
     }
 }

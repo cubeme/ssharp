@@ -38,7 +38,7 @@ namespace LandingGearSystem
         /// </summary>
         public HandlePosition Position { get; private set; } = HandlePosition.Down;
 
-
+        //todo: The F
         [Range(0, 500, OverflowBehavior.Clamp)]
 	    public int F;
 
@@ -48,18 +48,18 @@ namespace LandingGearSystem
 
             _oldPosition = Position;
             //Position = Choose(HandlePosition.Up, HandlePosition.Down);
-            //Position = (HandlePosition.Up);
-            if (F%50 == 0)
+            Position = (HandlePosition.Up);
+            if (F%250 == 0)
             {
-                //Position = Position == HandlePosition.Down ? HandlePosition.Up : HandlePosition.Down;
-                Position = Choose(HandlePosition.Up, HandlePosition.Down);
+                Position = Position == HandlePosition.Down ? HandlePosition.Up : HandlePosition.Down;
+               // Position = Choose(HandlePosition.Up, HandlePosition.Down);
             }
 
             if (_oldPosition != Position)
                 Cockpit.PilotHandle.HasMoved();
 
-           //if (f < 500)
-            ++F;
+           //if (F < 500)
+           ++F;
 
         }
     }

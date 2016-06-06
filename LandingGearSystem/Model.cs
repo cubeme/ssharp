@@ -196,10 +196,11 @@
 			var simulator = new Simulator(model);
 			model = (Model)simulator.Model;
 
-			for (int i = 0; i < 440; i++)
+			for (int i = 0; i < 300; i++)
 			{
 				simulator.SimulateStep();
 
+                Debug.WriteLine($"ActionSequence State: {model.DigitalPart.ComputingModules[0]._actionSequence._stateMachine.State}");
                 Debug.WriteLine($"Pilot: {model.Pilot.Position}");
 				Debug.WriteLine($"PilotHandle Moved: {model.Cockpit.PilotHandle.Moved}");
 				Debug.WriteLine($"DigiPart HandleHasMoved: {model.DigitalPart.ComputingModules[0].HandleHasMoved}");
@@ -208,11 +209,29 @@
 				Debug.WriteLine($"RetractEV DigiPart: {model.DigitalPart.ComputingModules[0].RetractEV}");
 				Debug.WriteLine($"GearShockAbsorberRelaxed DigiPart: {model.DigitalPart.ComputingModules[0].GearShockAbsorberRelaxed}");				
                 Debug.WriteLine($"AnalogicalSwitch HandleHasBeenMoved: {model.MechanicalPartControllers.AnalogicalSwitch.HandleHasBeenMoved}");
+                Debug.WriteLine($"AnalogicalSwitch Timer: {model.MechanicalPartControllers.AnalogicalSwitch._timer.RemainingTime}");
+                Debug.WriteLine($"GeneralEV State: {model.MechanicalPartControllers.GeneralEV._stateMachine.State}");
+                Debug.WriteLine($"GeneralEV Pressure: {model.MechanicalPartControllers.GeneralEV._pressureLevel}");
+                Debug.WriteLine($"FirstPressureCircuit Pressure: {model.MechanicalPartControllers.FirstPressureCircuit.Pressure}");
+                Debug.WriteLine($"FirstPressureCircuit _pressureLevel: {model.MechanicalPartControllers.FirstPressureCircuit._pressureLevel}");
+                Debug.WriteLine($"OpenEV State: {model.MechanicalPartControllers.OpenEV._stateMachine.State}");
+                Debug.WriteLine($"OpenEV Pressure: {model.MechanicalPartControllers.OpenEV._pressureLevel}");
+                Debug.WriteLine($"ExtensionCircuitDoors _pressureLevel: {model.MechanicalPartControllers.ExtensionCircuitDoors._pressureLevel}");
+                Debug.WriteLine($"ExtensionCircuitDoors Pressure: {model.MechanicalPartControllers.ExtensionCircuitDoors.Pressure}");
+                Debug.WriteLine($"RetractEV State: {model.MechanicalPartControllers.RetractEV._stateMachine.State}");
+                Debug.WriteLine($"Retract Pressure: {model.MechanicalPartControllers.RetractEV._pressureLevel}");
+                Debug.WriteLine($"RetractionCircuitGears _pressureLevel: {model.MechanicalPartControllers.RetractionCircuitGears._pressureLevel}");
+                Debug.WriteLine($"RetractionCircuitGears Pressure: {model.MechanicalPartControllers.RetractionCircuitGears.Pressure}");
+                Debug.WriteLine($"DoorFront: {model.MechanicalPartPlants.DoorFront.State}");
+                Debug.WriteLine($"DoorLeft: {model.MechanicalPartPlants.DoorLeft.State}");
+                Debug.WriteLine($"DoorRight: {model.MechanicalPartPlants.DoorRight.State}");
+                Debug.WriteLine($"DoorsClosed: {model.DigitalPart.ComputingModules[0].DoorsClosed}");
+                Debug.WriteLine($"DoorsOpen: {model.DigitalPart.ComputingModules[0].DoorsOpen}");
                 Debug.WriteLine($"GearFront: {model.MechanicalPartPlants.GearFront.State}");
                 Debug.WriteLine($"GearLeft: {model.MechanicalPartPlants.GearLeft.State}");
                 Debug.WriteLine($"GearRight: {model.MechanicalPartPlants.GearRight.State}");
                 Debug.WriteLine($"GearsRetracted: {model.DigitalPart.ComputingModules[0].GearsRetracted}");
-                //Debug.WriteLine($"F: {model.Pilot.f}");
+                //Debug.WriteLine($"F: {model.Pilot.F}");
                 Debug.WriteLine($"================== (step: {i}) ==========================================");
 			}
 

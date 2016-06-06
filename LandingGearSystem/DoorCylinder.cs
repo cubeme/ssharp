@@ -37,7 +37,7 @@ namespace LandingGearSystem
             //Normal motion
 	        _stateMachine
 		        .Transition(
-			        from: DoorStates.LockedClosed,
+			        from: new[] { DoorStates.LockedClosed, DoorStates.LockingClosed},
 			        to: DoorStates.UnlockingClosed,
 			        guard: ExtensionCircuitIsPressurized,
 			        action: () =>
@@ -68,8 +68,8 @@ namespace LandingGearSystem
 					guard: ExtensionCircuitIsPressurized)
 
 				.Transition(
-					from: DoorStates.Open,
-					to: DoorStates.MoveClosing,
+					from: new [] { DoorStates.Open, DoorStates.OpenLoose},
+                    to: DoorStates.MoveClosing,
 					guard: RetractionCurcuitIsPressurized,
 					action: () =>
 					{
@@ -79,21 +79,12 @@ namespace LandingGearSystem
 				.Transition(
 					from: DoorStates.Open,
 					to: DoorStates.OpenLoose,
-					guard: RetractionCurcuitIsPressurized == false && ExtensionCircuitIsPressurized)
+					guard: RetractionCurcuitIsPressurized == false && ExtensionCircuitIsPressurized == false)
 
 				.Transition(
 					from: DoorStates.OpenLoose,
 					to: DoorStates.Open,
 					guard: ExtensionCircuitIsPressurized)
-
-				.Transition(
-					from: DoorStates.OpenLoose,
-					to: DoorStates.MoveClosing,
-					guard: RetractionCurcuitIsPressurized,
-					action: () =>
-					{
-						_timer.Start(Position == CylinderPosition.Front ? 12 : 16);
-					})
 
 				.Transition(
 					from: DoorStates.MoveClosing,
@@ -112,8 +103,7 @@ namespace LandingGearSystem
 						RetractionCurcuitIsPressurized && _latchingBoxClosedOne.IsLocked &&
 						_latchingBoxClosedTwo.IsLocked)
 
-		        //Reverse Motion
-				.Transition(
+                .Transition(
 					from: DoorStates.MoveClosing,
 					to: DoorStates.MoveOpening,
 					guard: ExtensionCircuitIsPressurized,
@@ -131,16 +121,6 @@ namespace LandingGearSystem
 						_timer.Start(Position == CylinderPosition.Front ? 12 - _timer.RemainingTime : 16 - (16 * _timer.RemainingTime) / 15);
 					})
 
-	             .Transition(
-                    from: DoorStates.LockingClosed,
-                    to: DoorStates.UnlockingClosed,
-                    guard: ExtensionCircuitIsPressurized,
-                    action: () =>
-                    {
-                        _latchingBoxClosedOne.Unlock();
-                        _latchingBoxClosedTwo.Unlock();
-                    })
-                    
                 .Transition(
                     from: DoorStates.UnlockingClosed,
                     to: DoorStates.LockingClosed,

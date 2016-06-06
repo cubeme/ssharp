@@ -25,8 +25,9 @@ namespace LandingGearSystem
         /// <summary>
 		///   Gets the state machine that manages the state of the action sequence
 		/// </summary>
-		private readonly StateMachine<ActionSequenceStates> _stateMachine = ActionSequenceStates.WaitRetract;     
-        
+		public readonly StateMachine<ActionSequenceStates> _stateMachine = ActionSequenceStates.WaitRetract;     
+        //todo: private
+
         public ActionSequence(ComputingModule module)
         {
             _module = module;
@@ -56,10 +57,9 @@ namespace LandingGearSystem
                     guard: _module.GearsExtended,
                     action: _module.OutgoingThree)
                 .Transition(
-                    from: ActionSequenceStates.OutgoingTwo,
-                    to: ActionSequenceStates.RetractTwo,
-                    guard:
-                        _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Up &&
+                    from: new [] { ActionSequenceStates.OutgoingTwo, ActionSequenceStates.OutgoingThree},
+                      to: ActionSequenceStates.RetractTwo,
+                    guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Up &&
                         _module.GearShockAbsorberRelaxed,
                     action: _module.RetractionTwo)
                 .Transition(
@@ -67,13 +67,6 @@ namespace LandingGearSystem
                     to: ActionSequenceStates.OutgoingFour,
                     guard: _module.HandlePosition.Value == HandlePosition.Down,
                     action: _module.Four)
-                .Transition(
-                    from: ActionSequenceStates.OutgoingThree,
-                    to: ActionSequenceStates.RetractTwo,
-                    guard:
-                        _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Up &&
-                        _module.GearShockAbsorberRelaxed,
-                    action: _module.RetractionTwo)
                 .Transition(
                     from: ActionSequenceStates.OutgoingFour,
                     to: ActionSequenceStates.WaitRetract,

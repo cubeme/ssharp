@@ -40,7 +40,7 @@ namespace LandingGearSystem
 
 	        _stateMachine
 		        .Transition(
-			        from: GearStates.LockedExtended,
+			        from: new[] { GearStates.LockedExtended, GearStates.LockingExtended},
 			        to: GearStates.UnlockingExtended,
 			        guard: RetractionCurcuitIsPressurized,
 			        action: () =>
@@ -72,8 +72,8 @@ namespace LandingGearSystem
 					guard: RetractionCurcuitIsPressurized  && _latchingBoxRetracted.IsLocked)
 
 				.Transition(
-					from: GearStates.LockedRetracted,
-					to: GearStates.UnlockingRetracted,
+					from: new[] {GearStates.LockedRetracted, GearStates.LockingRetracted },
+                    to: GearStates.UnlockingRetracted,
 					guard: ExtensionCircuitIsPressurized,
 					action: () =>
 					{
@@ -103,8 +103,6 @@ namespace LandingGearSystem
 					to: GearStates.LockedExtended,
 					guard: ExtensionCircuitIsPressurized  && _latchingBoxExtended.IsLocked)
 
-		        //Reverse Motion
-
 				.Transition(
 					from: GearStates.UnlockingExtended,
 					to: GearStates.LockingExtended,
@@ -112,15 +110,6 @@ namespace LandingGearSystem
 					action: () =>
 					{
 						_latchingBoxExtended.Lock();
-					})
-
-				.Transition(
-					from: GearStates.LockingExtended,
-					to: GearStates.UnlockingExtended,
-					guard: RetractionCurcuitIsPressurized,
-					action: () =>
-					{
-						_latchingBoxExtended.Unlock();
 					})
 
 				.Transition(
@@ -140,15 +129,6 @@ namespace LandingGearSystem
 					{
 						_timer.Start(Position == CylinderPosition.Front ? 16 - (4 * _timer.RemainingTime) / 3 : 20 - (5 * _timer.RemainingTime) / 4);
 					})
-
-                .Transition(
-                    from: GearStates.LockingRetracted,
-                    to: GearStates.UnlockingRetracted,
-                    guard: ExtensionCircuitIsPressurized,
-                    action: () =>
-                    {
-                        _latchingBoxRetracted.Unlock();
-                    })
 
                 .Transition(
                     from: GearStates.UnlockingRetracted,

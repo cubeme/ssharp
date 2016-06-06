@@ -24,12 +24,18 @@ namespace LandingGearSystem
         /// <summary>
         ///   Gets the state machine that manages the state of the gear cylinder.
         /// </summary>
-        private readonly StateMachine<EVStates> _stateMachine = EVStates.Closed;
+        public readonly StateMachine<EVStates> _stateMachine = EVStates.Closed;
+        //todo: private
 
         /// <summary>
         /// Indicates the output pressure of the EV.
         /// </summary>
-        private int _hout = 0;
+        public int _pressureLevel = 0;
+        //todo: private
+
+        [Hidden]
+        private int _pressureStop;
+        private readonly int _maxHin;
 
         /// <summary>
         /// Initilializes a new instance.
@@ -37,18 +43,25 @@ namespace LandingGearSystem
         /// <param name="maxHin"> The maximum input pressure of the EV. </param>
         public ElectroValve(int maxHin)
         {
-            Range.Restrict(_hout, 0, maxHin, OverflowBehavior.Clamp);
+            Range.Restrict(_pressureLevel, 0, maxHin, OverflowBehavior.Clamp);
+            _maxHin = maxHin;
         }
 
         ///<summary>
         /// Gets the hydraulic output pressure of the EV.
         /// </summary>
-        public int Hout => _stateMachine == EVStates.Open ? _hout : 0;
+        public int Hout => _stateMachine == EVStates.Open ? _pressureLevel : 0;
 
         /// <summary>
         ///   Gets the hydraulic input pressure of the EV.
         /// </summary>
         public extern int Hin { get; }
+
+        ///<summary>
+        /// Indicates the current electric order.
+        /// </summary>
+        [Hidden]
+        private bool _eOrder;
 
         ///<summary>
         /// Gets the electric order.
@@ -58,7 +71,7 @@ namespace LandingGearSystem
         ///<summary>
         /// Transitions to be executed when EOrder == true.
         /// </summary>
-        public void EOrderIsTrue()
+        public void Open()
         {
             _stateMachine
                 .Transition(
@@ -69,12 +82,13 @@ namespace LandingGearSystem
         ///<summary>
         /// Transitions to be executed when EOrder == false.
         /// </summary>
-        public void EOrderIsFalse()
+        public void Close()
         {
             _stateMachine
                 .Transition(
                     from: EVStates.Open,
-                    to: EVStates.Closed);
+                    to: EVStates.Closed,
+                    action: () => _pressureStop = _pressureLevel);
         }
 
         ///<summary>
@@ -83,15 +97,22 @@ namespace LandingGearSystem
         public override void Update()
         {
             //todo: Mit Port oder irgendwie Methode direkt aufrufen? Hin lassen oder lieber einfach ansteigen lassen?
-            if (EOrder)
-                EOrderIsTrue();
-            else
-                EOrderIsFalse();
+            if (_eOrder == false && _eOrder != EOrder)
+                Open();
+            if (_eOrder == true && _eOrder != EOrder)
+                Close();
+            _eOrder = EOrder;
 
             if (_stateMachine.State == EVStates.Open)
-                _hout += Hin/10; //Needs 1sec to fill; 1 Step = 0.1sec
+                _pressureLevel += Hin/10; //Needs 1sec to fill; 1 Step = 0.1sec
             else
-                _hout -= Hin / 36; //Needs 3.6sec to go down; 1 Step = 0.1sec
+            {
+                if(_pressureStop > 0 && _maxHin > 0)
+                    //_pressureLevel -= _pressureStop / (36 * (_pressureStop / _maxHin)); //Needs 3.6sec to go down; 1 Step = 0.1sec
+                    _pressureLevel -= _maxHin/36;
+            }
+               
+            //todo: Stimmt das so?
         }
     }
 }
