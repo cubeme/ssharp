@@ -23,7 +23,6 @@ namespace LandingGearSystem
         public PressureCircuit(int maxPressure)
         {
             _maxPressure = maxPressure;
-            _pressureLevel = 0;
             Range.Restrict(_pressureLevel, 0, _maxPressure, OverflowBehavior.Clamp);
         }
 
@@ -47,13 +46,7 @@ namespace LandingGearSystem
         /// </summary>
         public override void Update()
         {
-            //todo: So oder einfach nur 0, wenn kein Inputpressure mehr?
-            if(InputPressure > 0)
-                _pressureLevel = InputPressure;
-            else
-            {
-                _pressureLevel--;
-            }
+            _pressureLevel = InputPressure > 0 ? InputPressure : 0;
         }
     }
 }

@@ -6,10 +6,11 @@ namespace LandingGearSystem
 
     class PilotHandle : Component
     {
+        //todo: So?
         /// <summary>
         ///  Indicates whether the pilot handle has been moved.
         /// </summary>
-        public bool Moved { get; private set; }
+        public extern void Moved();
 
         /// <summary>
         /// Gets the current position of the pilot handle.
@@ -30,12 +31,12 @@ namespace LandingGearSystem
                 .Transition(
                     from: HandlePosition.Down,
                     to: HandlePosition.Up,
-                    action: () => Moved = true)
+                    action: Moved)
 
                 .Transition(
                     from: HandlePosition.Up,
                     to: HandlePosition.Down,
-                    action: () => Moved = true);
+                    action: Moved);
         }
     
         public override void Update()
@@ -43,13 +44,11 @@ namespace LandingGearSystem
             _stateMachine
                 .Transition(
                     from: HandlePosition.Down,
-                    to: HandlePosition.Down,
-                    action: () => Moved = false)
+                    to: HandlePosition.Down)
 
                 .Transition(
                     from: HandlePosition.Up,
-                    to: HandlePosition.Up,
-                    action: () => Moved = false);               
+                    to: HandlePosition.Up);               
         }
     }
 }

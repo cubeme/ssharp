@@ -49,6 +49,37 @@ namespace LandingGearSystem
                 _comparisonFunction = Enumerable.All;
             else
                 _comparisonFunction = Enumerable.Any;
+
+            foreach (var module in ComputingModules)
+            {
+                module.HandlePosition = new TripleSensor<HandlePosition>();
+
+                module.AnalogicalSwitch = new TripleSensor<AnalogicalSwitchStates>();
+
+                module.FrontGearExtented = new TripleSensor<bool>();
+                module.FrontGearRetracted = new TripleSensor<bool>();
+                module.FrontGearShockAbsorber = new TripleSensor<AirplaneStates>();
+
+                module.LeftGearExtented = new TripleSensor<bool>();
+                module.LeftGearRetracted = new TripleSensor<bool>();
+                module.LeftGearShockAbsorber = new TripleSensor<AirplaneStates>();
+                
+                module.RightGearExtented = new TripleSensor<bool>();
+                module.RightGearRetracted = new TripleSensor<bool>();
+                module.RightGearShockAbsorber = new TripleSensor<AirplaneStates>();
+                
+                module.FrontDoorOpen = new TripleSensor<bool>();
+                module.FrontDoorClosed = new TripleSensor<bool>();
+                
+                module.LeftDoorOpen = new TripleSensor<bool>();
+                module.LeftDoorClosed = new TripleSensor<bool>();
+
+                module.RightDoorOpen = new TripleSensor<bool>();
+                module.RightDoorClosed = new TripleSensor<bool>();       
+                
+                module.CircuitPressurized = new TripleSensor<bool>();
+                
+            }
         }
 
         public DigitalPart()
@@ -58,9 +89,39 @@ namespace LandingGearSystem
         }
 
         public override void Update()
-        {
-            //todo: Doch Elemente einzeln aufrufen?
-            Array.ForEach(ComputingModules, element => element.Update());            
+        {     
+            Update(ComputingModules);     
+            
+            //todo: etwas unschön
+            if(_comparisonFunction(ComputingModules, element => element.CloseEV == true))
+                OpenCloseEV();
+            else
+            {
+                CloseCloseEV();
+            }
+
+            if (_comparisonFunction(ComputingModules, element => element.OpenEV == true))
+                OpenOpenEV();
+            else
+            {
+                CloseOpenEV();
+            }
+
+            if (_comparisonFunction(ComputingModules, element => element.RetractEV == true))
+                OpenRetractEV();
+            else
+            {
+                CloseRetractEV();
+            }
+
+            if (_comparisonFunction(ComputingModules, element => element.ExtendEV == true))
+                OpenExtendEV();
+            else
+            {
+                CloseExtendEV();
+            }
+
+
         }
 
         /// <summary>
@@ -71,22 +132,27 @@ namespace LandingGearSystem
         /// <summary>
         /// Gets a value indicating whether the door closure electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
         /// </summary
-        public bool CloseEVComposition() => _comparisonFunction(ComputingModules, element => element.CloseEV == true);
+        public extern void CloseCloseEV();
+        public extern void OpenCloseEV();
 
         /// <summary>
         /// Gets a value indicating whether the door opening electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
         /// </summary
-        public bool OpenEVComposition() => _comparisonFunction(ComputingModules, element => element.OpenEV == true);
+        public extern void CloseOpenEV();
+        public extern void OpenOpenEV();
 
         /// <summary>
         /// Gets a value indicating whether the gear retraction electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
         /// </summary
-        public bool RetractEVComposition() => _comparisonFunction(ComputingModules, element => element.RetractEV == true);
+        public extern void CloseRetractEV();
+        public extern void OpenRetractEV();
 
         /// <summary>
         /// Gets a value indicating whether the gear extension electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
         /// </summary
-        public bool ExtendEVComposition() => _comparisonFunction(ComputingModules, element => element.ExtendEV == true);
+        public extern void CloseExtendEV();
+        public extern void OpenExtendEV();
+
 
         /// <summary>
         /// Gets a value indicating whether all three gears are locked down through composition of the two computing modules outputs with a logical or.

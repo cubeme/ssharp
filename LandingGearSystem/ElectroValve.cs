@@ -33,8 +33,6 @@ namespace LandingGearSystem
         public int _pressureLevel = 0;
         //todo: private
 
-        [Hidden]
-        private int _pressureStop;
         private readonly int _maxHin;
 
         /// <summary>
@@ -58,17 +56,6 @@ namespace LandingGearSystem
         public extern int Hin { get; }
 
         ///<summary>
-        /// Indicates the current electric order.
-        /// </summary>
-        [Hidden]
-        private bool _eOrder;
-
-        ///<summary>
-        /// Gets the electric order.
-        /// </summary>
-        public extern bool EOrder { get; }
-
-        ///<summary>
         /// Transitions to be executed when EOrder == true.
         /// </summary>
         public void Open()
@@ -87,8 +74,7 @@ namespace LandingGearSystem
             _stateMachine
                 .Transition(
                     from: EVStates.Open,
-                    to: EVStates.Closed,
-                    action: () => _pressureStop = _pressureLevel);
+                    to: EVStates.Closed);
         }
 
         ///<summary>
@@ -96,23 +82,13 @@ namespace LandingGearSystem
         /// </summary>
         public override void Update()
         {
-            //todo: Mit Port oder irgendwie Methode direkt aufrufen? Hin lassen oder lieber einfach ansteigen lassen?
-            if (_eOrder == false && _eOrder != EOrder)
-                Open();
-            if (_eOrder == true && _eOrder != EOrder)
-                Close();
-            _eOrder = EOrder;
 
             if (_stateMachine.State == EVStates.Open)
                 _pressureLevel += Hin/10; //Needs 1sec to fill; 1 Step = 0.1sec
             else
             {
-                if(_pressureStop > 0 && _maxHin > 0)
-                    //_pressureLevel -= _pressureStop / (36 * (_pressureStop / _maxHin)); //Needs 3.6sec to go down; 1 Step = 0.1sec
-                    _pressureLevel -= _maxHin/36;
-            }
-               
-            //todo: Stimmt das so?
+                _pressureLevel -= _maxHin/36; //Needs 3.6sec for pressure to go down.
+            }               
         }
     }
 }

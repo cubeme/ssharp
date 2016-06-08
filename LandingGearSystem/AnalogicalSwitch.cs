@@ -45,20 +45,16 @@ namespace LandingGearSystem
         public readonly Timer _timer = new Timer();
         //todo: private
 
-        /// <summary>
-        /// Gets a value indicating whether the pilot handle has been moved.
-        /// </summary>
-        public extern bool HandleHasBeenMoved { get;  }
 
         /// <summary>
         /// Gets the value of the incoming electrical order.
         /// </summary>
         public extern bool IncomingEOrder();
 
-        /// <summary>
-        /// Gets the value of the outgoing electrical order if the switch is closed.
-        /// </summary>
-        public bool OutgoingEOrder() => _stateMachine == AnalogicalSwitchStates.Closed ? IncomingEOrder() : false;
+        public extern void OpenGeneralEV();
+
+        public extern void CloseGeneralEV();
+
 
         /// <summary>
         /// Closes the analogcial switch.
@@ -90,10 +86,6 @@ namespace LandingGearSystem
         {
             Update(_timer);
 
-            //todo: sinnvoll?
-            if(HandleHasBeenMoved)
-                Close();
-
             _stateMachine
                 .Transition(
                     from: AnalogicalSwitchStates.MoveClosing,
@@ -118,6 +110,13 @@ namespace LandingGearSystem
                     to: AnalogicalSwitchStates.Open,
                     guard: _timer.HasElapsed);
 
+            //todo: So oder eher in actions rein? --> Muss so sein, damit IncomingEOrder() immer überprüft wird
+            if(_stateMachine == AnalogicalSwitchStates.Closed && IncomingEOrder())
+                OpenGeneralEV();
+            else
+            {
+                CloseGeneralEV();
+            }
         }
     }
 }

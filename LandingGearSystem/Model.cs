@@ -88,21 +88,26 @@
 
 			Bind(nameof(MechanicalPartControllers.GeneralEV.Hin), nameof(MechanicalPartControllers.AircraftHydraulicCircuit.Pressure));
 
-			Bind(nameof(MechanicalPartControllers.AnalogicalSwitch.HandleHasBeenMoved), nameof(Cockpit.PilotHandle.Moved));
+            Bind(nameof(Cockpit.PilotHandle.Moved), nameof(MechanicalPartControllers.AnalogicalSwitch.Close));
 
 			Bind(nameof(Cockpit.GreenLight.LightValue), nameof(DigitalPart.GearsLockedDownComposition));
 			Bind(nameof(Cockpit.OrangeLight.LightValue), nameof(DigitalPart.GearsManeuveringComposition));
 			Bind(nameof(Cockpit.RedLight.LightValue), nameof(DigitalPart.AnomalyComposition));
 
-			Bind(nameof(MechanicalPartControllers.ExtendEV.EOrder), nameof(DigitalPart.ExtendEVComposition));
-			Bind(nameof(MechanicalPartControllers.RetractEV.EOrder), nameof(DigitalPart.RetractEVComposition));
-			Bind(nameof(MechanicalPartControllers.OpenEV.EOrder), nameof(DigitalPart.OpenEVComposition));
-			Bind(nameof(MechanicalPartControllers.CloseEV.EOrder), nameof(DigitalPart.CloseEVComposition));
+            Bind(nameof(DigitalPart.CloseExtendEV), nameof(MechanicalPartControllers.ExtendEV.Close));
+            Bind(nameof(DigitalPart.OpenExtendEV), nameof(MechanicalPartControllers.ExtendEV.Open));
+            Bind(nameof(DigitalPart.CloseRetractEV), nameof(MechanicalPartControllers.RetractEV.Close));
+            Bind(nameof(DigitalPart.OpenRetractEV), nameof(MechanicalPartControllers.RetractEV.Open));
+            Bind(nameof(DigitalPart.CloseOpenEV), nameof(MechanicalPartControllers.OpenEV.Close));
+            Bind(nameof(DigitalPart.OpenOpenEV), nameof(MechanicalPartControllers.OpenEV.Open));
+            Bind(nameof(DigitalPart.CloseCloseEV), nameof(MechanicalPartControllers.CloseEV.Close));
+            Bind(nameof(DigitalPart.OpenCloseEV), nameof(MechanicalPartControllers.CloseEV.Open));
 
 			Bind(nameof(MechanicalPartControllers.AnalogicalSwitch.IncomingEOrder), nameof(DigitalPart.GeneralEVComposition));
-			Bind(nameof(MechanicalPartControllers.GeneralEV.EOrder), nameof(MechanicalPartControllers.AnalogicalSwitch.OutgoingEOrder));
+			Bind(nameof(MechanicalPartControllers.AnalogicalSwitch.OpenGeneralEV),nameof(MechanicalPartControllers.GeneralEV.Open));
+            Bind(nameof(MechanicalPartControllers.AnalogicalSwitch.CloseGeneralEV), nameof(MechanicalPartControllers.GeneralEV.Close));
 
-			foreach (var module in DigitalPart.ComputingModules)
+            foreach (var module in DigitalPart.ComputingModules)
 			{		
 				foreach (var sensor in module.HandlePosition.Sensors)
 					Bind(nameof(sensor.CheckValue), nameof(Cockpit.PilotHandle.PilotHandlePosition));
@@ -202,13 +207,11 @@
 
                 Debug.WriteLine($"ActionSequence State: {model.DigitalPart.ComputingModules[0]._actionSequence._stateMachine.State}");
                 Debug.WriteLine($"Pilot: {model.Pilot.Position}");
-				Debug.WriteLine($"PilotHandle Moved: {model.Cockpit.PilotHandle.Moved}");
 				Debug.WriteLine($"DigiPart HandleHasMoved: {model.DigitalPart.ComputingModules[0].HandleHasMoved}");
 				Debug.WriteLine($"OpenEV DigiPart: {model.DigitalPart.ComputingModules[0].OpenEV}");
 				Debug.WriteLine($"GeneralEV DigiPart: {model.DigitalPart.ComputingModules[0].GeneralEV}");
 				Debug.WriteLine($"RetractEV DigiPart: {model.DigitalPart.ComputingModules[0].RetractEV}");
 				Debug.WriteLine($"GearShockAbsorberRelaxed DigiPart: {model.DigitalPart.ComputingModules[0].GearShockAbsorberRelaxed}");				
-                Debug.WriteLine($"AnalogicalSwitch HandleHasBeenMoved: {model.MechanicalPartControllers.AnalogicalSwitch.HandleHasBeenMoved}");
                 Debug.WriteLine($"AnalogicalSwitch Timer: {model.MechanicalPartControllers.AnalogicalSwitch._timer.RemainingTime}");
                 Debug.WriteLine($"GeneralEV State: {model.MechanicalPartControllers.GeneralEV._stateMachine.State}");
                 Debug.WriteLine($"GeneralEV Pressure: {model.MechanicalPartControllers.GeneralEV._pressureLevel}");
@@ -231,7 +234,6 @@
                 Debug.WriteLine($"GearLeft: {model.MechanicalPartPlants.GearLeft.State}");
                 Debug.WriteLine($"GearRight: {model.MechanicalPartPlants.GearRight.State}");
                 Debug.WriteLine($"GearsRetracted: {model.DigitalPart.ComputingModules[0].GearsRetracted}");
-                //Debug.WriteLine($"F: {model.Pilot.F}");
                 Debug.WriteLine($"================== (step: {i}) ==========================================");
 			}
 
