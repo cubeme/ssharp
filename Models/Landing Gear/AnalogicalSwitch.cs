@@ -51,6 +51,25 @@ namespace LandingGearSystem
         /// </summary>
         public extern bool IncomingEOrder();
 
+        private bool _eOrderValue;
+
+        public bool CheckEOrder
+        {
+            set
+            {
+                if (_eOrderValue != value)
+                {
+                    if (_stateMachine == AnalogicalSwitchStates.Closed && value)
+                        OpenGeneralEV();
+                    else
+                    {
+                        CloseGeneralEV();
+                    }
+                }
+                _eOrderValue = IncomingEOrder();
+            }
+        }
+
         public extern void OpenGeneralEV();
 
         public extern void CloseGeneralEV();
@@ -111,12 +130,7 @@ namespace LandingGearSystem
                     guard: _timer.HasElapsed);
 
             //todo: So oder eher in actions rein? --> Muss so sein, damit IncomingEOrder() immer überprüft wird
-            if(_stateMachine == AnalogicalSwitchStates.Closed && IncomingEOrder())
-                OpenGeneralEV();
-            else
-            {
-                CloseGeneralEV();
-            }
+            CheckEOrder = IncomingEOrder();
         }
     }
 }

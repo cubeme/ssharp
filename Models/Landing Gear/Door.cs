@@ -60,6 +60,10 @@ namespace LandingGearSystem
 
     class Door : Component
     {
+        /// <summary>
+        ///   The fault keeps the door stuck in a certain state.
+        /// </summary>
+        public readonly Fault DoorIsStuckFault = new PermanentFault();
 
         /// <summary>
         /// Indicates the position of the door, i.e. whether it is located in the front, on the left or right side of the plane.
@@ -99,6 +103,20 @@ namespace LandingGearSystem
         public override void Update()
         {
             State = DoorCylinderState;
+        }
+
+        /// <summary>
+        ///   Keeps the door stuck in one state.
+        /// </summary>
+        [FaultEffect(Fault = nameof(DoorIsStuckFault))]
+        public class DoorIsStuckFaultEffect : Door
+        {
+            public DoorIsStuckFaultEffect(DoorPosition position) : base(position) { }
+
+            public override void Update()
+            {
+
+            }
         }
     }
 }

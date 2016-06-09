@@ -50,42 +50,15 @@ namespace LandingGearSystem
             else
                 _comparisonFunction = Enumerable.Any;
 
-            foreach (var module in ComputingModules)
-            {
-                module.HandlePosition = new TripleSensor<HandlePosition>();
-
-                module.AnalogicalSwitch = new TripleSensor<AnalogicalSwitchStates>();
-
-                module.FrontGearExtented = new TripleSensor<bool>();
-                module.FrontGearRetracted = new TripleSensor<bool>();
-                module.FrontGearShockAbsorber = new TripleSensor<AirplaneStates>();
-
-                module.LeftGearExtented = new TripleSensor<bool>();
-                module.LeftGearRetracted = new TripleSensor<bool>();
-                module.LeftGearShockAbsorber = new TripleSensor<AirplaneStates>();
-                
-                module.RightGearExtented = new TripleSensor<bool>();
-                module.RightGearRetracted = new TripleSensor<bool>();
-                module.RightGearShockAbsorber = new TripleSensor<AirplaneStates>();
-                
-                module.FrontDoorOpen = new TripleSensor<bool>();
-                module.FrontDoorClosed = new TripleSensor<bool>();
-                
-                module.LeftDoorOpen = new TripleSensor<bool>();
-                module.LeftDoorClosed = new TripleSensor<bool>();
-
-                module.RightDoorOpen = new TripleSensor<bool>();
-                module.RightDoorClosed = new TripleSensor<bool>();       
-                
-                module.CircuitPressurized = new TripleSensor<bool>();
-                
-            }
+            InitializeSensors();
         }
 
         public DigitalPart()
         {
             ComputingModules = new[] {new ComputingModule()};
             _comparisonFunction = Enumerable.Any;
+
+            InitializeSensors();
         }
 
         public override void Update()
@@ -171,5 +144,66 @@ namespace LandingGearSystem
         /// </summary
         public bool AnomalyComposition() => _comparisonFunction(ComputingModules, element => element.Anomaly == true);
 
+        private void InitializeSensors()
+        {
+            var sensorHandle = new TripleSensor<HandlePosition>();
+
+            var sensorSwitch = new TripleSensor<AnalogicalSwitchStates>();
+
+            var sensorFrontGearExtended = new TripleSensor<bool>();
+            var sensorFrontGearRetracted = new TripleSensor<bool>();
+            var sensorFrontGearShockAbsorber = new TripleSensor<AirplaneStates>();
+
+            var sensorLeftGearExtended = new TripleSensor<bool>();
+            var sensorLeftGearRetracted = new TripleSensor<bool>();
+            var sensorLeftGearShockAbsorber = new TripleSensor<AirplaneStates>();
+
+            var sensorRightGearExtended = new TripleSensor<bool>();
+            var sensorRightGearRetracted = new TripleSensor<bool>();
+            var sensorRightGearShockAbsorber = new TripleSensor<AirplaneStates>();
+
+            var sensorFrontDoorOpen = new TripleSensor<bool>();
+            var sensorFrontDoorClosed = new TripleSensor<bool>();
+
+            var sensorLeftDoorOpen = new TripleSensor<bool>();
+            var sensorLeftDoorClosed = new TripleSensor<bool>();
+
+            var sensorRightDoorOpen = new TripleSensor<bool>();
+            var sensorRightDoorClosed = new TripleSensor<bool>();
+
+            var sensorCircuitPressurized = new TripleSensor<bool>();
+
+
+            foreach (var module in ComputingModules)
+            {
+                module.HandlePosition = sensorHandle;
+
+                module.AnalogicalSwitch = sensorSwitch;
+
+                module.FrontGearExtented = sensorFrontGearExtended;
+                module.FrontGearRetracted = sensorFrontGearRetracted;
+                module.FrontGearShockAbsorber = sensorFrontGearShockAbsorber;
+
+                module.LeftGearExtented = sensorLeftGearExtended;
+                module.LeftGearRetracted = sensorLeftGearRetracted;
+                module.LeftGearShockAbsorber = sensorLeftGearShockAbsorber;
+
+                module.RightGearExtented = sensorRightGearExtended;
+                module.RightGearRetracted = sensorRightGearRetracted;
+                module.RightGearShockAbsorber = sensorRightGearShockAbsorber;
+
+                module.FrontDoorOpen = sensorFrontDoorOpen;
+                module.FrontDoorClosed = sensorFrontDoorClosed;
+
+                module.LeftDoorOpen = sensorLeftDoorOpen;
+                module.LeftDoorClosed = sensorLeftDoorClosed;
+
+                module.RightDoorOpen = sensorRightDoorOpen;
+                module.RightDoorClosed = sensorRightDoorClosed;
+
+                module.CircuitPressurized = sensorCircuitPressurized;
+
+            }
+        }
     }
 }

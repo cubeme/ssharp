@@ -41,9 +41,12 @@ namespace LandingGearSystem
             Position = HandlePosition.Up;
             //Position = HandlePosition.Down;
 
-           if (oldPosition != Position)
-                Cockpit.PilotHandle.HasMoved();
+            if (oldPosition != Position)
+                return;
 
+            //Set PilotHandle to new position.
+            Cockpit.PilotHandle.Position = Position;
+            Cockpit.PilotHandle.Moved();
 
         }
     }

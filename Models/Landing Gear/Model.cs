@@ -110,7 +110,7 @@
             foreach (var module in DigitalPart.ComputingModules)
 			{		
 				foreach (var sensor in module.HandlePosition.Sensors)
-					Bind(nameof(sensor.CheckValue), nameof(Cockpit.PilotHandle.PilotHandlePosition));
+					Bind(nameof(sensor.CheckValue), nameof(Cockpit.PilotHandle.Position));
 
 				foreach (var sensor in module.AnalogicalSwitch.Sensors)
 					Bind(nameof(sensor.CheckValue), nameof(MechanicalPartControllers.AnalogicalSwitch.SwitchPosition));
@@ -201,7 +201,7 @@
 			var simulator = new Simulator(model);
 			model = (Model)simulator.Model;
 
-			for (int i = 0; i < 300; i++)
+			for (var i = 0; i < 300; i++)
 			{
 				simulator.SimulateStep();
 
