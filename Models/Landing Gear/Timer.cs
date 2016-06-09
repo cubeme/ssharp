@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace LandingGearSystem
+namespace SafetySharp.CaseStudies.LandingGear
 {
     using SafetySharp.Modeling;
 

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-
-namespace LandingGearSystem
+﻿namespace SafetySharp.CaseStudies.LandingGear
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using SafetySharp.Modeling;
 
     /// <summary>

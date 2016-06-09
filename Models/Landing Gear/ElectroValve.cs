@@ -1,6 +1,6 @@
 ﻿
 
-namespace LandingGearSystem
+namespace SafetySharp.CaseStudies.LandingGear
 {
     using SafetySharp.Modeling;
 
@@ -62,7 +62,7 @@ namespace LandingGearSystem
         {
             _stateMachine
                 .Transition(
-                    from: EVStates.Closed,
+                    @from: EVStates.Closed,
                     to: EVStates.Open);
         }
 
@@ -73,7 +73,7 @@ namespace LandingGearSystem
         {
             _stateMachine
                 .Transition(
-                    from: EVStates.Open,
+                    @from: EVStates.Open,
                     to: EVStates.Closed);
         }
 
@@ -82,7 +82,6 @@ namespace LandingGearSystem
         /// </summary>
         public override void Update()
         {
-
             if (_stateMachine.State == EVStates.Open)
                 _pressureLevel += Hin/10; //Needs 1sec to fill; 1 Step = 0.1sec
             else

@@ -1,6 +1,6 @@
 ﻿
 
-namespace LandingGearSystem
+namespace SafetySharp.CaseStudies.LandingGear
 {
     using SafetySharp.Modeling;
 
@@ -40,7 +40,7 @@ namespace LandingGearSystem
 
 	        _stateMachine
 		        .Transition(
-			        from: new[] { GearStates.LockedExtended, GearStates.LockingExtended},
+			        @from: new[] { GearStates.LockedExtended, GearStates.LockingExtended},
 			        to: GearStates.UnlockingExtended,
 			        guard: RetractionCurcuitIsPressurized,
 			        action: () =>
@@ -49,7 +49,7 @@ namespace LandingGearSystem
 			        })
 
 				.Transition(
-					from: GearStates.UnlockingExtended,
+					@from: GearStates.UnlockingExtended,
 					to: GearStates.MoveRetracting,
 					guard: RetractionCurcuitIsPressurized && _latchingBoxExtended.IsUnlocked,
 					action: () =>
@@ -58,7 +58,7 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: GearStates.MoveRetracting,
+					@from: GearStates.MoveRetracting,
 					to: GearStates.LockingRetracted,
 					guard: RetractionCurcuitIsPressurized  && _timer.HasElapsed,
 					action: () =>
@@ -67,12 +67,12 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: GearStates.LockingRetracted,
+					@from: GearStates.LockingRetracted,
 					to: GearStates.LockedRetracted,
 					guard: RetractionCurcuitIsPressurized  && _latchingBoxRetracted.IsLocked)
 
 				.Transition(
-					from: new[] {GearStates.LockedRetracted, GearStates.LockingRetracted },
+					@from: new[] {GearStates.LockedRetracted, GearStates.LockingRetracted },
                     to: GearStates.UnlockingRetracted,
 					guard: ExtensionCircuitIsPressurized,
 					action: () =>
@@ -81,7 +81,7 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: GearStates.UnlockingRetracted,
+					@from: GearStates.UnlockingRetracted,
 					to: GearStates.MoveExtending,
 					guard: ExtensionCircuitIsPressurized  && _latchingBoxRetracted.IsUnlocked,
 					action: () =>
@@ -90,7 +90,7 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: GearStates.MoveExtending,
+					@from: GearStates.MoveExtending,
 					to: GearStates.LockingExtended,
 					guard: ExtensionCircuitIsPressurized  && _timer.HasElapsed,
 					action: () =>
@@ -99,12 +99,12 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: GearStates.LockingExtended,
+					@from: GearStates.LockingExtended,
 					to: GearStates.LockedExtended,
 					guard: ExtensionCircuitIsPressurized  && _latchingBoxExtended.IsLocked)
 
 				.Transition(
-					from: GearStates.UnlockingExtended,
+					@from: GearStates.UnlockingExtended,
 					to: GearStates.LockingExtended,
 					guard: ExtensionCircuitIsPressurized,
 					action: () =>
@@ -113,7 +113,7 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: GearStates.MoveRetracting,
+					@from: GearStates.MoveRetracting,
 					to: GearStates.MoveExtending,
 					guard: ExtensionCircuitIsPressurized,
 					action: () =>
@@ -122,7 +122,7 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: GearStates.MoveExtending,
+					@from: GearStates.MoveExtending,
 					to: GearStates.MoveRetracting,
 					guard: RetractionCurcuitIsPressurized,
 					action: () =>
@@ -131,7 +131,7 @@ namespace LandingGearSystem
 					})
 
                 .Transition(
-                    from: GearStates.UnlockingRetracted,
+                    @from: GearStates.UnlockingRetracted,
                     to: GearStates.LockingRetracted,
                     guard: RetractionCurcuitIsPressurized,
                     action: () =>

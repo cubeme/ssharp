@@ -1,5 +1,5 @@
 ﻿
-namespace LandingGearSystem
+namespace SafetySharp.CaseStudies.LandingGear
 {
     using SafetySharp.Modeling;
 
@@ -68,7 +68,7 @@ namespace LandingGearSystem
         {
             _stateMachine
                 .Transition(
-                    from: new[] { LatchingBoxState.Locked, LatchingBoxState.Locking },
+                    @from: new[] { LatchingBoxState.Locked, LatchingBoxState.Locking },
                     to: LatchingBoxState.Unlocking,
                     action: () =>
                     {
@@ -80,7 +80,7 @@ namespace LandingGearSystem
         {
             _stateMachine
                 .Transition(
-                    from: new[] {LatchingBoxState.Unlocked, LatchingBoxState.Unlocking},
+                    @from: new[] {LatchingBoxState.Unlocked, LatchingBoxState.Unlocking},
                     to: LatchingBoxState.Locking,
                     action: () =>
                     {
@@ -95,12 +95,12 @@ namespace LandingGearSystem
             _stateMachine
 
                 .Transition(
-                    from: LatchingBoxState.Unlocking,
+                    @from: LatchingBoxState.Unlocking,
                     to: LatchingBoxState.Unlocked,
                     guard: _timer.HasElapsed)
 
                 .Transition(
-                    from: LatchingBoxState.Locking,
+                    @from: LatchingBoxState.Locking,
                     to: LatchingBoxState.Locked,
                     guard: _timer.HasElapsed);
 

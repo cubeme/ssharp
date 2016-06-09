@@ -1,9 +1,9 @@
-﻿namespace LandingGearSystem
+﻿namespace SafetySharp.CaseStudies.LandingGear
 {
-	using System.Diagnostics;
-	using NUnit.Framework;
-	using SafetySharp.Analysis;
-	using SafetySharp.Modeling;
+    using System.Diagnostics;
+    using NUnit.Framework;
+    using SafetySharp.Analysis;
+    using SafetySharp.Modeling;
 
     [TestFixture(60, AirplaneStates.Flight, Mode.Any, 1)]
     class Model : ModelBase

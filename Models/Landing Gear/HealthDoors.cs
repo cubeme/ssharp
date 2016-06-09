@@ -1,6 +1,6 @@
 ﻿
 
-namespace LandingGearSystem
+namespace SafetySharp.CaseStudies.LandingGear
 {
 
     class HealthDoors : HealthMonitoring
@@ -19,7 +19,7 @@ namespace LandingGearSystem
             //Doors motion monitoring
             StateMachine
                 .Transition(
-                    from: HealthMonitoringStates.Wait,
+                    @from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Open,
                     guard: ComputingModule.OpenEV,
                     action: () =>
@@ -27,16 +27,16 @@ namespace LandingGearSystem
                         Timer.Start(70);
                     })
                 .Transition(
-                    from: HealthMonitoringStates.Open,
+                    @from: HealthMonitoringStates.Open,
                     to: HealthMonitoringStates.Error,
                     guard: (Timer.HasElapsed && ComputingModule.DoorsClosed) || (Timer.HasElapsed && !ComputingModule.DoorsOpen),
                     action: () => AnomalyDetected = true)
                 .Transition(
-                    from: HealthMonitoringStates.Open,
+                    @from: HealthMonitoringStates.Open,
                     to: HealthMonitoringStates.Wait,
                     guard: !ComputingModule.DoorsClosed && ComputingModule.DoorsOpen)
                 .Transition(
-                    from: HealthMonitoringStates.Wait,
+                    @from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Close,
                     guard: ComputingModule.CloseEV,
                     action: () =>
@@ -44,12 +44,12 @@ namespace LandingGearSystem
                         Timer.Start(70);
                     })
                 .Transition(
-                    from: HealthMonitoringStates.Close,
+                    @from: HealthMonitoringStates.Close,
                     to: HealthMonitoringStates.Error,
                     guard: (Timer.HasElapsed && ComputingModule.DoorsOpen) || (Timer.HasElapsed && !ComputingModule.DoorsClosed),
                     action: () => AnomalyDetected = true)
                 .Transition(
-                    from: HealthMonitoringStates.Close,
+                    @from: HealthMonitoringStates.Close,
                     to: HealthMonitoringStates.Wait,
                     guard: ComputingModule.DoorsClosed && !ComputingModule.DoorsOpen);
 

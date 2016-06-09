@@ -1,10 +1,7 @@
-﻿
-using System;
-using System.Linq;
-
-
-namespace LandingGearSystem
+﻿namespace SafetySharp.CaseStudies.LandingGear
 {
+    using System;
+    using System.Linq;
     using SafetySharp.Modeling;
 
     class ComputingModule : Component
@@ -176,7 +173,6 @@ namespace LandingGearSystem
         /// <summary>
         /// Value indicating the old pilot handle position to determine whether the pilot handle has been moved.
         /// </summary>
-        [Hidden]
         private HandlePosition _oldHandlePosition;
 
         /// <summary>

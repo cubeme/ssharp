@@ -1,6 +1,6 @@
 ﻿
 
-namespace LandingGearSystem
+namespace SafetySharp.CaseStudies.LandingGear
 {
 
     class HealthPressureSensor : HealthMonitoring
@@ -19,7 +19,7 @@ namespace LandingGearSystem
             //Pressure sensor monitoring
             StateMachine
                 .Transition(
-                    from: HealthMonitoringStates.Wait,
+                    @from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Start,
                     guard: ComputingModule.GeneralEV,
                     action: () =>
@@ -27,16 +27,16 @@ namespace LandingGearSystem
                         Timer.Start(20);
                     })
                 .Transition(
-                    from: HealthMonitoringStates.Start,
+                    @from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Intermediate,
                     guard: ComputingModule.CircuitPressurized.Value)
                 .Transition(
-                    from: HealthMonitoringStates.Start,
+                    @from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Error,
                     guard: Timer.HasElapsed && !ComputingModule.CircuitPressurized.Value ,
                     action: () => AnomalyDetected = true)
                 .Transition(
-                    from: HealthMonitoringStates.Intermediate,
+                    @from: HealthMonitoringStates.Intermediate,
                     to: HealthMonitoringStates.End,
                     guard: !ComputingModule.GeneralEV,
                     action: () =>
@@ -44,11 +44,11 @@ namespace LandingGearSystem
                         Timer.Start(100);
                     })
                 .Transition(
-                    from: HealthMonitoringStates.End,
+                    @from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Wait,
                     guard: !ComputingModule.CircuitPressurized.Value)
                 .Transition(
-                    from: HealthMonitoringStates.End,
+                    @from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Start,
                     guard: ComputingModule.GeneralEV,
                     action: () =>
@@ -56,7 +56,7 @@ namespace LandingGearSystem
                         Timer.Start(20);
                     })
                 .Transition(
-                    from: HealthMonitoringStates.End,
+                    @from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Error,
                     guard: Timer.HasElapsed && ComputingModule.CircuitPressurized.Value,
                     action: () => AnomalyDetected = true);

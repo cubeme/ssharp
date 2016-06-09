@@ -1,5 +1,5 @@
 ﻿
-namespace LandingGearSystem
+namespace SafetySharp.CaseStudies.LandingGear
 { 
 
     class HealthGears : HealthMonitoring
@@ -18,7 +18,7 @@ namespace LandingGearSystem
             //Gears motion monitoring
             StateMachine
                 .Transition(
-                    from: HealthMonitoringStates.Wait,
+                    @from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Extend,
                     guard: ComputingModule.ExtendEV,
                     action: () =>
@@ -26,16 +26,16 @@ namespace LandingGearSystem
                         Timer.Start(100);
                     })
                 .Transition(
-                    from: HealthMonitoringStates.Extend,
+                    @from: HealthMonitoringStates.Extend,
                     to: HealthMonitoringStates.Error,
                     guard: (Timer.RemainingTime == 30 && ComputingModule.GearsRetracted) || (Timer.HasElapsed && !ComputingModule.GearsExtended),
                     action: () => AnomalyDetected = true)
                 .Transition(
-                    from: HealthMonitoringStates.Extend,
+                    @from: HealthMonitoringStates.Extend,
                     to: HealthMonitoringStates.Wait,
                     guard: ComputingModule.GearsExtended && !ComputingModule.GearsRetracted)
                 .Transition(
-                    from: HealthMonitoringStates.Wait,
+                    @from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Retract,
                     guard: ComputingModule.RetractEV,
                     action: () =>
@@ -43,12 +43,12 @@ namespace LandingGearSystem
                         Timer.Start(100);
                     })
                 .Transition(
-                    from: HealthMonitoringStates.Retract,
+                    @from: HealthMonitoringStates.Retract,
                     to: HealthMonitoringStates.Error,
                     guard: (Timer.RemainingTime == 30 && ComputingModule.GearsExtended) || (Timer.HasElapsed && !ComputingModule.GearsRetracted),
                     action: () => AnomalyDetected = true)
                 .Transition(
-                    from: HealthMonitoringStates.Retract,
+                    @from: HealthMonitoringStates.Retract,
                     to: HealthMonitoringStates.Wait,
                     guard: ComputingModule.GearsRetracted && !ComputingModule.GearsExtended);
         }

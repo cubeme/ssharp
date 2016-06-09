@@ -1,11 +1,15 @@
 ﻿
 
-namespace LandingGearSystem
+namespace SafetySharp.CaseStudies.LandingGear
 {
     using SafetySharp.Modeling;
 
     class DoorCylinder : Cylinder
     {
+        /// <summary>
+        ///   The fault keeps the door cylinder stuck in a certain state.
+        /// </summary>
+        public readonly Fault DoorCylinderIsStuckFault = new PermanentFault();
 
         /// <summary>
         ///  Timer to time the movement of the door cylinder.
@@ -37,7 +41,7 @@ namespace LandingGearSystem
             //Normal motion
 	        _stateMachine
 		        .Transition(
-			        from: new[] { DoorStates.LockedClosed, DoorStates.LockingClosed},
+			        @from: new[] { DoorStates.LockedClosed, DoorStates.LockingClosed},
 			        to: DoorStates.UnlockingClosed,
 			        guard: ExtensionCircuitIsPressurized,
 			        action: () =>
@@ -47,7 +51,7 @@ namespace LandingGearSystem
 			        })
 
 				.Transition(
-					from: DoorStates.UnlockingClosed,
+					@from: DoorStates.UnlockingClosed,
 					to: DoorStates.MoveOpening,
 					guard:
 						ExtensionCircuitIsPressurized && _latchingBoxClosedOne.IsUnlocked &&
@@ -58,17 +62,17 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: DoorStates.MoveOpening,
+					@from: DoorStates.MoveOpening,
 					to: DoorStates.Open,
 					guard: ExtensionCircuitIsPressurized && _timer.HasElapsed)
 
 				.Transition(
-					from: DoorStates.Open,
+					@from: DoorStates.Open,
 					to: DoorStates.Open,
 					guard: ExtensionCircuitIsPressurized)
 
 				.Transition(
-					from: new [] { DoorStates.Open, DoorStates.OpenLoose},
+					@from: new [] { DoorStates.Open, DoorStates.OpenLoose},
                     to: DoorStates.MoveClosing,
 					guard: RetractionCurcuitIsPressurized,
 					action: () =>
@@ -77,17 +81,17 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: DoorStates.Open,
+					@from: DoorStates.Open,
 					to: DoorStates.OpenLoose,
 					guard: RetractionCurcuitIsPressurized == false && ExtensionCircuitIsPressurized == false)
 
 				.Transition(
-					from: DoorStates.OpenLoose,
+					@from: DoorStates.OpenLoose,
 					to: DoorStates.Open,
 					guard: ExtensionCircuitIsPressurized)
 
 				.Transition(
-					from: DoorStates.MoveClosing,
+					@from: DoorStates.MoveClosing,
 					to: DoorStates.LockingClosed,
 					guard: RetractionCurcuitIsPressurized && _timer.HasElapsed,
 					action: () =>
@@ -97,14 +101,14 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: DoorStates.LockingClosed,
+					@from: DoorStates.LockingClosed,
 					to: DoorStates.LockedClosed,
 					guard:
 						RetractionCurcuitIsPressurized && _latchingBoxClosedOne.IsLocked &&
 						_latchingBoxClosedTwo.IsLocked)
 
                 .Transition(
-					from: DoorStates.MoveClosing,
+					@from: DoorStates.MoveClosing,
 					to: DoorStates.MoveOpening,
 					guard: ExtensionCircuitIsPressurized,
 					action: () =>
@@ -113,7 +117,7 @@ namespace LandingGearSystem
 					})
 
 				.Transition(
-					from: DoorStates.MoveOpening,
+					@from: DoorStates.MoveOpening,
 					to: DoorStates.MoveClosing,
 					guard: RetractionCurcuitIsPressurized ,
 					action: () =>
@@ -122,7 +126,7 @@ namespace LandingGearSystem
 					})
 
                 .Transition(
-                    from: DoorStates.UnlockingClosed,
+                    @from: DoorStates.UnlockingClosed,
                     to: DoorStates.LockingClosed,
                     guard: RetractionCurcuitIsPressurized,
                     action: () =>
@@ -131,6 +135,20 @@ namespace LandingGearSystem
                         _latchingBoxClosedTwo.Lock();
                     });
 
+        }
+
+        /// <summary>
+        ///   Keeps the door stuck in one state.
+        /// </summary>
+        [FaultEffect(Fault = nameof(DoorCylinderIsStuckFault))]
+        public class DoorCylinderIsStuckFaultEffect : DoorCylinder
+        {
+            public DoorCylinderIsStuckFaultEffect(CylinderPosition position) : base(position) { }
+
+            public override void Update()
+            {
+
+            }
         }
 
     }

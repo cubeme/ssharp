@@ -1,6 +1,6 @@
 ﻿
 
-namespace LandingGearSystem
+namespace SafetySharp.CaseStudies.LandingGear
 {
     using SafetySharp.Modeling;
 
@@ -82,7 +82,7 @@ namespace LandingGearSystem
         {
             _stateMachine
                 .Transition(
-                    from: new[] {AnalogicalSwitchStates.Open, AnalogicalSwitchStates.MoveOpening},
+                    @from: new[] {AnalogicalSwitchStates.Open, AnalogicalSwitchStates.MoveOpening},
                     to: AnalogicalSwitchStates.MoveClosing,
                     action: () =>
                     {
@@ -90,7 +90,7 @@ namespace LandingGearSystem
                     })
 
                 .Transition(
-                    from: AnalogicalSwitchStates.Closed,
+                    @from: AnalogicalSwitchStates.Closed,
                     to: AnalogicalSwitchStates.Closed,
                     action: () =>
                     {
@@ -107,7 +107,7 @@ namespace LandingGearSystem
 
             _stateMachine
                 .Transition(
-                    from: AnalogicalSwitchStates.MoveClosing,
+                    @from: AnalogicalSwitchStates.MoveClosing,
                     to: AnalogicalSwitchStates.Closed,
                     guard: _timer.HasElapsed,
                     action: () =>
@@ -116,7 +116,7 @@ namespace LandingGearSystem
                     })
 
                 .Transition(
-                    from: AnalogicalSwitchStates.Closed,
+                    @from: AnalogicalSwitchStates.Closed,
                     to: AnalogicalSwitchStates.MoveOpening,
                     guard: _timer.HasElapsed,
                     action: () =>
@@ -125,7 +125,7 @@ namespace LandingGearSystem
                     })
 
                 .Transition(
-                    from: AnalogicalSwitchStates.MoveOpening,
+                    @from: AnalogicalSwitchStates.MoveOpening,
                     to: AnalogicalSwitchStates.Open,
                     guard: _timer.HasElapsed);
 
