@@ -30,6 +30,11 @@ namespace SafetySharp.CaseStudies.LandingGear
     class AnalogicalSwitch : Component
     {
         /// <summary>
+        ///   The fault keeps the analogical switch stuck in a specified position.
+        /// </summary>
+        //public readonly Fault AnalogicalSwitchStuckInValueFault = new TransientFault();
+
+        /// <summary>
 		///   Gets the state machine that manages the state of the analogical switch.
 		/// </summary>
 		private readonly StateMachine<AnalogicalSwitchStates> _stateMachine = AnalogicalSwitchStates.Open;
@@ -42,9 +47,7 @@ namespace SafetySharp.CaseStudies.LandingGear
         /// <summary>
         ///  Times the movement of the analogical switch.
         /// </summary>
-        public readonly Timer _timer = new Timer();
-        //todo: private
-
+        private readonly Timer _timer = new Timer();
 
         /// <summary>
         /// Gets the value of the incoming electrical order.
@@ -129,7 +132,7 @@ namespace SafetySharp.CaseStudies.LandingGear
                     to: AnalogicalSwitchStates.Open,
                     guard: _timer.HasElapsed);
 
-            //todo: So oder eher in actions rein? --> Muss so sein, damit IncomingEOrder() immer überprüft wird
+            //todo: This way it only closes/opens the general EV if it is necessary.
             CheckEOrder = IncomingEOrder();
         }
     }

@@ -61,9 +61,14 @@ namespace SafetySharp.CaseStudies.LandingGear
     class Door : Component
     {
         /// <summary>
-        ///   The fault keeps the door stuck in a certain state.
+        ///   The fault keeps the door stuck in the current state.
         /// </summary>
-        public readonly Fault DoorIsStuckFault = new PermanentFault();
+        public readonly Fault DoorIsStuckFault = new TransientFault();
+
+        /// <summary>
+        ///   The fault keeps the door stuck in a specified state.
+        /// </summary>
+        public readonly Fault DoorIsStuckInStateFault = new TransientFault();
 
         /// <summary>
         /// Indicates the position of the door, i.e. whether it is located in the front, on the left or right side of the plane.
@@ -105,8 +110,9 @@ namespace SafetySharp.CaseStudies.LandingGear
             State = DoorCylinderState;
         }
 
+        //todo: Stuck in current or in specified state?
         /// <summary>
-        ///   Keeps the door stuck in one state.
+        ///   Keeps the door stuck in the current state.
         /// </summary>
         [FaultEffect(Fault = nameof(DoorIsStuckFault))]
         public class DoorIsStuckFaultEffect : Door
@@ -118,5 +124,7 @@ namespace SafetySharp.CaseStudies.LandingGear
 
             }
         }
+
+
     }
 }

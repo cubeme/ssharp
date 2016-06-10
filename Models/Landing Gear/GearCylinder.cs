@@ -6,7 +6,11 @@ namespace SafetySharp.CaseStudies.LandingGear
 
     class GearCylinder : Cylinder
     {
-        
+        /// <summary>
+        ///   The fault keeps the gear cylinder stuck in a certain state.
+        /// </summary>
+        //public readonly Fault GearCylinderIsStuckFault = new TransientFault();
+
         /// <summary>
         ///  Timer to time the movement of the gear cylinder.
         /// </summary>
@@ -32,7 +36,7 @@ namespace SafetySharp.CaseStudies.LandingGear
         /// <summary>
 		///   Gets the current state of the gear cylinder.
 		/// </summary>
-        public GearStates GearCylinderState => _stateMachine.State;
+        public virtual GearStates GearCylinderState => _stateMachine.State;
 
         public override void Update()
         {

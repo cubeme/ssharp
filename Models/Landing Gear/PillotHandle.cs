@@ -6,7 +6,7 @@ namespace SafetySharp.CaseStudies.LandingGear
 
     class PilotHandle : Component
     {
-        //todo: So?
+        //todo: Removed HasMoved() and Moved() is called directly by the pilot.
         /// <summary>
         ///  Indicates whether the pilot handle has been moved.
         /// </summary>

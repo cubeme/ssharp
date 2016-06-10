@@ -63,7 +63,7 @@
         {     
             Update(ComputingModules);     
             
-            //todo: etwas unschön
+            //todo: Find better a solution
             if(_comparisonFunction(ComputingModules, element => element.CloseEV == true))
                 OpenCloseEV();
             else

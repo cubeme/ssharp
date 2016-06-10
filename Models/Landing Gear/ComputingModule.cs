@@ -156,8 +156,7 @@
         /// <summary>
         /// Carries out the outgoing and retraction sequence of the landing gear.
         /// </summary>
-        public readonly ActionSequence _actionSequence;
-        //todo: private
+        private readonly ActionSequence _actionSequence;
 
         private readonly HealthMonitoring[] _systemHealth;
 

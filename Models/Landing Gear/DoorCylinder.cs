@@ -9,7 +9,7 @@ namespace SafetySharp.CaseStudies.LandingGear
         /// <summary>
         ///   The fault keeps the door cylinder stuck in a certain state.
         /// </summary>
-        public readonly Fault DoorCylinderIsStuckFault = new PermanentFault();
+        //public readonly Fault DoorCylinderIsStuckFault = new TransientFault();
 
         /// <summary>
         ///  Timer to time the movement of the door cylinder.
@@ -29,7 +29,7 @@ namespace SafetySharp.CaseStudies.LandingGear
         private readonly LatchingBox _latchingBoxClosedOne = new LatchingBox(4,3);
         private readonly LatchingBox _latchingBoxClosedTwo = new LatchingBox(4,3);
 
-        public DoorStates DoorCylinderState => _stateMachine.State;
+        public virtual DoorStates DoorCylinderState => _stateMachine.State;
 
         /// <summary>
         /// Updates the door cylinder
@@ -38,7 +38,6 @@ namespace SafetySharp.CaseStudies.LandingGear
         {
             Update(_timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
 
-            //Normal motion
 	        _stateMachine
 		        .Transition(
 			        @from: new[] { DoorStates.LockedClosed, DoorStates.LockingClosed},
@@ -135,20 +134,6 @@ namespace SafetySharp.CaseStudies.LandingGear
                         _latchingBoxClosedTwo.Lock();
                     });
 
-        }
-
-        /// <summary>
-        ///   Keeps the door stuck in one state.
-        /// </summary>
-        [FaultEffect(Fault = nameof(DoorCylinderIsStuckFault))]
-        public class DoorCylinderIsStuckFaultEffect : DoorCylinder
-        {
-            public DoorCylinderIsStuckFaultEffect(CylinderPosition position) : base(position) { }
-
-            public override void Update()
-            {
-
-            }
         }
 
     }
