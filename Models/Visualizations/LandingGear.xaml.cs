@@ -17,7 +17,7 @@ namespace SafetySharp.CaseStudies.Visualizations
     /// <summary>
     /// Interaktionslogik für LandingGear.xaml
     /// </summary>
-    public partial class LandingGear : Window
+    public partial class LandingGear
     {
         public LandingGear()
         {

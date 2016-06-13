@@ -24,6 +24,9 @@
             <TabItem Header="Hemodialysis Machine">
                 <visualization:HdMachine />
             </TabItem>
+            <TabItem Header="Landing Gear System">
+                <visualization:LandingGear />
+            </TabItem>
         </TabControl>
     </Grid>
 </controls:MetroWindow>

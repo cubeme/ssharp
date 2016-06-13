@@ -1,12 +1,45 @@
-﻿<Window x:Class="SafetySharp.CaseStudies.Visualizations.LandingGear"
+﻿<UserControl x:Class="SafetySharp.CaseStudies.Visualizations.LandingGear"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SafetySharp.CaseStudies.Visualizations"
-        mc:Ignorable="d"
-        Title="LandingGear" Height="300" Width="300">
+        mc:Ignorable="d">
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
         
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Margin="50,0,0,0" Grid.Row="0" Grid.Column="0" FontSize="24" Content="Sequence:" />
+            <Label  Margin="0,0,0,0" Grid.Row="0" Grid.Column="1"  FontSize="24" Content="Bind to Sequence"></Label>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Label Margin="50,0,0,0" Grid.Column="0" FontSize="18" Content="PilotHandle:" />
+            <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="Bind to PilotHandle Position" />
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="OpenEV:" />
+                <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="Bind to OpenEV Position" />
+                <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="CloseEV:" />
+                <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="Bind to Close Position" />
+                
+            </StackPanel>
+        </Grid>
     </Grid>
-</Window>
+</UserControl>
