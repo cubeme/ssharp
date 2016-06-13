@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Landing Gear", "Models\Land
 		{96F3A853-B30A-4413-98C8-C9AAA4C084DE} = {96F3A853-B30A-4413-98C8-C9AAA4C084DE}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWPF", "HelloWPF\HelloWPF.csproj", "{2E1F6F9F-9EA5-4960-A422-843239FC6BBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,10 @@ Global
 		{69DC4323-F4D0-493B-AA75-3521D39E1094}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69DC4323-F4D0-493B-AA75-3521D39E1094}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69DC4323-F4D0-493B-AA75-3521D39E1094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E1F6F9F-9EA5-4960-A422-843239FC6BBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1F6F9F-9EA5-4960-A422-843239FC6BBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E1F6F9F-9EA5-4960-A422-843239FC6BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1F6F9F-9EA5-4960-A422-843239FC6BBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
