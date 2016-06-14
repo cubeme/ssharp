@@ -29,6 +29,22 @@ namespace SafetySharp.CaseStudies.LandingGear
 
     class AnalogicalSwitch : Component
     {
+
+        /// <summary>
+        ///   The fault keeps the AnalgocialSwitch stuck in one state.
+        /// </summary>
+        public readonly Fault SwitchStuckFault = new PermanentFault();
+
+        /// <summary>
+        ///   The fault will not close the AnalgocialSwitch.
+        /// </summary>
+        public readonly Fault SwitchCloseFault = new PermanentFault();
+
+        /// <summary>
+        ///   The fault flips the IncomingEOrder value.
+        /// </summary>
+        public readonly Fault IncomingEorderFault = new PermanentFault();
+
         /// <summary>
 		///   Gets the state machine that manages the state of the analogical switch.
 		/// </summary>
@@ -51,7 +67,7 @@ namespace SafetySharp.CaseStudies.LandingGear
 
         private bool _eOrderValue;
 
-        public bool CheckEOrder
+        public virtual bool CheckEOrder
         {
             set
             {
@@ -76,7 +92,7 @@ namespace SafetySharp.CaseStudies.LandingGear
         /// <summary>
         /// Closes the analogcial switch.
         /// </summary>
-        public void Close()
+        public virtual void Close()
         {
             _stateMachine
                 .Transition(
@@ -128,6 +144,60 @@ namespace SafetySharp.CaseStudies.LandingGear
                     guard: _timer.HasElapsed);
 
             CheckEOrder = IncomingEOrder();
+        }
+
+        /// <summary>
+        ///   Keeps the AnalgocialSwitch stuck in one state.
+        /// </summary>
+        [FaultEffect(Fault = nameof(SwitchStuckFault))]
+        public class SwitchStuckFaultEffect : AnalogicalSwitch
+        {
+
+            public override void Update()
+            {
+                Update(_timer);
+
+                //no transitions
+
+                CheckEOrder = IncomingEOrder();
+            }
+        }
+
+        /// <summary>
+        ///   Will not close the analgical switch.
+        /// </summary>
+        [FaultEffect(Fault = nameof(SwitchCloseFault))]
+        public class SwitchCloseFaultEffect : AnalogicalSwitch
+        {
+            public override void Close()
+            {
+            }
+        }
+
+        /// <summary>
+        ///   Flips the IncomingEOrder value.
+        /// </summary>
+        [FaultEffect(Fault = nameof(IncomingEorderFault))]
+        public class IncomingEorderFaultEffect : AnalogicalSwitch
+        {
+            public override bool CheckEOrder
+            {
+                set
+                {
+                    value = !value;
+
+                    if (_eOrderValue != value)
+                    {
+                        if (_stateMachine == AnalogicalSwitchStates.Closed && value)
+                            OpenGeneralEV();
+                        else
+                        {
+                            CloseGeneralEV();
+                        }
+                    }
+                    _eOrderValue = value;
+                }
+            }
         }
     }
 }

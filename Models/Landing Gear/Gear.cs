@@ -66,7 +66,7 @@ namespace SafetySharp.CaseStudies.LandingGear
         /// <summary>
         ///   The fault keeps the gear stuck in a certain state.
         /// </summary>
-        //public readonly Fault GearIsStuckFault = new PermanentFault();
+        public readonly Fault GearIsStuckFault = new PermanentFault();
 
         /// <summary>
         /// Indicates the position of the gear, i.e. whether it is located in the front, on the left or right side of the plane.
@@ -107,19 +107,19 @@ namespace SafetySharp.CaseStudies.LandingGear
             State = GearCylinderState;
         }
 
-        ///// <summary>
-        /////   Keeps the gear stuck in one state.
-        ///// </summary>
-        //[FaultEffect(Fault = nameof(GearIsStuckFault))]
-        //public class GearIsStuckFaultEffect : Gear
-        //{
-        //    public GearIsStuckFaultEffect(GearPosition position) : base(position) { }
+        /// <summary>
+        ///   Keeps the gear stuck in one state.
+        /// </summary>
+        [FaultEffect(Fault = nameof(GearIsStuckFault))]
+        public class GearIsStuckFaultEffect : Gear
+        {
+            public GearIsStuckFaultEffect(GearPosition position) : base(position) { }
 
-        //    public override void Update()
-        //    {
+            public override void Update()
+            {
 
-        //    }
-        //}
+            }
+        }
 
     }
 }

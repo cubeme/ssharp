@@ -12,7 +12,7 @@
         /// <summary>
         ///  Gets the value recorded by the sensor.
         /// </summary>
-        public TSensorType Value => CheckValue;
+        public virtual TSensorType Value => CheckValue;
     }
 }
 

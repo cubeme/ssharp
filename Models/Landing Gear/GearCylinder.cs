@@ -6,7 +6,12 @@ namespace SafetySharp.CaseStudies.LandingGear
 
     class GearCylinder : Cylinder
     {
-        
+
+        /// <summary>
+        ///   The fault keeps the gear cylinder stuck in a certain state.
+        /// </summary>
+        public readonly Fault GearCylinderIsStuckFault = new PermanentFault();
+
         /// <summary>
         ///  Timer to time the movement of the gear cylinder.
         /// </summary>
@@ -139,6 +144,23 @@ namespace SafetySharp.CaseStudies.LandingGear
                         _latchingBoxRetracted.Lock();
                     });
 
+        }
+
+        /// <summary>
+        ///   Keeps the gear cylinder stuck in one state.
+        /// </summary>
+        [FaultEffect(Fault = nameof(GearCylinderIsStuckFault))]
+        public class GearCylinderIsStuckFaultEffect : GearCylinder
+        {
+            public GearCylinderIsStuckFaultEffect(CylinderPosition position) : base(position) { }
+
+            public override void Update()
+            {
+                Update(_timer, _latchingBoxExtended, _latchingBoxRetracted);
+
+                //no statemachine transtiions
+
+            }
         }
 
     }
