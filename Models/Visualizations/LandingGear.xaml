@@ -12,34 +12,170 @@
             <RowDefinition Height="4*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
-        
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
 
-            <Label Margin="50,0,0,0" Grid.Row="0" Grid.Column="0" FontSize="24" Content="Sequence:" />
-            <Label  Margin="0,0,0,0" Grid.Row="0" Grid.Column="1"  FontSize="24" Content="Bind to Sequence"></Label>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label Margin="10,0,0,0" Grid.Column="0" FontSize="18" Content="Sequence:" />
+            <Label  Margin="0,0,0,0" Grid.Column="1"  FontSize="18" Content="Bind to Sequence"></Label>
 
-        </Grid>
+        </StackPanel>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
-            <Label Margin="50,0,0,0" Grid.Column="0" FontSize="18" Content="PilotHandle:" />
-            <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="Bind to PilotHandle Position" />
-            
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="OpenEV:" />
-                <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="Bind to OpenEV Position" />
-                <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="CloseEV:" />
-                <Label Margin="0,0,0,0" Grid.Column="0" FontSize="18" Content="Bind to Close Position" />
-                
+
+            <StackPanel Grid.Column="0" Orientation="Vertical">
+                <Label Margin="10,0,0,0" FontSize="12" HorizontalAlignment="Left" Content="PilotHandle:" />
+                <Label Margin="10,0,0,0"  HorizontalAlignment="Left" FontSize="12">Bind to PilotHandle Position</Label>
+                <Label Margin="10,20,0,0" FontSize="12" HorizontalAlignment="Left" Content="GeneralEV:" />
+                <Label Margin="10,0,0,0" FontSize="12" HorizontalAlignment="Left" Content="Bind to GeneralEV" />
             </StackPanel>
+
+            <Grid Grid.Column="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="OpenEV:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to OpenEV Position" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="CloseEV:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to CloseEV Position" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="ExtensionCircuit:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to ExtensionCircuit" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="RetractionCircuit:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RetractionCircuit" />
+                    </StackPanel>
+ 
+                    <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Front Door Cylinder:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to FrontDoorCylinder" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Left Door Cylinder:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to LeftDoorCylinder" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Right Door Cylinder:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RightDoorCylinder" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Front Door:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to FrontDoor" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Left Door:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to LeftDoor" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Right Door:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RightDoor" />
+                    </StackPanel>
+
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="ExtendEV:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to ExtendEV Position" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="RetractEV:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RetractEV Position" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="ExtensionCircuit:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to ExtensionCircuit" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="RetractionCircuit:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RetractionCircuit" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Front Gear Cylinder:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to FrontGearCylinder" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Left DooGearr Cylinder:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to LeftGearCylinder" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Right Gear Cylinder:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RightGearCylinder" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Front Gear:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to FrontGear" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Left Gear:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to LeftGear" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Vertical">
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Right Gear:" />
+                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RightGear" />
+                    </StackPanel>
+
+                </Grid>
+            </Grid>
+        </Grid>
+        
+        <Grid Grid.Row="2">
+            <Label Margin="10,0,0,0" FontSize="12" Content="Errors" />
+            
         </Grid>
     </Grid>
 </UserControl>
