@@ -9,8 +9,8 @@ namespace SafetySharp.CaseStudies.LandingGear
         ///<summary>
         /// Indicates current pressure levell.
         /// </summary>
-        public int _pressureLevel;
-        //todo: private
+        private int _pressureLevel;
+
         ///<summary>
         /// Indicates the maximum pressure.
         /// </summary>

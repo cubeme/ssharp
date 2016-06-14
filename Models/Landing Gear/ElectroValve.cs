@@ -24,14 +24,12 @@ namespace SafetySharp.CaseStudies.LandingGear
         /// <summary>
         ///   Gets the state machine that manages the state of the gear cylinder.
         /// </summary>
-        public readonly StateMachine<EVStates> _stateMachine = EVStates.Closed;
-        //todo: private
+        private readonly StateMachine<EVStates> _stateMachine = EVStates.Closed;
 
         /// <summary>
         /// Indicates the output pressure of the EV.
         /// </summary>
-        public int _pressureLevel = 0;
-        //todo: private
+        private int _pressureLevel = 0;
 
         private readonly int _maxHin;
 

@@ -42,9 +42,7 @@ namespace SafetySharp.CaseStudies.LandingGear
         /// <summary>
         ///  Times the movement of the analogical switch.
         /// </summary>
-        public readonly Timer _timer = new Timer();
-        //todo: private
-
+        private readonly Timer _timer = new Timer();
 
         /// <summary>
         /// Gets the value of the incoming electrical order.
@@ -66,7 +64,7 @@ namespace SafetySharp.CaseStudies.LandingGear
                         CloseGeneralEV();
                     }
                 }
-                _eOrderValue = IncomingEOrder();
+                _eOrderValue = value;
             }
         }
 
@@ -129,7 +127,6 @@ namespace SafetySharp.CaseStudies.LandingGear
                     to: AnalogicalSwitchStates.Open,
                     guard: _timer.HasElapsed);
 
-            //todo: So oder eher in actions rein? --> Muss so sein, damit IncomingEOrder() immer überprüft wird
             CheckEOrder = IncomingEOrder();
         }
     }

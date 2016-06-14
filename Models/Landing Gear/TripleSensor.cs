@@ -42,7 +42,7 @@ namespace SafetySharp.CaseStudies.LandingGear
         {
             Valid = true;
             Value = default(TSensorType);
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 Sensors[i] = new Sensor<TSensorType>();
             }

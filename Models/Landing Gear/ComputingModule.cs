@@ -156,8 +156,7 @@
         /// <summary>
         /// Carries out the outgoing and retraction sequence of the landing gear.
         /// </summary>
-        public readonly ActionSequence _actionSequence;
-        //todo: private
+        private readonly ActionSequence _actionSequence;
 
         private readonly HealthMonitoring[] _systemHealth;
 
@@ -215,7 +214,7 @@
             //Compute new values
             Update(HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, RightGearExtented, RightGearRetracted, RightGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, CircuitPressurized, _actionSequence);
 
-            Array.ForEach(_systemHealth, element => element.Update());
+            Update(_systemHealth);
 
             //Look for anomaly
             if (_systemHealth.Any(element => element.AnomalyDetected))

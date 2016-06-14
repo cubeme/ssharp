@@ -25,8 +25,7 @@ namespace SafetySharp.CaseStudies.LandingGear
         /// <summary>
 		///   Gets the state machine that manages the state of the action sequence
 		/// </summary>
-		public readonly StateMachine<ActionSequenceStates> _stateMachine = ActionSequenceStates.WaitRetract;     
-        //todo: private
+		private readonly StateMachine<ActionSequenceStates> _stateMachine = ActionSequenceStates.WaitRetract;     
 
         public ActionSequence(ComputingModule module)
         {
