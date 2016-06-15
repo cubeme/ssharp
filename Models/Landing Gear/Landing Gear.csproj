@@ -53,41 +53,42 @@
     <Compile Include="..\..\Source\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Cockpit.cs" />
-    <Compile Include="HealthDoors.cs" />
-    <Compile Include="HealthGears.cs" />
-    <Compile Include="HealthPressureSensor.cs" />
-    <Compile Include="HealthMonitoring.cs" />
-    <Compile Include="HealthSwitch.cs" />
-    <Compile Include="Light.cs" />
-    <Compile Include="MechanicalPartActuators.cs" />
-    <Compile Include="MechanicalPartControllers.cs" />
-    <Compile Include="MechanicalPartPlants.cs" />
-    <Compile Include="Model.cs" />
-    <Compile Include="ActionSequence.cs" />
-    <Compile Include="AircraftHydraulicCircuit.cs" />
-    <Compile Include="AnalogicalSwitch.cs" />
-    <Compile Include="ComputingModule.cs" />
-    <Compile Include="Cylinder.cs" />
-    <Compile Include="DigitalPart.cs" />
-    <Compile Include="Door.cs" />
-    <Compile Include="DoorCylinder.cs" />
-    <Compile Include="ElectroValve.cs" />
-    <Compile Include="Gear.cs" />
-    <Compile Include="GearCylinder.cs" />
-    <Compile Include="Airplane.cs" />
-    <Compile Include="PressureCircuit.cs" />
-    <Compile Include="LatchingBox.cs" />
-    <Compile Include="PillotHandle.cs" />
-    <Compile Include="Pilot.cs" />
+    <Compile Include="Modeling\Cockpit.cs" />
+    <Compile Include="Modeling\HealthDoors.cs" />
+    <Compile Include="Modeling\HealthGears.cs" />
+    <Compile Include="Modeling\HealthPressureSensor.cs" />
+    <Compile Include="Modeling\HealthMonitoring.cs" />
+    <Compile Include="Modeling\HealthSwitch.cs" />
+    <Compile Include="Modeling\Light.cs" />
+    <Compile Include="Modeling\MechanicalPartActuators.cs" />
+    <Compile Include="Modeling\MechanicalPartControllers.cs" />
+    <Compile Include="Modeling\MechanicalPartPlants.cs" />
+    <Compile Include="Modeling\Model.cs" />
+    <Compile Include="Modeling\ActionSequence.cs" />
+    <Compile Include="Modeling\AircraftHydraulicCircuit.cs" />
+    <Compile Include="Modeling\AnalogicalSwitch.cs" />
+    <Compile Include="Modeling\ComputingModule.cs" />
+    <Compile Include="Modeling\Cylinder.cs" />
+    <Compile Include="Modeling\DigitalPart.cs" />
+    <Compile Include="Modeling\Door.cs" />
+    <Compile Include="Modeling\DoorCylinder.cs" />
+    <Compile Include="Modeling\ElectroValve.cs" />
+    <Compile Include="Modeling\Gear.cs" />
+    <Compile Include="Modeling\GearCylinder.cs" />
+    <Compile Include="Modeling\Airplane.cs" />
+    <Compile Include="Modeling\PressureCircuit.cs" />
+    <Compile Include="Modeling\LatchingBox.cs" />
+    <Compile Include="Modeling\PillotHandle.cs" />
+    <Compile Include="Modeling\Pilot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sensor.cs" />
-    <Compile Include="SensorFaultBool.cs" />
-    <Compile Include="SensorFaultGearShockAbsorber.cs" />
-    <Compile Include="SensorFaultHandle.cs" />
-    <Compile Include="SensorFaultSwitch.cs" />
-    <Compile Include="Timer.cs" />
-    <Compile Include="TripleSensor.cs" />
+    <Compile Include="Modeling\Sensor.cs" />
+    <Compile Include="Modeling\SensorFaultBool.cs" />
+    <Compile Include="Modeling\SensorFaultGearShockAbsorber.cs" />
+    <Compile Include="Modeling\SensorFaultHandle.cs" />
+    <Compile Include="Modeling\SensorFaultSwitch.cs" />
+    <Compile Include="Modeling\Timer.cs" />
+    <Compile Include="Modeling\TripleSensor.cs" />
+    <Compile Include="Tests\Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Source\SafetySharp\SafetySharp.csproj">
@@ -96,10 +97,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
+    <None Include="Modeling\packages.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="../../Source/SafetySharp.targets" />
 </Project>
