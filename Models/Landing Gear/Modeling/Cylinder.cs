@@ -23,7 +23,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         Left
     }
 
-    class Cylinder : Component
+    public class Cylinder : Component
     {
 
         /// <summary>

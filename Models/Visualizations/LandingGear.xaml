@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SafetySharp.CaseStudies.Visualizations"
         mc:Ignorable="d">
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -14,8 +14,9 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Label Margin="10,0,0,0" Grid.Column="0" FontSize="18" Content="Sequence:" />
-            <Label  Margin="0,0,0,0" Grid.Column="1"  FontSize="18" Content="Bind to Sequence"></Label>
+            <Label VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0" FontSize="18" Content="Sequence State:" />
+            <TextBlock x:Name="txtSequence"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="18" 
+                       Text="{Binding ActionSequenceState}"/>
 
         </StackPanel>
 
@@ -26,10 +27,22 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Orientation="Vertical">
-                <Label Margin="10,0,0,0" FontSize="12" HorizontalAlignment="Left" Content="PilotHandle:" />
-                <Label Margin="10,0,0,0"  HorizontalAlignment="Left" FontSize="12">Bind to PilotHandle Position</Label>
-                <Label Margin="10,20,0,0" FontSize="12" HorizontalAlignment="Left" Content="GeneralEV:" />
-                <Label Margin="10,0,0,0" FontSize="12" HorizontalAlignment="Left" Content="Bind to GeneralEV" />
+                <Button
+                    x:Name="HandleButton"
+                    FontSize="11"
+                    FontWeight="Bold"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Foreground="Chartreuse"
+                    Margin="10,30,10,10"
+                    Padding="10,10,10,10"
+                    Click="HandleClicked">
+                    <TextBlock x:Name="HandleButtonText" TextAlignment="Center" Text="{Binding MoveToPosition, UpdateSourceTrigger=PropertyChanged, StringFormat='Move Handle &#x0a;{0}'}"/>
+                </Button>
+                <Label Margin="10,20,0,0" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Pilot Handle:" />
+                <TextBlock x:Name="txtHandle" Margin="10,0,0,0" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Position}"/>
+                <Label Margin="10,10,0,0" FontSize="12" HorizontalAlignment="Left" Content="GeneralEV:" />
+                <TextBlock x:Name="txtGeneralEV" Margin="10,0,0,0" FontSize="12" HorizontalAlignment="Left" Text="{Binding State}"/>
             </StackPanel>
 
             <Grid Grid.Column="1">
@@ -55,52 +68,52 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="OpenEV:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to OpenEV Position" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to OpenEV Position </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="CloseEV:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to CloseEV Position" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to CloseEV Position</TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="ExtensionCircuit:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to ExtensionCircuit" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to ExtensionCircuit</TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="RetractionCircuit:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RetractionCircuit" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12">Bind to RetractionCircuit </TextBlock>
                     </StackPanel>
  
                     <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Front Door Cylinder:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to FrontDoorCylinder" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to FrontDoorCylinder</TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Left Door Cylinder:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to LeftDoorCylinder" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to LeftDoorCylinder </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Right Door Cylinder:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RightDoorCylinder" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to RightDoorCylinder </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Front Door:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to FrontDoor" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12">Bind to FrontDoor</TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Left Door:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to LeftDoor" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to LeftDoor </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Right Door:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RightDoor" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to RightDoor </TextBlock>
                     </StackPanel>
 
                 </Grid>
@@ -121,52 +134,52 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="ExtendEV:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to ExtendEV Position" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to ExtendEV Position </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="RetractEV:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RetractEV Position" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to RetractEV Position </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="ExtensionCircuit:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to ExtensionCircuit" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to ExtensionCircuit </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="RetractionCircuit:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RetractionCircuit" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to RetractionCircuit </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Front Gear Cylinder:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to FrontGearCylinder" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to FrontGearCylinder </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Left DooGearr Cylinder:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to LeftGearCylinder" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to LeftGearCylinder </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Right Gear Cylinder:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RightGearCylinder" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to RightGearCylinder </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Front Gear:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to FrontGear" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to FrontGear </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Left Gear:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to LeftGear" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12"> Bind to LeftGear </TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="12" Content="Right Gear:" />
-                        <Label Margin="0,0,0,0" FontSize="12" Content="Bind to RightGear" />
+                        <TextBlock Margin="0,0,0,0" FontSize="12">Bind to RightGear </TextBlock>
                     </StackPanel>
 
                 </Grid>

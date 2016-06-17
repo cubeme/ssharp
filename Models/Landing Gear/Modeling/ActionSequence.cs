@@ -27,8 +27,10 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// <summary>
         ///   Gets the state machine that manages the state of the action sequence
         /// </summary>
-        private readonly StateMachine<ActionSequenceStates> _stateMachine;  
-        
+        private readonly StateMachine<ActionSequenceStates> _stateMachine;
+
+        public ActionSequenceStates State => _stateMachine.State;
+
         public ActionSequence(ComputingModule module, ActionSequenceStates startState)
         {
             _module = module;

@@ -4,7 +4,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class Cockpit : Component
+    public class Cockpit : Component
     {
         /// <summary>
         /// The instance of the pilot handle which is controlled by the pilot.

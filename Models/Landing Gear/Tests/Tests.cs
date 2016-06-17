@@ -44,7 +44,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Tests
         {
             var model = new Model(new InitializeOne());
             model.Faults.SuppressActivations();
-            model.MechanicalPartControllers.FirstPressureCircuit.CircuitEnabledFault.ForceActivation();
+            //model.MechanicalPartControllers.FirstPressureCircuit.CircuitEnabledFault.ForceActivation();
 
             var simulator = new Simulator(model);
             model = (Model)simulator.Model;

@@ -3,7 +3,7 @@
     using System.Linq;
     using SafetySharp.Modeling;
 
-    class ComputingModule : Component
+    public class ComputingModule : Component
     {
 
         /// <summary>
@@ -156,6 +156,8 @@
         /// Carries out the outgoing and retraction sequence of the landing gear.
         /// </summary>
         private readonly ActionSequence _actionSequence;
+
+        public ActionSequenceStates ActionSequenceState => _actionSequence.State;
 
         private readonly HealthMonitoring[] _systemHealth;
 

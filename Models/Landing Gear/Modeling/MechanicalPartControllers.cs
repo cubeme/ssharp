@@ -4,7 +4,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class MechanicalPartControllers: Component
+    public class MechanicalPartControllers: Component
     {     			    
         public readonly ElectroValve GeneralEV;
         public readonly ElectroValve OpenEV ;

@@ -61,7 +61,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         Right
     }
 
-    class Gear : Component
+    public class Gear : Component
     {
         /// <summary>
         ///   The fault keeps the gear stuck in a certain state.

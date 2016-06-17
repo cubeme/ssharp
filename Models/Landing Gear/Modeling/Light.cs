@@ -4,7 +4,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class Light : Component
+    public class Light : Component
     {
         //todo: Should the light have an attribute color?
 

@@ -2,7 +2,7 @@
 {
     using SafetySharp.Modeling;
 
-    class Sensor<TSensorType> : Component
+    public class Sensor<TSensorType> : Component
     {
         /// <summary>
         ///  Indicates the current sensor value.

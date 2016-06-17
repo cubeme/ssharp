@@ -16,7 +16,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         Flight
     }
 
-    class Airplane : Component
+    public class Airplane : Component
     {
         /// <summary>
         /// Nondeterministically chooses an airplane status.

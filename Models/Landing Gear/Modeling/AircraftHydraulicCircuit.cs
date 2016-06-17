@@ -3,7 +3,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class AircraftHydraulicCircuit : Component
+    public class AircraftHydraulicCircuit : Component
     {
         /// <summary>
         ///  Indicates the pressure of the aircraft hydraulic circuit.

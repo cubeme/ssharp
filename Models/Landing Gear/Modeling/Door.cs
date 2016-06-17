@@ -58,7 +58,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         Right
     }
 
-    class Door : Component
+    public class Door : Component
     {
         /// <summary>
         ///   The fault keeps the door stuck in a certain state.

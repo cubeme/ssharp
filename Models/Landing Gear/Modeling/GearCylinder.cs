@@ -4,7 +4,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class GearCylinder : Cylinder
+    public class GearCylinder : Cylinder
     {
 
         /// <summary>

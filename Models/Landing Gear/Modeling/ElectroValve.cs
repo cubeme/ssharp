@@ -19,24 +19,27 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         Open
     }
 
-    class ElectroValve : Component
+    public class ElectroValve : Component
     {
         /// <summary>
-        ///   Gets the state machine that manages the state of the gear cylinder.
+        ///   Gets the state machine that manages the state of the electro valve.
         /// </summary>
         private readonly StateMachine<EVStates> _stateMachine = EVStates.Closed;
 
         /// <summary>
         /// Indicates the output pressure of the EV.
         /// </summary>
-        private int _pressureLevel = 0;
+        private int _pressureLevel;
 
+        /// <summary>
+        /// Indicates the maximum input pressure of the electro valve.
+        /// </summary>
         private readonly int _maxHin;
 
         /// <summary>
         /// Initilializes a new instance.
         /// </summary>
-        /// <param name="maxHin"> The maximum input pressure of the EV. </param>
+        /// <param name="maxHin"> The maximum input pressure of the electro valve. </param>
         public ElectroValve(int maxHin)
         {
             Range.Restrict(_pressureLevel, 0, maxHin, OverflowBehavior.Clamp);
@@ -52,6 +55,11 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         ///   Gets the hydraulic input pressure of the EV.
         /// </summary>
         public extern int Hin { get; }
+
+        /// <summary>
+        ///   Gets the current state of the electro valve.
+        /// </summary>
+        public EVStates State => _stateMachine.State;
 
         ///<summary>
         /// Transitions to be executed when EOrder == true.

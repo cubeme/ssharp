@@ -4,7 +4,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class TripleSensor<TSensorType> : Component
+    public class TripleSensor<TSensorType> : Component
     {
         /// <summary>
         /// Array of three micro sensors the triple sensor is made up out of.

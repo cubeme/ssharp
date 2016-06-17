@@ -4,7 +4,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class MechanicalPartPlants : Component
+    public class MechanicalPartPlants : Component
     {
         public MechanicalPartActuators Actuators;
 

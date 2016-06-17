@@ -4,7 +4,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class PilotHandle : Component
+    public class PilotHandle : Component
     {
         //todo: So?
         /// <summary>

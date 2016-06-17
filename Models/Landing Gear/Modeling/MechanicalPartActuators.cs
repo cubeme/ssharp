@@ -4,7 +4,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class MechanicalPartActuators : Component
+    public class MechanicalPartActuators : Component
     {
 
         public readonly DoorCylinder FrontDoorCylinder = new DoorCylinder(CylinderPosition.Front);

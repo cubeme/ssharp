@@ -4,7 +4,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
 
-    class DoorCylinder : Cylinder
+    public class DoorCylinder : Cylinder
     {
         /// <summary>
         ///   The fault keeps the door cylinder stuck in a certain state.

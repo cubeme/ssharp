@@ -20,7 +20,7 @@
         All
     }
 
-    class DigitalPart : Component
+    public class DigitalPart : Component
     {
 
         /// <summary>

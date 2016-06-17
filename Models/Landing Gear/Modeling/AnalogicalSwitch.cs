@@ -27,7 +27,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         MoveOpening
     }
 
-    class AnalogicalSwitch : Component
+    public class AnalogicalSwitch : Component
     {
 
         /// <summary>

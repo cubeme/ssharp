@@ -18,7 +18,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         Up
     }
 
-    class Pilot : Component
+    public class Pilot : Component
     {
 
         /// <summary>
@@ -26,7 +26,8 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         public Cockpit Cockpit { get; set;  }
 
-        private readonly HandlePosition _move;
+        [Hidden]
+        public HandlePosition Move { private get; set; }
 
         /// <summary>
         /// Gets the current handle position.
@@ -36,7 +37,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         public Pilot(HandlePosition startPosition)
         {
             Position = startPosition;
-            _move = Position == HandlePosition.Down ? HandlePosition.Up : HandlePosition.Down;
+            Move = Position == HandlePosition.Down ? HandlePosition.Up : HandlePosition.Down;
         }
 
         public override void Update()
@@ -44,7 +45,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
             Update(Cockpit);
 
             var oldPosition = Position;
-            Position = _move;
+            Position = Move;
 
             if (oldPosition != Position)
                 return;

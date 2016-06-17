@@ -1,10 +1,11 @@
 ﻿namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
-
+     
     public class InitializeMany
     {
         public readonly int PressureLimit = 60;
+        //todo: set airplane state from visualization
         public readonly AirplaneStates AirplaneState = AirplaneStates.Flight;
         public readonly Mode Mode = Mode.Any;
         public readonly int Count = 1;
@@ -22,11 +23,11 @@
         public readonly GearStates GearStart = GearStates.LockedExtended;
     }
 
-    class Model : ModelBase
+    public class Model : ModelBase
 	{
 	    [Root(RootKind.Plant)]
         public Airplane Airplane;
-
+         
 	    [Root(RootKind.Controller)]
         public DigitalPart DigitalPart;
 
