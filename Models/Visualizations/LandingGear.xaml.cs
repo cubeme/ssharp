@@ -14,7 +14,6 @@ using System.Windows.Shapes;
 
 namespace SafetySharp.CaseStudies.Visualizations
 {
-    //todo: pilot handle up down instead of extend/retract
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using Analysis;
@@ -40,10 +39,15 @@ namespace SafetySharp.CaseStudies.Visualizations
             MoveToPosition = _model.Cockpit.PilotHandle.Position == HandlePosition.Up ? HandlePosition.Down : HandlePosition.Up;
             HandleButtonText.DataContext = this;
 
+            //Initialize the simulation environment
             SimulationControls.ModelStateChanged += (o, e) => UpdateModelState();
             SimulationControls.SetModel(new Model(new InitializeOne()));
 
+            //Initialize the visualization state
             UpdateModelState();
+
+            SimulationControls.MaxSpeed = 64;
+            SimulationControls.ChangeSpeed(8);
 
         }
 

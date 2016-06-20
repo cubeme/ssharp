@@ -22,6 +22,17 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
     public class ElectroValve : Component
     {
         /// <summary>
+        ///   The fault does not close the electro valve.
+        /// </summary>
+        public readonly Fault EvCloseFault = new PermanentFault();
+
+        /// <summary>
+        ///   The fault does not open the electro valve.
+        /// </summary>
+        public readonly Fault EvOpenFault = new PermanentFault();
+
+
+        /// <summary>
         ///   Gets the state machine that manages the state of the electro valve.
         /// </summary>
         private readonly StateMachine<EVStates> _stateMachine = EVStates.Closed;
@@ -64,7 +75,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         ///<summary>
         /// Transitions to be executed when EOrder == true.
         /// </summary>
-        public void Open()
+        public virtual void Open()
         {
             _stateMachine
                 .Transition(
@@ -75,7 +86,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         ///<summary>
         /// Transitions to be executed when EOrder == false.
         /// </summary>
-        public void Close()
+        public virtual void Close()
         {
             _stateMachine
                 .Transition(
@@ -94,6 +105,34 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
             {
                 _pressureLevel -= _maxHin/36; //Needs 3.6sec for pressure to go down.
             }               
+        }
+
+        /// <summary>
+        ///  Does not close the electro valve.
+        /// </summary>
+        [FaultEffect(Fault = nameof(EvCloseFault))]
+        public class EvCloseFaultEffect : ElectroValve
+        {
+            public EvCloseFaultEffect(int pressure) : base(pressure) { }
+
+            public override void Close()
+            {
+
+            }
+        }
+
+        /// <summary>
+        ///  Does not open the electro valve.
+        /// </summary>
+        [FaultEffect(Fault = nameof(EvOpenFault))]
+        public class EvOpenFaultEffect : ElectroValve
+        {
+            public EvOpenFaultEffect(int pressure) : base(pressure) { }
+
+            public override void Open()
+            {
+
+            }
         }
     }
 }

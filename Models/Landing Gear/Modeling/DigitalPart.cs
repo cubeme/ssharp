@@ -22,6 +22,7 @@
 
     public class DigitalPart : Component
     {
+        //todo: Errors in DigitalPart/ComputingModule?
 
         /// <summary>
         /// Array with computing modules the digital part is composed of.
