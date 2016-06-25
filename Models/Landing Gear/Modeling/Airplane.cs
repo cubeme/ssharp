@@ -19,9 +19,9 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
     public class Airplane : Component
     {
         /// <summary>
-        /// Nondeterministically chooses an airplane status.
+        /// Indicates the current state of the airplane, i.e. in flight or on ground.
         /// </summary>
-        public AirplaneStates AirPlaneStatus { get; }
+        public AirplaneStates AirPlaneStatus { get; set; }
 
         public Airplane(AirplaneStates state)
         {

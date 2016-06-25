@@ -51,10 +51,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// Initilializes a new instance.
         /// </summary>
         /// <param name="maxHin"> The maximum input pressure of the electro valve. </param>
-        public ElectroValve(int maxHin)
+        /// <param name="type">Indicates the type of electro valve, i.e. door closing, door opening etc.</param>
+        public ElectroValve(int maxHin, string type)
         {
             Range.Restrict(_pressureLevel, 0, maxHin, OverflowBehavior.Clamp);
             _maxHin = maxHin;
+            EvCloseFault.Name = $"{type}CannotClose";
+            EvOpenFault.Name = $"{type}CannotOpen";
         }
 
         ///<summary>
@@ -113,7 +116,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(EvCloseFault))]
         public class EvCloseFaultEffect : ElectroValve
         {
-            public EvCloseFaultEffect(int pressure) : base(pressure) { }
+            public EvCloseFaultEffect(int pressure, string type) : base(pressure, type) { }
 
             public override void Close()
             {
@@ -127,7 +130,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(EvOpenFault))]
         public class EvOpenFaultEffect : ElectroValve
         {
-            public EvOpenFaultEffect(int pressure) : base(pressure) { }
+            public EvOpenFaultEffect(int pressure, string type) : base(pressure, type) { }
 
             public override void Open()
             {

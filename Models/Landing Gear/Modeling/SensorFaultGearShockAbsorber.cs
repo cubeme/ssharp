@@ -15,7 +15,19 @@
         [FaultEffect(Fault = nameof(SensorFault))]
         public class SensorFaultEffect : SensorFaultGearShockAbsorber
         {
+            public SensorFaultEffect(string type)
+                : base(type)
+            {
+            }
+
             public override AirplaneStates Value => CheckValue == AirplaneStates.Ground ? AirplaneStates.Flight : AirplaneStates.Ground;
         }
+
+        public SensorFaultGearShockAbsorber(string type)
+            : base(type)
+        {
+            SensorFault.Name = $"{Type}IsFalse";
+        }
+    
     }
 }

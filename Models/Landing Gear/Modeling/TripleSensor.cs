@@ -38,13 +38,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        public TripleSensor()
+        public TripleSensor(string type)
         {
             Valid = true;
             Value = default(TSensorType);
             for (var i = 0; i < 3; i++)
             {
-                Sensors[i] = new Sensor<TSensorType>();
+                Sensors[i] = new Sensor<TSensorType>(type);
             }
         }
 

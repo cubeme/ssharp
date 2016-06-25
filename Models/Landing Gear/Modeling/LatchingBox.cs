@@ -48,10 +48,12 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 		/// </summary>
 		public int DurationLock { get; }
 
-        public LatchingBox(int durationUnlock, int durationLock)
+        public LatchingBox(int durationUnlock, int durationLock, string type)
         {
             DurationUnlock = durationUnlock;
             DurationLock = durationLock;
+            LatchingBoxLockFault.Name = $"{type}CannotLock";
+            LatchingBoxUnlockFault.Name = $"{type}CannotUnLock";
         }
 
         /// <summary>
@@ -122,7 +124,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(LatchingBoxLockFault))]
         public class LatchingBoxLockFaultEffect : LatchingBox
         {
-            public LatchingBoxLockFaultEffect(int dUnlock, int dLock) : base(dUnlock, dLock) { }
+            public LatchingBoxLockFaultEffect(int dUnlock, int dLock, string type) : base(dUnlock, dLock, type) { }
 
             public override void Lock()
             {
@@ -135,7 +137,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(LatchingBoxUnlockFault))]
         public class LatchingBoxUnlockFaultEffect : LatchingBox
         {
-            public LatchingBoxUnlockFaultEffect(int dUnlock, int dLock) : base(dUnlock, dLock) { }
+            public LatchingBoxUnlockFaultEffect(int dUnlock, int dLock, string type) : base(dUnlock, dLock, type) { }
 
             public override void Unlock()
             {

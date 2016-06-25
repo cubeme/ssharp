@@ -16,7 +16,12 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         public readonly Fault HandleDownFault = new PermanentFault();
 
-        //todo: So?
+        public PilotHandle()
+        {
+            HandleUpFault.Name = "PilotHandleIsStuckUp";
+            HandleDownFault.Name = "PilotHandleIsStuckDown";
+        }
+
         /// <summary>
         ///  Indicates whether the pilot handle has been moved.
         /// </summary>

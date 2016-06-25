@@ -17,26 +17,30 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         private readonly Timer _timer = new Timer();
 
+        /// <summary>
+        /// Latching box locking the gear cylinder in extended position.
+        /// </summary>
+        private readonly LatchingBox _latchingBoxExtended;
+
+        /// <summary>
+        /// Latching box locking the gear cylinder in retracted position.
+        /// </summary>
+        private readonly LatchingBox _latchingBoxRetracted;
+
         public GearCylinder(CylinderPosition position, GearStates startState)
             : base(position)
         {
             _stateMachine = startState;
+            GearCylinderIsStuckFault.Name = $"{Position}GearCylinderIsStuck";
+
+            _latchingBoxExtended = new LatchingBox(8, 4, $"{Position}GearCylinderLatchingBoxExtended");
+            _latchingBoxRetracted = new LatchingBox(8, 4, $"{Position}GearCylinderLatchingBoxRetracted");
         }
 
         /// <summary>
         ///   Gets the state machine that manages the state of the gear cylinder.
         /// </summary>
-        private readonly StateMachine<GearStates> _stateMachine;
-
-        /// <summary>
-        /// Latching box locking the gear cylinder in extended position.
-        /// </summary>
-        private readonly LatchingBox _latchingBoxExtended = new LatchingBox(8, 4);
-
-        /// <summary>
-        /// Latching box locking the gear cylinder in retracted position.
-        /// </summary>
-        private readonly LatchingBox _latchingBoxRetracted = new LatchingBox(8, 4);
+        private readonly StateMachine<GearStates> _stateMachine;    
 
         /// <summary>
 		///   Gets the current state of the gear cylinder.

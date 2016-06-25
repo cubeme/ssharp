@@ -12,6 +12,7 @@
                       Title="S# Case Study Visualizations" Width="700" Height="600">
     <Grid>
         <TabControl>
+            <!--
             <TabItem Header="Height Control">
                 <visualization:HeightControlSystem />
             </TabItem>
@@ -24,6 +25,7 @@
             <TabItem Header="Hemodialysis Machine">
                 <visualization:HdMachine />
             </TabItem>
+            -->
             <TabItem Header="Landing Gear System">
                 <visualization:LandingGear />
             </TabItem>

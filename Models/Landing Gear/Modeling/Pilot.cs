@@ -37,7 +37,6 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         public Pilot(HandlePosition startPosition)
         {
             Position = startPosition;
-            Move = Position == HandlePosition.Down ? HandlePosition.Up : HandlePosition.Down;
         }
 
         public override void Update()

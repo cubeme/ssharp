@@ -15,7 +15,18 @@
         [FaultEffect(Fault = nameof(SensorFault))]
         public class SensorFaultEffect : SensorFaultHandle
         {
+            public SensorFaultEffect(string type)
+                : base(type)
+            {
+            }
+
             public override HandlePosition Value => CheckValue == HandlePosition.Down ? HandlePosition.Up : HandlePosition.Down;
+        }
+
+        public SensorFaultHandle(string type)
+            : base(type)
+        {
+            SensorFault.Name = $"{Type}IsFalse";
         }
     }
 }

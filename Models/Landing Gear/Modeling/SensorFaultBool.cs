@@ -15,7 +15,17 @@
         [FaultEffect(Fault = nameof(SensorFault))]
         public class SensorFaultEffect : SensorFaultBool
         {
+            public SensorFaultEffect(string type)
+                : base(type)
+            {}
+
             public override bool Value => !CheckValue;
+        }
+
+        public SensorFaultBool(string type)
+            : base(type)
+        {
+            SensorFault.Name = $"{Type}IsFalse";
         }
     }
 }

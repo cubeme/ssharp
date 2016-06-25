@@ -97,6 +97,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         public Door(DoorPosition position)
         {
             Position = position;
+            DoorIsStuckFault.Name = $"{Position}DoorIsStuck";
 
         }
 

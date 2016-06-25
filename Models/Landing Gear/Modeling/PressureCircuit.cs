@@ -30,10 +30,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 		///   Initializes a new instance.
 		/// </summary>
 		/// <param name="maxPressure">The maximum allowed pressure level of the tank.</param>
-        public PressureCircuit(int maxPressure)
+        public PressureCircuit(int maxPressure, string type)
         {
             _maxPressure = maxPressure;
             Range.Restrict(_pressureLevel, 0, _maxPressure, OverflowBehavior.Clamp);
+
+            CircuitEnabledFault.Name = $"{type}CircuitIsAlwaysDisabled";
+            CircuitPressureFault.Name = $"{type}CircuitPressureIsAlwaysZero";
         }
 
         ///<summary>
@@ -65,7 +68,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(CircuitEnabledFault))]
         public class CircuitEnabledFaultEffect : PressureCircuit
         {
-            public CircuitEnabledFaultEffect(int maxP) : base(maxP) { }
+            public CircuitEnabledFaultEffect(int maxP, string type) : base(maxP, type) { }
 
             public override bool IsEnabled => false;
         }
@@ -76,7 +79,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(CircuitPressureFault))]
         public class CircuitPressureFaultEffect : PressureCircuit
         {
-            public CircuitPressureFaultEffect(int maxP) : base(maxP) { }
+            public CircuitPressureFaultEffect(int maxP, string type) : base(maxP, type) { }
 
             public override int Pressure => 0;
         }

@@ -102,6 +102,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         {
             Position = position;
             State = startState;
+            GearIsStuckFault.Name = $"{Position}GearIsStuck";
         }
 
         public override void Update()

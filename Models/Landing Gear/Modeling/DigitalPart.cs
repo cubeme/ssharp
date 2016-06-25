@@ -145,32 +145,32 @@
 
         private void InitializeSensors()
         {
-            var sensorHandle = new TripleSensor<HandlePosition>();
+            var sensorHandle = new TripleSensor<HandlePosition>("SensorPilotHandle");
 
-            var sensorSwitch = new TripleSensor<AnalogicalSwitchStates>();
+            var sensorSwitch = new TripleSensor<AnalogicalSwitchStates>("SensorSwitch");
 
-            var sensorFrontGearExtended = new TripleSensor<bool>();
-            var sensorFrontGearRetracted = new TripleSensor<bool>();
-            var sensorFrontGearShockAbsorber = new TripleSensor<AirplaneStates>();
+            var sensorFrontGearExtended = new TripleSensor<bool>("SensorFrontGearExtended");
+            var sensorFrontGearRetracted = new TripleSensor<bool>("SensorFrontGearRetracted");
+            var sensorFrontGearShockAbsorber = new TripleSensor<AirplaneStates>("SensorFrontGearShockAbsorber");
 
-            var sensorLeftGearExtended = new TripleSensor<bool>();
-            var sensorLeftGearRetracted = new TripleSensor<bool>();
-            var sensorLeftGearShockAbsorber = new TripleSensor<AirplaneStates>();
+            var sensorLeftGearExtended = new TripleSensor<bool>("SensorLeftGearExtended");
+            var sensorLeftGearRetracted = new TripleSensor<bool>("SensorLeftGearRetracted");
+            var sensorLeftGearShockAbsorber = new TripleSensor<AirplaneStates>("SensorLeftGearShockAbsorber");
 
-            var sensorRightGearExtended = new TripleSensor<bool>();
-            var sensorRightGearRetracted = new TripleSensor<bool>();
-            var sensorRightGearShockAbsorber = new TripleSensor<AirplaneStates>();
+            var sensorRightGearExtended = new TripleSensor<bool>("SensorRightGearExtended");
+            var sensorRightGearRetracted = new TripleSensor<bool>("SensorRightGearRetracted");
+            var sensorRightGearShockAbsorber = new TripleSensor<AirplaneStates>("SensorRichtGearShockAbsorber");
 
-            var sensorFrontDoorOpen = new TripleSensor<bool>();
-            var sensorFrontDoorClosed = new TripleSensor<bool>();
+            var sensorFrontDoorOpen = new TripleSensor<bool>("SensorFrontDoorOpen");
+            var sensorFrontDoorClosed = new TripleSensor<bool>("SensorFrontDoorClosed");
 
-            var sensorLeftDoorOpen = new TripleSensor<bool>();
-            var sensorLeftDoorClosed = new TripleSensor<bool>();
+            var sensorLeftDoorOpen = new TripleSensor<bool>("SensorLeftDoorOpen");
+            var sensorLeftDoorClosed = new TripleSensor<bool>("SensorLeftDoorClosed");
 
-            var sensorRightDoorOpen = new TripleSensor<bool>();
-            var sensorRightDoorClosed = new TripleSensor<bool>();
+            var sensorRightDoorOpen = new TripleSensor<bool>("SensorRightDoorOpen");
+            var sensorRightDoorClosed = new TripleSensor<bool>("SensorRightDoorClosed");
 
-            var sensorCircuitPressurized = new TripleSensor<bool>();
+            var sensorCircuitPressurized = new TripleSensor<bool>("SensorFirstPressureCircuit");
 
 
             foreach (var module in ComputingModules)

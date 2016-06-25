@@ -16,18 +16,24 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         private readonly Timer _timer = new Timer();
 
-        public DoorCylinder(CylinderPosition position) : base(position) { }
+        /// <summary>
+        /// Two latching boxes locking the door cylinder in closed position.
+        /// </summary>
+        private readonly LatchingBox _latchingBoxClosedOne;
+        private readonly LatchingBox _latchingBoxClosedTwo;
+
+        public DoorCylinder(CylinderPosition position)
+            : base(position)
+        {
+            DoorCylinderIsStuckFault.Name = $"{Position}DoorCylinderIsStuck";
+            _latchingBoxClosedOne = new LatchingBox(4, 3, $"{Position}DoorCylinderLatchingBoxClosedOne");
+            _latchingBoxClosedTwo = new LatchingBox(4, 3, $"{Position}DoorCylinderLatchingBoxClosedTwo");
+        }
 
         /// <summary>
 		///   Gets the state machine that manages the state of the door cylinder.
 		/// </summary>
-		private readonly StateMachine<DoorStates> _stateMachine = DoorStates.LockedClosed;
-
-        /// <summary>
-        /// Two latching boxes locking the door cylinder in closed position.
-        /// </summary>
-        private readonly LatchingBox _latchingBoxClosedOne = new LatchingBox(4,3);
-        private readonly LatchingBox _latchingBoxClosedTwo = new LatchingBox(4,3);
+		private readonly StateMachine<DoorStates> _stateMachine = DoorStates.LockedClosed;                     
 
         public DoorStates DoorCylinderState => _stateMachine.State;
 

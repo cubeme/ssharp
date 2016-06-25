@@ -25,17 +25,17 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         public MechanicalPartControllers(int limit)
         {
             AircraftHydraulicCircuit = new AircraftHydraulicCircuit(limit);
-            FirstPressureCircuit = new PressureCircuit(limit);
-            RetractionCircuitDoors = new PressureCircuit(limit);
-            ExtensionCircuitDoors = new PressureCircuit(limit);
-            RetractionCircuitGears = new PressureCircuit(limit);
-            ExtensionCircuitGears = new PressureCircuit(limit);
+            FirstPressureCircuit = new PressureCircuit(limit, "FirstPressureCircuit");
+            RetractionCircuitDoors = new PressureCircuit(limit, "RetractionCircuitDoors");
+            ExtensionCircuitDoors = new PressureCircuit(limit, "ExtensionCircuitDoors");
+            RetractionCircuitGears = new PressureCircuit(limit, "RetractionCircuitGears");
+            ExtensionCircuitGears = new PressureCircuit(limit, "ExtensionCircuitGears");
 
-            GeneralEV = new ElectroValve(limit);
-            OpenEV = new ElectroValve(limit);
-            CloseEV = new ElectroValve(limit);
-            ExtendEV = new ElectroValve(limit);
-            RetractEV = new ElectroValve(limit);
+            GeneralEV = new ElectroValve(limit, "GeneralEV");
+            OpenEV = new ElectroValve(limit, "OpenEV");
+            CloseEV = new ElectroValve(limit, "CloseEV");
+            ExtendEV = new ElectroValve(limit, "ExtendEV");
+            RetractEV = new ElectroValve(limit, "RetractEV");
     }
 
         public override void Update()

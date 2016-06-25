@@ -16,7 +16,18 @@
         public class SensorFaultEffect : SensorFaultSwitch
         {
             //todo: Works like this because only open and closed states are of interest.
+            public SensorFaultEffect(string type)
+                : base(type)
+            {
+            }
+
             public override AnalogicalSwitchStates Value => CheckValue == AnalogicalSwitchStates.Closed ? AnalogicalSwitchStates.Open : AnalogicalSwitchStates.Closed;
+        }
+
+        public SensorFaultSwitch(string type)
+            : base(type)
+        {
+            SensorFault.Name = $"{Type}IsFalse";
         }
     }
 }

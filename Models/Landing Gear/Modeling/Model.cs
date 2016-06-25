@@ -11,6 +11,7 @@
         public readonly int Count = 1;
         public readonly ActionSequenceStates ActionStart = ActionSequenceStates.WaitRetract;
         public readonly HandlePosition HandlePosition = HandlePosition.Down;
+        public readonly HandlePosition Move = HandlePosition.Down;
         public readonly GearStates GearStart = GearStates.LockedExtended;
     }
 
@@ -20,6 +21,7 @@
         public readonly AirplaneStates AirplaneState = AirplaneStates.Flight;
         public readonly ActionSequenceStates ActionStart = ActionSequenceStates.WaitRetract;
         public readonly HandlePosition HandlePosition = HandlePosition.Down;
+        public readonly HandlePosition Move = HandlePosition.Down;
         public readonly GearStates GearStart = GearStates.LockedExtended;
     }
 
@@ -55,7 +57,8 @@
 
             Pilot = new Pilot(initialize.HandlePosition)
             {
-                Cockpit = new Cockpit()
+                Cockpit = new Cockpit(),
+                Move = initialize.Move
             };
 
             MechanicalPartPlants = new MechanicalPartPlants(initialize.GearStart)
@@ -78,7 +81,8 @@
 
             Pilot = new Pilot(initialize.HandlePosition)
             {
-                Cockpit = new Cockpit()
+                Cockpit = new Cockpit(),
+                Move = initialize.Move
             };
 
             MechanicalPartPlants = new MechanicalPartPlants(initialize.GearStart)

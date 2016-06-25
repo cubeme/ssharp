@@ -4,6 +4,8 @@
 
     public class Sensor<TSensorType> : Component
     {
+        protected readonly string Type;
+
         /// <summary>
         ///  Indicates the current sensor value.
         /// </summary>
@@ -13,6 +15,11 @@
         ///  Gets the value recorded by the sensor.
         /// </summary>
         public virtual TSensorType Value => CheckValue;
+
+        public Sensor(string type)
+        {
+            Type = type;
+        } 
     }
 }
 
