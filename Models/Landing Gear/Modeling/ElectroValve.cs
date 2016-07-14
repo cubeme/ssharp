@@ -35,12 +35,12 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// <summary>
         ///   Gets the state machine that manages the state of the electro valve.
         /// </summary>
-        private readonly StateMachine<EVStates> _stateMachine = EVStates.Closed;
+        public readonly StateMachine<EVStates> _stateMachine = EVStates.Closed;
 
         /// <summary>
         /// Indicates the output pressure of the EV.
         /// </summary>
-        private int _pressureLevel;
+        public int _pressureLevel;
 
         /// <summary>
         /// Indicates the maximum input pressure of the electro valve.

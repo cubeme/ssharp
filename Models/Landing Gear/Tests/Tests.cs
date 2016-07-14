@@ -29,12 +29,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Tests
         public void Main()
         {
             var model = new Model(new InitializeOne());
+            model.Faults.SuppressActivations();
 
-            var modelchecker = new SSharpChecker() { Configuration = { StateCapacity = 1 << 16, CpuCount = 1 } };
+            var modelchecker = new SSharpChecker() { Configuration = { StateCapacity = 1 << 26, CpuCount = 2, StackCapacity = 1 << 22 } };
 
             // var result = modelchecker.CheckInvariant(model, !model.DigitalPart.ComputingModules.Any(element => element.Anomaly) );
 
-            var result = modelchecker.CheckInvariant(model, !model.MechanicalPartPlants.DoorFront.DoorIsOpen);
+            var result = modelchecker.CheckInvariant(model, !model.DigitalPart.AnomalyComposition());
 
             Assert.IsTrue(result.FormulaHolds);
         }
@@ -59,6 +60,9 @@ namespace SafetySharp.CaseStudies.LandingGear.Tests
                 Debug.WriteLine($"GeneralEV DigiPart: {model.DigitalPart.ComputingModules[0].GeneralEV}");
                 Debug.WriteLine($"RetractEV DigiPart: {model.DigitalPart.ComputingModules[0].RetractEV}");
                 Debug.WriteLine($"GearShockAbsorberRelaxed DigiPart: {model.DigitalPart.ComputingModules[0].GearShockAbsorberRelaxed}");
+                Debug.WriteLine($"Timer Switch: {model.MechanicalPartControllers.AnalogicalSwitch._timer.RemainingTime}");
+                Debug.WriteLine($"GeneralEV State: {model.MechanicalPartControllers.GeneralEV._stateMachine.State}");
+                Debug.WriteLine($"GeneralEV pressure: {model.MechanicalPartControllers.GeneralEV._pressureLevel}");
                 Debug.WriteLine($"FirstPressureCircuit Pressure: {model.MechanicalPartControllers.FirstPressureCircuit.Pressure}");
                 Debug.WriteLine($"ExtensionCircuitDoors Pressure: {model.MechanicalPartControllers.ExtensionCircuitDoors.Pressure}");
                 Debug.WriteLine($"RetractionCircuitGears Pressure: {model.MechanicalPartControllers.RetractionCircuitGears.Pressure}");
@@ -71,6 +75,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Tests
                 Debug.WriteLine($"GearLeft: {model.MechanicalPartPlants.GearLeft.State}");
                 Debug.WriteLine($"GearRight: {model.MechanicalPartPlants.GearRight.State}");
                 Debug.WriteLine($"GearsRetracted: {model.DigitalPart.ComputingModules[0].GearsRetracted}");
+                Debug.WriteLine($"Anomaly: {model.DigitalPart.AnomalyComposition()}");
                 Debug.WriteLine($"================== (step: {i}) ==========================================");
             }
 

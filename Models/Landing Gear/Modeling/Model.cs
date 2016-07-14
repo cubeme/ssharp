@@ -21,7 +21,7 @@
         public readonly AirplaneStates AirplaneState = AirplaneStates.Flight;
         public readonly ActionSequenceStates ActionStart = ActionSequenceStates.WaitRetract;
         public readonly HandlePosition HandlePosition = HandlePosition.Down;
-        public readonly HandlePosition Move = HandlePosition.Down;
+        public readonly HandlePosition Move = HandlePosition.Up;
         public readonly GearStates GearStart = GearStates.LockedExtended;
     }
 

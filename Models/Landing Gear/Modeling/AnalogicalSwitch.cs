@@ -45,6 +45,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         public readonly Fault IncomingEorderFault = new PermanentFault();
 
+        public AnalogicalSwitch()
+        {
+            SwitchStuckFault.Name = "SwitchIsStuck";
+            SwitchCloseFault.Name = "SwitchCannotClose";
+            IncomingEorderFault.Name = "SwitchEorderFalse";
+        }
+
         /// <summary>
 		///   Gets the state machine that manages the state of the analogical switch.
 		/// </summary>
@@ -58,7 +65,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// <summary>
         ///  Times the movement of the analogical switch.
         /// </summary>
-        private readonly Timer _timer = new Timer();
+        public readonly Timer _timer = new Timer();
 
         /// <summary>
         /// Gets the value of the incoming electrical order.
@@ -67,21 +74,19 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 
         private bool _eOrderValue;
 
-        public virtual bool CheckEOrder
+        public virtual void CheckEOrder()
         {
-            set
-            {
-                if (_eOrderValue != value)
+                if (_eOrderValue != IncomingEOrder())
                 {
-                    if (_stateMachine == AnalogicalSwitchStates.Closed && value)
+                    if (_stateMachine == AnalogicalSwitchStates.Closed && IncomingEOrder())
                         OpenGeneralEV();
                     else
                     {
                         CloseGeneralEV();
                     }
                 }
-                _eOrderValue = value;
-            }
+                _eOrderValue = IncomingEOrder();
+
         }
 
         public extern void OpenGeneralEV();
@@ -143,7 +148,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     to: AnalogicalSwitchStates.Open,
                     guard: _timer.HasElapsed);
 
-            CheckEOrder = IncomingEOrder();
+            CheckEOrder();
         }
 
         /// <summary>
@@ -159,7 +164,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 
                 //no transitions
 
-                CheckEOrder = IncomingEOrder();
+                CheckEOrder();
             }
         }
 
@@ -180,11 +185,10 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(IncomingEorderFault))]
         public class IncomingEorderFaultEffect : AnalogicalSwitch
         {
-            public override bool CheckEOrder
+            public override void CheckEOrder()
             {
-                set
-                {
-                    value = !value;
+               
+                    var value = !IncomingEOrder();
 
                     if (_eOrderValue != value)
                     {
@@ -196,7 +200,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                         }
                     }
                     _eOrderValue = value;
-                }
+                
             }
         }
     }

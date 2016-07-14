@@ -24,6 +24,7 @@ namespace SafetySharp.CaseStudies.Visualizations
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Collections.ObjectModel;
 	using System.ComponentModel;
 	using System.Linq;
 	using System.Runtime.CompilerServices;
@@ -39,10 +40,10 @@ namespace SafetySharp.CaseStudies.Visualizations
     /// </summary>
     public partial class LandingGear
 	{
-		private Model _model;
+		private readonly Model _model;
 
-        private readonly List<Fault> _faultList;
-        private readonly List<Fault> _activeFaultList = new List<Fault>();
+        private readonly ObservableCollection<Fault> _faultList;
+        private readonly ObservableCollection<Fault> _activeFaultList = new ObservableCollection<Fault>();
 
 	    private bool _handleButtonClicked;
         private bool _airplaneButtonClicked;
@@ -56,13 +57,14 @@ namespace SafetySharp.CaseStudies.Visualizations
 
 			//Initialize the simulation environment
 			SimulationControls.ModelStateChanged += (o, e) => UpdateModelState();
-            SimulationControls.SetModel(new Model(new InitializeOne()));
+            var model = (new Model(new InitializeOne()));
+            model.Faults.SuppressActivations();
+            SimulationControls.SetModel(model);
 
 			_model = (Model)SimulationControls.Model;
 			_model.Faults.SuppressActivations();
 
-            _faultList = new List<Fault>(_model.Faults);
-            _faultList.Sort((x, y) => String.CompareOrdinal(x.Name, y.Name));
+            _faultList = new ObservableCollection<Fault>(_model.Faults);
 
             InactiveFaultList.ItemsSource = _faultList;
             ActiveFaultList.ItemsSource = _activeFaultList;
@@ -93,8 +95,9 @@ namespace SafetySharp.CaseStudies.Visualizations
 		        _model.DigitalPart.AnomalyComposition();
 
                 AnomalyPopup.IsOpen = true;
-		        txtPopup.Content = $"An anomaly has been detected!";
-		        _anomalyToggled = false;
+		        txtPopup.Content = "An anomaly has been detected! \nPlease reset the simulation.";
+
+                _anomalyToggled = false;
 		    }
 
             //Pilot Handle
@@ -160,12 +163,6 @@ namespace SafetySharp.CaseStudies.Visualizations
 			txtFrontGear.Content = _model.MechanicalPartPlants.GearFront.State.ToString();
 			txtLeftGear.Content = _model.MechanicalPartPlants.GearLeft.State.ToString();
 			txtRightGear.Content = _model.MechanicalPartPlants.GearRight.State.ToString();
-
-
-            InactiveFaultList.Items.Refresh();
-		    ActiveFaultList.Items.Refresh();
-
-
 		}
 
         private void HandleClicked(object sender, RoutedEventArgs e)
@@ -183,31 +180,23 @@ namespace SafetySharp.CaseStudies.Visualizations
         private void RemoveClicked(object sender, RoutedEventArgs e)
         {
             var fault = (Fault)ActiveFaultList.SelectedItem;
-            if (fault != null)
-            {
+            if (fault == null)
+                return;
+            _faultList.Add(fault);
+            _activeFaultList.Remove(fault);
 
-                _faultList.Add(fault);
-                _faultList.Sort((x, y) => String.CompareOrdinal(x.Name, y.Name));
-                _activeFaultList.Remove(fault);
-
-                fault.ToggleActivationMode();
-            }
-            UpdateModelState();
+            fault.ToggleActivationMode();
         }
 
         private void AddClicked(object sender, RoutedEventArgs e)
         {
             var fault = (Fault)InactiveFaultList.SelectedItem;
-            if (fault != null)
-            {
-                _activeFaultList.Add(fault);
-                _activeFaultList.Sort((x, y) => String.CompareOrdinal(x.Name, y.Name));
-                _faultList.Remove(fault);
+            if (fault == null)
+                return;
+            _activeFaultList.Add(fault);
+            _faultList.Remove(fault);
 
-                fault.ToggleActivationMode();
-            }
-
-            UpdateModelState();
+            fault.ToggleActivationMode();
         }
 
     }
