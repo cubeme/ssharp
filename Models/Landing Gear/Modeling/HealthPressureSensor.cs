@@ -63,5 +63,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 
            
         }
+
+        public override void Reset()
+        {
+            StateMachine.
+                Transition(
+                    from: new[] { HealthMonitoringStates.Start, HealthMonitoringStates.Intermediate },
+                    to: HealthMonitoringStates.Wait);
+        }
     }
 }

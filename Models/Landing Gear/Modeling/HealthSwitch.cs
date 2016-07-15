@@ -19,7 +19,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
             //Analogical switch monitoring
             StateMachine
                 .Transition(
-                    @from: HealthMonitoringStates.Wait,
+                    @from: new [] { HealthMonitoringStates.Wait, HealthMonitoringStates.End, HealthMonitoringStates.Start},
                     to: HealthMonitoringStates.Start,
                     guard: ComputingModule.HandleHasMoved,
                     action: () =>
@@ -37,21 +37,14 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                 .Transition(
                     @from: HealthMonitoringStates.Start,
                     to: HealthMonitoringStates.Error,
-                    guard: Timer.RemainingTime == 19 && ComputingModule.AnalogicalSwitch.Value == AnalogicalSwitchStates.Open,
+                    guard: Timer.RemainingTime == 190 && ComputingModule.AnalogicalSwitch.Value == AnalogicalSwitchStates.Open,
                     action: () => AnomalyDetected = true)
                 .Transition(
                     @from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Wait,
                     guard: ComputingModule.AnalogicalSwitch.Value == AnalogicalSwitchStates.Open && !ComputingModule.HandleHasMoved,
                     action: () => Timer.Stop())
-                .Transition(
-                    @from: HealthMonitoringStates.End,
-                    to: HealthMonitoringStates.Start,
-                    guard: ComputingModule.HandleHasMoved,
-                    action: () =>
-                    {
-                        Timer.Start(200);
-                    })
+               
                 .Transition(
                     @from: HealthMonitoringStates.End,
                     to: HealthMonitoringStates.Error,

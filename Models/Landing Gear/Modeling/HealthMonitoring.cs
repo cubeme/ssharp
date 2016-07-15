@@ -81,5 +81,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         {
             ComputingModule = module;
         }
+
+        public virtual void Reset() { }
     }
 }

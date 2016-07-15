@@ -37,35 +37,62 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
             _stateMachine = startState;
         }
 
+        public bool Reset { get; private set; }
+
         public override void Update()
         {
             _stateMachine
                 .Transition(
-                    @from: new[] {ActionSequenceStates.WaitOutgoing, ActionSequenceStates.RetractFour},
+                    @from: ActionSequenceStates.WaitOutgoing,
                     to: ActionSequenceStates.OutgoingOne,
                     guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Down,
                     action: _module.One)
                 .Transition(
+                    from: ActionSequenceStates.RetractFour,
+                    to: ActionSequenceStates.OutgoingOne,
+                    guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Down,
+                    action: () =>
+                    {
+                        _module.One();
+                        Reset = true;
+                    })
+                .Transition(
                     @from: ActionSequenceStates.OutgoingOne,
                     to: ActionSequenceStates.OutgoingTwo,
                     guard: _module.DoorsOpen,
-                    action: _module.OutgoingTwo)
+                    action: () =>
+                    {
+                        _module.OutgoingTwo();
+                        Reset = false;
+                    })
                 .Transition(
                     @from: ActionSequenceStates.OutgoingOne,
                     to: ActionSequenceStates.RetractFour,
                     guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Up,
-                    action: _module.Four)
+                    action: () =>
+                    {
+                        _module.Four();
+                        Reset = true;
+                    })
                 .Transition(
                     @from: ActionSequenceStates.OutgoingTwo,
                     to: ActionSequenceStates.OutgoingThree,
                     guard: _module.GearsExtended,
-                    action: _module.OutgoingThree)
+                    action: () =>
+                    {
+                        _module.OutgoingThree();
+                        Reset = false;
+                    })
                 .Transition(
                     @from: new [] { ActionSequenceStates.OutgoingTwo, ActionSequenceStates.OutgoingThree},
                       to: ActionSequenceStates.RetractTwo,
                     guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Up &&
                         _module.GearShockAbsorberRelaxed,
-                    action: _module.RetractionTwo)
+                    action: () =>
+                    {
+                        _module.RetractionTwo();
+                        Reset = true;
+                    })
                 .Transition(
                     @from: ActionSequenceStates.OutgoingThree,
                     to: ActionSequenceStates.OutgoingFour,
@@ -75,9 +102,22 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     @from: ActionSequenceStates.OutgoingFour,
                     to: ActionSequenceStates.WaitRetract,
                     guard: _module.DoorsClosed,
-                    action: _module.Zero)
+                    action: () =>
+                    {
+                        _module.Zero();
+                        Reset = false;
+                    })
                 .Transition(
-                    @from: new[] {ActionSequenceStates.OutgoingFour, ActionSequenceStates.WaitRetract},
+                    @from: ActionSequenceStates.OutgoingFour,
+                    to: ActionSequenceStates.RetractOne,
+                    guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Up,
+                    action: () =>
+                    {
+                        _module.One();
+                        Reset = true;
+                    })
+                .Transition(
+                    from: ActionSequenceStates.WaitRetract,
                     to: ActionSequenceStates.RetractOne,
                     guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Up,
                     action: _module.One)
@@ -85,37 +125,52 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     @from: ActionSequenceStates.RetractOne,
                     to: ActionSequenceStates.RetractTwo,
                     guard: _module.DoorsOpen && _module.GearShockAbsorberRelaxed,
-                    action: _module.RetractionTwo)
+                    action: () =>
+                    {
+                        _module.RetractionTwo();
+                        Reset = false;
+                    })
                 .Transition(
                     @from: ActionSequenceStates.RetractOne,
                     to: ActionSequenceStates.OutgoingFour,
                     guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Down,
-                    action: _module.Four)
+                    action: () =>
+                    {
+                        _module.Four();
+                        Reset = true;
+                    })
                 .Transition(
                     @from: ActionSequenceStates.RetractTwo,
                     to: ActionSequenceStates.RetractThree,
                     guard: _module.GearsRetracted,
-                    action: _module.RetractionThree)
+                    action: () =>
+                    {
+                        _module.RetractionThree();
+                        Reset = false;
+                    })
                 .Transition(
-                    @from: ActionSequenceStates.RetractTwo,
+                    @from: new [] { ActionSequenceStates.RetractTwo, ActionSequenceStates.RetractThree},
                     to: ActionSequenceStates.OutgoingTwo,
                     guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Down,
-                    action: _module.OutgoingTwo)
+                    action: () =>
+                    {
+                        _module.OutgoingTwo();
+                        Reset = true;
+                    })
                 .Transition(
                     @from: ActionSequenceStates.RetractThree,
                     to: ActionSequenceStates.RetractFour,
                     guard: _module.HandlePosition.Value == HandlePosition.Up,
                     action: _module.Four)
                 .Transition(
-                    @from: ActionSequenceStates.RetractThree,
-                    to: ActionSequenceStates.OutgoingTwo,
-                    guard: _module.HandleHasMoved && _module.HandlePosition.Value == HandlePosition.Down,
-                    action: _module.OutgoingTwo)
-                .Transition(
                     @from: ActionSequenceStates.RetractFour,
                     to: ActionSequenceStates.WaitOutgoing,
                     guard: _module.DoorsClosed,
-                    action: _module.Zero);
+                    action: () =>
+                    {
+                        _module.Zero();
+                        Reset = false;
+                    });
         }
     }
 }

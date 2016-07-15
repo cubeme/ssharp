@@ -52,5 +52,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     to: HealthMonitoringStates.Wait,
                     guard: ComputingModule.GearsRetracted && !ComputingModule.GearsExtended);
         }
+
+        public override void Reset()
+        {
+            StateMachine.
+                Transition(
+                    from: new[] { HealthMonitoringStates.Extend, HealthMonitoringStates.Retract },
+                    to: HealthMonitoringStates.Wait);
+        }
     }
 }

@@ -215,6 +215,11 @@
             //Compute new values
             Update(HandlePosition, AnalogicalSwitch, FrontGearExtented, FrontGearRetracted, FrontGearShockAbsorber, LeftGearExtented, LeftGearRetracted, LeftGearShockAbsorber, RightGearExtented, RightGearRetracted, RightGearShockAbsorber, FrontDoorClosed, FrontDoorOpen, LeftDoorClosed, LeftDoorOpen, RightDoorClosed, RightDoorOpen, CircuitPressurized, _actionSequence);
 
+            //Reset system health monitoring if action sequence has been reversed.
+            if(_actionSequence.Reset)
+                foreach (var m in _systemHealth )
+                    m.Reset();
+
             Update(_systemHealth);
 
             //Look for anomaly
@@ -225,8 +230,13 @@
                 Anomaly = true;
 
             //Cockpit Lights
+            //True if and only if all three gears are seen as locked in extended position
             GearsLockedDown = GearsExtended;
-            GearsManeuvering = !GearsExtended && !GearsRetracted;
+            //True if and only if at least one door or one gear is maneuvering, i.e. at least on edoor is not locked in closed position or one gear is not locked in retracted or extended position
+            GearsManeuvering = (!FrontDoorClosed.Value || !LeftDoorClosed.Value || !RightDoorClosed.Value) ||
+                               (!FrontGearExtented.Value && !FrontGearRetracted.Value) ||
+                               (!LeftGearExtented.Value && !LeftGearRetracted.Value) ||
+                               (!RightGearExtented.Value && !RightGearRetracted.Value);
 
         }
 
