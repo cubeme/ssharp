@@ -40,16 +40,10 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         public readonly Fault SwitchCloseFault = new PermanentFault();
 
-        /// <summary>
-        ///   The fault flips the IncomingEOrder value.
-        /// </summary>
-        public readonly Fault IncomingEorderFault = new PermanentFault();
-
         public AnalogicalSwitch()
         {
             SwitchStuckFault.Name = "SwitchIsStuck";
             SwitchCloseFault.Name = "SwitchCannotClose";
-            IncomingEorderFault.Name = "SwitchEorderFalse";
         }
 
         /// <summary>
@@ -65,7 +59,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// <summary>
         ///  Times the movement of the analogical switch.
         /// </summary>
-        public readonly Timer _timer = new Timer();
+        private readonly Timer _timer = new Timer();
 
         /// <summary>
         /// Gets the value of the incoming electrical order.
@@ -185,29 +179,5 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
             }
         }
 
-        /// <summary>
-        ///   Flips the IncomingEOrder value.
-        /// </summary>
-        [FaultEffect(Fault = nameof(IncomingEorderFault))]
-        public class IncomingEorderFaultEffect : AnalogicalSwitch
-        {
-            public override void CheckEOrder()
-            {
-               
-                   // var value = !IncomingEOrder();
-				   //
-                   // if (_eOrderValue != value)
-                   // {
-                   //     if (_stateMachine == AnalogicalSwitchStates.Closed && value)
-                   //         OpenGeneralEV();
-                   //     else
-                   //     {
-                   //         CloseGeneralEV();
-                   //     }
-                   // }
-                   // _eOrderValue = value;
-                
-            }
-        }
     }
 }
