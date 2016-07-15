@@ -46,7 +46,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
             var oldPosition = Position;
             Position = Move;
 
-            if (oldPosition != Position)
+            if (oldPosition == Position)
                 return;
 
             //Set PilotHandle to new position.

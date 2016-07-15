@@ -72,21 +72,27 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         public extern bool IncomingEOrder();
 
-        private bool _eOrderValue;
+        private bool _evState;
 
         public virtual void CheckEOrder()
         {
-                if (_eOrderValue != IncomingEOrder())
-                {
-                    if (_stateMachine == AnalogicalSwitchStates.Closed && IncomingEOrder())
-                        OpenGeneralEV();
-                    else
-                    {
-                        CloseGeneralEV();
-                    }
-                }
-                _eOrderValue = IncomingEOrder();
+	        if (_stateMachine != AnalogicalSwitchStates.Closed)
+		        return;
 
+	        var mustOpen = IncomingEOrder();
+	        var mustClose = !IncomingEOrder();
+
+	        if (mustOpen && !_evState)
+	        {
+		        OpenGeneralEV();
+		        _evState = true;
+	        }
+
+	        if (mustClose && _evState)
+	        {
+		        CloseGeneralEV();
+				_evState = false;
+			}
         }
 
         public extern void OpenGeneralEV();
@@ -188,18 +194,18 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
             public override void CheckEOrder()
             {
                
-                    var value = !IncomingEOrder();
-
-                    if (_eOrderValue != value)
-                    {
-                        if (_stateMachine == AnalogicalSwitchStates.Closed && value)
-                            OpenGeneralEV();
-                        else
-                        {
-                            CloseGeneralEV();
-                        }
-                    }
-                    _eOrderValue = value;
+                   // var value = !IncomingEOrder();
+				   //
+                   // if (_eOrderValue != value)
+                   // {
+                   //     if (_stateMachine == AnalogicalSwitchStates.Closed && value)
+                   //         OpenGeneralEV();
+                   //     else
+                   //     {
+                   //         CloseGeneralEV();
+                   //     }
+                   // }
+                   // _eOrderValue = value;
                 
             }
         }
