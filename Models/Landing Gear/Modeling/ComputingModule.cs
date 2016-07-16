@@ -159,6 +159,10 @@
 
         public ActionSequenceStates ActionSequenceState => _actionSequence.State;
 
+        public bool NotRetracting => _actionSequence.State != ActionSequenceStates.RetractOne && _actionSequence.State != ActionSequenceStates.RetractTwo && _actionSequence.State != ActionSequenceStates.RetractThree && _actionSequence.State != ActionSequenceStates.RetractFour;
+
+        public bool NotOutgoing => _actionSequence.State != ActionSequenceStates.OutgoingOne && _actionSequence.State != ActionSequenceStates.OutgoingTwo && _actionSequence.State != ActionSequenceStates.OutgoingThree && _actionSequence.State != ActionSequenceStates.OutgoingFour;
+
         private readonly HealthMonitoring[] _systemHealth;
 
         public ComputingModule(ActionSequenceStates startState)
