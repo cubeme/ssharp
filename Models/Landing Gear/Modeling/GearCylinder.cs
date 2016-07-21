@@ -12,10 +12,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         public readonly Fault GearCylinderIsStuckFault = new PermanentFault();
 
-        /// <summary>
-        ///  Timer to time the movement of the gear cylinder.
-        /// </summary>
-        private readonly Timer _timer = new Timer();
+        
 
         /// <summary>
         /// Latching box locking the gear cylinder in extended position.
@@ -27,7 +24,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         private readonly LatchingBox _latchingBoxRetracted;
 
-        public GearCylinder(CylinderPosition position, GearStates startState)
+        public GearCylinder(Position position, GearStates startState)
             : base(position)
         {
             _stateMachine = startState;
@@ -49,7 +46,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 
         public override void Update()
         {
-            Update(_timer, _latchingBoxExtended, _latchingBoxRetracted);
+            Update(Timer, _latchingBoxExtended, _latchingBoxRetracted);
 
 	        _stateMachine
 		        .Transition(
@@ -67,13 +64,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 					guard: RetractionCurcuitIsPressurized && _latchingBoxExtended.IsUnlocked,
 					action: () =>
 					{
-						_timer.Start(Position == CylinderPosition.Front ? 16 : 20);
+						Timer.Start(Position == Position.Front ? 16 : 20);
 					})
 
 				.Transition(
 					@from: GearStates.MoveRetracting,
 					to: GearStates.LockingRetracted,
-					guard: RetractionCurcuitIsPressurized  && _timer.HasElapsed,
+					guard: RetractionCurcuitIsPressurized  && Timer.HasElapsed,
 					action: () =>
 					{
 						_latchingBoxRetracted.Lock();
@@ -99,13 +96,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 					guard: ExtensionCircuitIsPressurized  && _latchingBoxRetracted.IsUnlocked,
 					action: () =>
 					{
-						_timer.Start(Position == CylinderPosition.Front ? 12 : 16);
+						Timer.Start(Position == Position.Front ? 12 : 16);
 					})
 
 				.Transition(
 					@from: GearStates.MoveExtending,
 					to: GearStates.LockingExtended,
-					guard: ExtensionCircuitIsPressurized  && _timer.HasElapsed,
+					guard: ExtensionCircuitIsPressurized  && Timer.HasElapsed,
 					action: () =>
 					{
 						_latchingBoxExtended.Lock();
@@ -131,7 +128,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 					guard: ExtensionCircuitIsPressurized,
 					action: () =>
 					{
-						_timer.Start(Position == CylinderPosition.Front ? 12 - (3 * _timer.RemainingTime) / 4 : 16 - (4 * _timer.RemainingTime) / 5);
+						Timer.Start(Position == Position.Front ? 12 - (3 * Timer.RemainingTime) / 4 : 16 - (4 * Timer.RemainingTime) / 5);
 					})
 
 				.Transition(
@@ -140,7 +137,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 					guard: RetractionCurcuitIsPressurized,
 					action: () =>
 					{
-						_timer.Start(Position == CylinderPosition.Front ? 16 - (4 * _timer.RemainingTime) / 3 : 20 - (5 * _timer.RemainingTime) / 4);
+						Timer.Start(Position == Position.Front ? 16 - (4 * Timer.RemainingTime) / 3 : 20 - (5 * Timer.RemainingTime) / 4);
 					})
 
                 .Transition(
@@ -160,11 +157,11 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(GearCylinderIsStuckFault))]
         public class GearCylinderIsStuckFaultEffect : GearCylinder
         {
-            public GearCylinderIsStuckFaultEffect(CylinderPosition position, GearStates start) : base(position, start) { }
+            public GearCylinderIsStuckFaultEffect(Position position, GearStates start) : base(position, start) { }
 
             public override void Update()
             {
-                Update(_timer, _latchingBoxExtended, _latchingBoxRetracted);
+                Update(Timer, _latchingBoxExtended, _latchingBoxRetracted);
 
                 //no statemachine transtiions
 

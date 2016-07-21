@@ -26,7 +26,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         Locking
     }
 
-    class LatchingBox : Component
+    internal class LatchingBox : Component
     {
         /// <summary>
         ///   The fault will not lock the latching box.

@@ -42,7 +42,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
     /// <summary>
     ///  Describes the position of the door.
     /// </summary>
-    public enum DoorPosition
+    public enum Position
     {
         /// <summary>
         /// Position indicating the door is located in the front of the airplane.
@@ -68,7 +68,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// <summary>
         /// Indicates the position of the door, i.e. whether it is located in the front, on the left or right side of the plane.
         /// </summary>
-        public DoorPosition Position { get; private set; }
+        public Position Position { get; private set; }
 
         /// <summary>
         ///   Indicates the current state of the doors.
@@ -94,7 +94,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// Initializes a new instance.
         /// </summary>
         /// /// <param name="position">The position the door is located at on the airplane.</param>
-        public Door(DoorPosition position)
+        public Door(Position position)
         {
             Position = position;
             DoorIsStuckFault.Name = $"{Position}DoorIsStuck";
@@ -112,7 +112,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(DoorIsStuckFault))]
         public class DoorIsStuckFaultEffect : Door
         {
-            public DoorIsStuckFaultEffect(DoorPosition position) : base(position) { }
+            public DoorIsStuckFaultEffect(Position position) : base(position) { }
 
             public override void Update()
             {

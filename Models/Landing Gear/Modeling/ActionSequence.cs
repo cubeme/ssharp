@@ -18,10 +18,8 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         RetractFour
     }
 
-    class ActionSequence : Component
+    internal class ActionSequence : Component
     {
-        
-
         private readonly ComputingModule _module;
 
         /// <summary>
@@ -130,6 +128,15 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                         _module.RetractionTwo();
                         Reset = false;
                     })
+                //if the gear shock absorbers are  not relaxed
+                .Transition(
+                    @from: ActionSequenceStates.RetractOne,
+                    to: ActionSequenceStates.RetractThree,
+                    guard: _module.DoorsOpen && !_module.GearShockAbsorberRelaxed,
+                    action: () =>
+                    {
+                        Reset = false;
+                    })
                 .Transition(
                     @from: ActionSequenceStates.RetractOne,
                     to: ActionSequenceStates.OutgoingFour,
@@ -170,7 +177,8 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     {
                         _module.Zero();
                         Reset = false;
-                    });
+                    })
+               ;
         }
     }
 }

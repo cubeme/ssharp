@@ -12,17 +12,12 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         public readonly Fault DoorCylinderIsStuckFault = new PermanentFault();
 
         /// <summary>
-        ///  Timer to time the movement of the door cylinder.
-        /// </summary>
-        private readonly Timer _timer = new Timer();
-
-        /// <summary>
         /// Two latching boxes locking the door cylinder in closed position.
         /// </summary>
         private readonly LatchingBox _latchingBoxClosedOne;
         private readonly LatchingBox _latchingBoxClosedTwo;
 
-        public DoorCylinder(CylinderPosition position)
+        public DoorCylinder(Position position)
             : base(position)
         {
             DoorCylinderIsStuckFault.Name = $"{Position}DoorCylinderIsStuck";
@@ -42,7 +37,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         public override void Update()
         {
-            Update(_timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
+            Update(Timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
 
 	        _stateMachine
 		        .Transition(
@@ -63,13 +58,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 						_latchingBoxClosedTwo.IsUnlocked,
 					action: () =>
 					{
-						_timer.Start(Position == CylinderPosition.Front ? 12 : 15);
+						Timer.Start(Position == Position.Front ? 12 : 15);
 					})
 
 				.Transition(
 					@from: DoorStates.MoveOpening,
 					to: DoorStates.Open,
-					guard: ExtensionCircuitIsPressurized && _timer.HasElapsed)
+					guard: ExtensionCircuitIsPressurized && Timer.HasElapsed)
 
 				.Transition(
 					@from: DoorStates.Open,
@@ -82,7 +77,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 					guard: RetractionCurcuitIsPressurized,
 					action: () =>
 					{
-						_timer.Start(Position == CylinderPosition.Front ? 12 : 16);
+						Timer.Start(Position == Position.Front ? 12 : 16);
 					})
 
 				.Transition(
@@ -98,7 +93,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 				.Transition(
 					@from: DoorStates.MoveClosing,
 					to: DoorStates.LockingClosed,
-					guard: RetractionCurcuitIsPressurized && _timer.HasElapsed,
+					guard: RetractionCurcuitIsPressurized && Timer.HasElapsed,
 					action: () =>
 					{
 						_latchingBoxClosedOne.Lock();
@@ -118,7 +113,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 					guard: ExtensionCircuitIsPressurized,
 					action: () =>
 					{
-						_timer.Start(Position == CylinderPosition.Front ? 12 - _timer.RemainingTime : 15 - (15 * _timer.RemainingTime) / 16);
+						Timer.Start(Position == Position.Front ? 12 - Timer.RemainingTime : 15 - (15 * Timer.RemainingTime) / 16);
 					})
 
 				.Transition(
@@ -127,7 +122,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 					guard: RetractionCurcuitIsPressurized ,
 					action: () =>
 					{
-						_timer.Start(Position == CylinderPosition.Front ? 12 - _timer.RemainingTime : 16 - (16 * _timer.RemainingTime) / 15);
+						Timer.Start(Position == Position.Front ? 12 - Timer.RemainingTime : 16 - (16 * Timer.RemainingTime) / 15);
 					})
 
                 .Transition(
@@ -148,11 +143,11 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(DoorCylinderIsStuckFault))]
         public class DoorCylinderIsStuckFaultEffect : DoorCylinder
         {
-            public DoorCylinderIsStuckFaultEffect(CylinderPosition position) : base(position) { }
+            public DoorCylinderIsStuckFaultEffect(Position position) : base(position) { }
 
             public override void Update()
             {
-                Update(_timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
+                Update(Timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
 
                 //no statemachine transtiions
 

@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.ActionSequence" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAAAAAAAAABAgAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Modeling\ActionSequence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.AircraftHydraulicCircuit" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Modeling\AircraftHydraulicCircuit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Airplane" Collapsed="true">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\Airplane.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.AnalogicalSwitch" Collapsed="true">
+    <Position X="15.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAAAAAAAAgUAgAAAAAAQAAAAAAAQAAAAAAABCAAQA=</HashCode>
+      <FileName>Modeling\AnalogicalSwitch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Cockpit" Collapsed="true">
+    <Position X="17" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQBkAAAAAA=</HashCode>
+      <FileName>Modeling\Cockpit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.ComputingModule" Collapsed="true">
+    <Position X="10" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CYwBAjAQAoggoBEQUAgAQAcEkQACAEAAABAAIiiAUIY=</HashCode>
+      <FileName>Modeling\ComputingModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Cylinder" Collapsed="true">
+    <Position X="1.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAIIAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\Cylinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.DigitalPart" Collapsed="true">
+    <Position X="11.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAKAAAAAAAAAAJAAEgCgAIIAAJAAQQAAIAAAAAAA=</HashCode>
+      <FileName>Modeling\DigitalPart.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Door" Collapsed="true">
+    <Position X="13.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAJAAAgAAAAAAAAIAAAAAIAAAAABAAAAAA=</HashCode>
+      <FileName>Modeling\Door.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.DoorCylinder" Collapsed="true">
+    <Position X="0.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEAAAhBAgAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\DoorCylinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.ElectroValve" Collapsed="true">
+    <Position X="15.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAIAgAABIAAAAAAAAAGAAAAAYABACAAAA=</HashCode>
+      <FileName>Modeling\ElectroValve.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Gear" Collapsed="true">
+    <Position X="17" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAAAQAAAgAAAQAAAAAAAQAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Modeling\Gear.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.GearCylinder" Collapsed="true">
+    <Position X="2.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAAAgAAgAAAAAAAAEACAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\GearCylinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.HealthDoors" Collapsed="true">
+    <Position X="7.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\HealthDoors.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.HealthGears" Collapsed="true">
+    <Position X="0.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\HealthGears.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.HealthMonitoring" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAACBAAAAAAAAAAAAAAAAAAAAAAAAAAEQAA=</HashCode>
+      <FileName>Modeling\HealthMonitoring.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.HealthPressureSensor" Collapsed="true">
+    <Position X="3" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\HealthPressureSensor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.HealthSwitch" Collapsed="true">
+    <Position X="5.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\HealthSwitch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.LatchingBox" Collapsed="true">
+    <Position X="13.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQQCAAAAAAgAAggAAAAAAAACAAAAAAAAAAAA0AAAAA=</HashCode>
+      <FileName>Modeling\LatchingBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Light" Collapsed="true">
+    <Position X="15.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\Light.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.MechanicalPartActuators" Collapsed="true">
+    <Position X="17" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAEACQAAAAEAAI=</HashCode>
+      <FileName>Modeling\MechanicalPartActuators.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.MechanicalPartControllers" Collapsed="true">
+    <Position X="10" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAACAAgAAgABAAAAAACAQAACACAABAABAAAAAAAAI=</HashCode>
+      <FileName>Modeling\MechanicalPartControllers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.MechanicalPartPlants" Collapsed="true">
+    <Position X="11.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAIAAAIQAAAAAABAAAJAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Modeling\MechanicalPartPlants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.InitializeMany" Collapsed="true">
+    <Position X="10" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAIAAAAEAAAAAgAQAAAAAAAAAgAAAAAAEAAA=</HashCode>
+      <FileName>Modeling\Model.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.InitializeOne" Collapsed="true">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAIAAAAEAAAAAgAAAAAAAAAAAgAAAAAAEAAA=</HashCode>
+      <FileName>Modeling\Model.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Model" Collapsed="true">
+    <Position X="13.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAgAAAAAAAAAAAAAAAAAAAgAAGAAgAAgAEA=</HashCode>
+      <FileName>Modeling\Model.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.PilotHandle" Collapsed="true">
+    <Position X="17" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACCAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Modeling\PillotHandle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Pilot" Collapsed="true">
+    <Position X="15.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIgAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\Pilot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.PressureCircuit" Collapsed="true">
+    <Position X="10" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAAAAAAAAAAAEAAAAAAAAAEAAAEAACAgAAAAE=</HashCode>
+      <FileName>Modeling\PressureCircuit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Sensor&lt;TSensorType&gt;" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAgAAAAAAA=</HashCode>
+      <FileName>Modeling\Sensor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.SensorFaultBool" Collapsed="true">
+    <Position X="0.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\SensorFaultBool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.SensorFaultGearShockAbsorber" Collapsed="true">
+    <Position X="3" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\SensorFaultGearShockAbsorber.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.SensorFaultHandle" Collapsed="true">
+    <Position X="5.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\SensorFaultHandle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.SensorFaultSwitch" Collapsed="true">
+    <Position X="7.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\SensorFaultSwitch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.Timer" Collapsed="true">
+    <Position X="13.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACCAABAAEAAAAAAAAAAAAAAAKAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\Timer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Modeling.TripleSensor&lt;TSensorType&gt;" Collapsed="true">
+    <Position X="15.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAIAACAAAAAAAAAAAAAAACAAAAAAQAAgBAAAAAA=</HashCode>
+      <FileName>Modeling\TripleSensor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SafetySharp.CaseStudies.LandingGear.Tests.Tests" Collapsed="true">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAIAAAAABAAAAAAAAAAAAAgAAQBEAAAAA=</HashCode>
+      <FileName>Tests\Tests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.ActionSequenceStates" Collapsed="true">
+    <Position X="10" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQAAAAAgAAAAIAAAAAAAQAAACIAAAAAAQAAAAgAAAAg=</HashCode>
+      <FileName>Modeling\ActionSequence.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.AirplaneStates" Collapsed="true">
+    <Position X="11.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkAA=</HashCode>
+      <FileName>Modeling\Airplane.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.AnalogicalSwitchStates" Collapsed="true">
+    <Position X="13.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAABAAAAAAAAAAAAAAAAAAAAACAACA=</HashCode>
+      <FileName>Modeling\AnalogicalSwitch.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.CylinderPosition" Collapsed="true">
+    <Position X="15.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAA=</HashCode>
+      <FileName>Modeling\Cylinder.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.Mode" Collapsed="true">
+    <Position X="13.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Modeling\DigitalPart.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.DoorStates" Collapsed="true">
+    <Position X="10" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAASAAIAAABAAAAAAAAAAAgAAAAAAAAAAACCA=</HashCode>
+      <FileName>Modeling\Door.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.DoorPosition" Collapsed="true">
+    <Position X="17" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAA=</HashCode>
+      <FileName>Modeling\Door.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.EVStates" Collapsed="true">
+    <Position X="11.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Modeling\ElectroValve.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.GearStates" Collapsed="true">
+    <Position X="15.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAhAAAIAAAAAAAAAAgAAAAYAAAAAAAAAgAAA=</HashCode>
+      <FileName>Modeling\Gear.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.GearPosition" Collapsed="true">
+    <Position X="13.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAA=</HashCode>
+      <FileName>Modeling\Gear.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.HealthMonitoringStates" Collapsed="true">
+    <Position X="10" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAAAAAACAAJQAAAAAAAAAAAAQAAAAAAAAAAACAAAQ=</HashCode>
+      <FileName>Modeling\HealthMonitoring.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.LatchingBoxState" Collapsed="true">
+    <Position X="11.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAwAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeling\LatchingBox.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SafetySharp.CaseStudies.LandingGear.Modeling.HandlePosition" Collapsed="true">
+    <Position X="17" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Modeling\Pilot.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

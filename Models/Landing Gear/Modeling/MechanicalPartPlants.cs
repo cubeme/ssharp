@@ -8,9 +8,9 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
     {
         public MechanicalPartActuators Actuators;
 
-        public readonly Door DoorFront = new Door(DoorPosition.Front);
-        public readonly Door DoorLeft = new Door(DoorPosition.Left);
-        public readonly Door DoorRight = new Door(DoorPosition.Right);
+        public readonly Door DoorFront = new Door(Position.Front);
+        public readonly Door DoorLeft = new Door(Position.Left);
+        public readonly Door DoorRight = new Door(Position.Right);
 
         public readonly Gear GearFront;
         public readonly Gear GearLeft; 
@@ -18,9 +18,9 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 
         public MechanicalPartPlants(GearStates startState)
         {
-            GearFront = new Gear(GearPosition.Front, startState);
-            GearLeft = new Gear(GearPosition.Left, startState);
-            GearRight = new Gear(GearPosition.Right, startState);
+            GearFront = new Gear(Position.Front, startState);
+            GearLeft = new Gear(Position.Left, startState);
+            GearRight = new Gear(Position.Right, startState);
         }
 
         public override void Update()

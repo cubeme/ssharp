@@ -11,6 +11,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Tests
 
     internal class Tests
     {
+        //Enumarets all reachable states.
         [Test]
         public void EnumerateAllStates()
         {
@@ -24,6 +25,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Tests
             Assert.IsTrue(result.FormulaHolds);
         }
 
+        //Simulates an outgoing or retraction sequence. Used for debugging purposes.
         [Test]
         public void Simulation()
         {
@@ -59,8 +61,6 @@ namespace SafetySharp.CaseStudies.LandingGear.Tests
                 Debug.WriteLine($"Anomaly: {model.DigitalPart.AnomalyComposition()}");
                 Debug.WriteLine($"================== (step: {i}) ==========================================");
             }
-
-            // var result = modelchecker.CheckInvariant(model, !model.DigitalPart.ComputingModules.Any(element => element.Anomaly) );
         }
 
         //Test Requirements

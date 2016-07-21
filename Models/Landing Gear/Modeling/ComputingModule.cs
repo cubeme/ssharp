@@ -159,6 +159,7 @@
 
         public ActionSequenceStates ActionSequenceState => _actionSequence.State;
 
+        //for model checking
         public bool NotRetracting => _actionSequence.State != ActionSequenceStates.RetractOne && _actionSequence.State != ActionSequenceStates.RetractTwo && _actionSequence.State != ActionSequenceStates.RetractThree && _actionSequence.State != ActionSequenceStates.RetractFour;
 
         public bool NotOutgoing => _actionSequence.State != ActionSequenceStates.OutgoingOne && _actionSequence.State != ActionSequenceStates.OutgoingTwo && _actionSequence.State != ActionSequenceStates.OutgoingThree && _actionSequence.State != ActionSequenceStates.OutgoingFour;

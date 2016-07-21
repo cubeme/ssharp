@@ -42,25 +42,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         LockingExtended
     }
 
-    /// <summary>
-    ///  Describes the position of the gear.
-    /// </summary>
-    public enum GearPosition
-    {
-        /// <summary>
-        /// Position indicating the gear is located in the front of the airplane.
-        /// </summary>
-        Front,
-        /// <summary>
-        /// Position indicating the gear is located on the left side of the airplane.
-        /// </summary>
-        Left,
-        /// <summary>
-        /// Position indicating the gear is located on the right side of the airplane.
-        /// </summary>
-        Right
-    }
-
+    
     public class Gear : Component
     {
         /// <summary>
@@ -71,7 +53,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// <summary>
         /// Indicates the position of the gear, i.e. whether it is located in the front, on the left or right side of the plane.
         /// </summary>
-        public GearPosition Position { get; private set; }
+        public Position Position { get; private set; }
 
         /// <summary>
         ///  Indicates the current state of the gears.
@@ -98,7 +80,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         /// <param name="position">The position the gear is located at on the airplane.</param>
         /// <param name="startState">Indicates the state the gear is in when the simulation is started.</param>
-        public Gear(GearPosition position, GearStates startState)
+        public Gear(Position position, GearStates startState)
         {
             Position = position;
             State = startState;
@@ -116,7 +98,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(GearIsStuckFault))]
         public class GearIsStuckFaultEffect : Gear
         {
-            public GearIsStuckFaultEffect(GearPosition position, GearStates start) : base(position, start) { }
+            public GearIsStuckFaultEffect(Position position, GearStates start) : base(position, start) { }
 
             public override void Update()
             {

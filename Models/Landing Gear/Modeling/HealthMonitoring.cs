@@ -47,7 +47,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         Retract
     }
 
-    class HealthMonitoring : Component
+    internal class HealthMonitoring : Component
     {
 
         //Health monitoring
