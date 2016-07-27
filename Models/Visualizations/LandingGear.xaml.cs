@@ -42,7 +42,7 @@ namespace SafetySharp.CaseStudies.Visualizations
 	{
 		private readonly Model _model;
 
-        private readonly ObservableCollection<Fault> _faultList;
+        private readonly ObservableCollection<Fault> _inactiveFaultList;
         private readonly ObservableCollection<Fault> _activeFaultList = new ObservableCollection<Fault>();
 
 	    private bool _handleButtonClicked;
@@ -50,40 +50,41 @@ namespace SafetySharp.CaseStudies.Visualizations
 
         private bool _anomalyToggled = true;
 
+        private bool _simulationStarted = false;
 
         public LandingGear()
 		{
 			InitializeComponent();
 
 			//Initialize the simulation environment
-			SimulationControls.ModelStateChanged += (o, e) => UpdateModelState();
+			MySimulationControls.ModelStateChanged += (o, e) => UpdateModelState();
             var model = (new Model(new InitializeOne()));
             model.Faults.SuppressActivations();
-            SimulationControls.SetModel(model);
+            MySimulationControls.SetModel(model);
+            MySimulationControls.StartButton.Clicked += StartButtonOnClicked;    
 
-			_model = (Model)SimulationControls.Model;
+            _model = (Model)MySimulationControls.Model;
 			_model.Faults.SuppressActivations();
 
-            _faultList = new ObservableCollection<Fault>(_model.Faults);
+            _inactiveFaultList = new ObservableCollection<Fault>(_model.Faults);
 
-            InactiveFaultList.ItemsSource = _faultList;
+            InactiveFaultList.ItemsSource = _inactiveFaultList;
             ActiveFaultList.ItemsSource = _activeFaultList;
 
             //Initialize the visualization state
             UpdateModelState();
 
-			SimulationControls.MaxSpeed = 64;
-			SimulationControls.ChangeSpeed(8);
+			MySimulationControls.MaxSpeed = 64;
+			MySimulationControls.ChangeSpeed(8);
 		}
 
-
-		private void UpdateModelState()
+        private void UpdateModelState()
 		{
 			if (_model == null)
 				return;
 
             //Actionsequence State
-            txtSequence.Content = _model.DigitalPart.ComputingModules[0].ActionSequenceState.ToString();
+            TxtSequence.Content = _model.DigitalPart.ComputingModules[0].ActionSequenceState.ToString();
 
             //Cockpit Lights
             Green.Foreground = _model.DigitalPart.GearsLockedDownComposition() ? Brushes.Green : Brushes.White;
@@ -95,13 +96,13 @@ namespace SafetySharp.CaseStudies.Visualizations
 		        _model.DigitalPart.AnomalyComposition();
 
                 AnomalyPopup.IsOpen = true;
-		        txtPopup.Content = "An anomaly has been detected! \nPlease reset the simulation.";
+		        TxtPopup.Content = "An anomaly has been detected! \nPlease reset the simulation.";
 
                 _anomalyToggled = false;
 		    }
 
             //Pilot Handle
-            txtHandle.Content = _model.Cockpit.PilotHandle.Position.ToString();
+            TxtHandle.Content = _model.Cockpit.PilotHandle.Position.ToString();
 
             //Button to move the pilot handle
             var moveToPosition = _model.Cockpit.PilotHandle.Position == HandlePosition.Up ? HandlePosition.Down : HandlePosition.Up;
@@ -116,7 +117,7 @@ namespace SafetySharp.CaseStudies.Visualizations
 		    }
 
             //Airplane state
-		    txtAirplane.Content = _model.Airplane.AirPlaneStatus.ToString();
+		    TxtAirplane.Content = _model.Airplane.AirPlaneStatus.ToString();
 
             //Button to change airplane status
 		    var changeAirplaneState = _model.Airplane.AirPlaneStatus == AirplaneStates.Flight ? AirplaneStates.Ground : AirplaneStates.Flight;
@@ -131,48 +132,52 @@ namespace SafetySharp.CaseStudies.Visualizations
             }
 
             //General EV
-            txtGeneralEV.Content = _model.MechanicalPartControllers.GeneralEV.State.ToString();
+            TxtGeneralEv.Content = _model.MechanicalPartControllers.GeneralEV.State.ToString();
 
             //First Pressure Circuit
-		    txtFirstPressure.Content = $"Enabled: {_model.MechanicalPartControllers.FirstPressureCircuit.IsEnabled}, Pressure: {_model.MechanicalPartControllers.FirstPressureCircuit.Pressure}";
+		    TxtFirstPressure.Content = $"Enabled: {_model.MechanicalPartControllers.FirstPressureCircuit.IsEnabled}, Pressure: {_model.MechanicalPartControllers.FirstPressureCircuit.Pressure}";
 
             //Doors
-            txtOpenEV.Content = _model.MechanicalPartControllers.OpenEV.State.ToString();
-			txtCloseEV.Content = _model.MechanicalPartControllers.CloseEV.State.ToString();
-			txtExtensionDoors.Content =
+            TxtOpenEv.Content = _model.MechanicalPartControllers.OpenEV.State.ToString();
+			TxtCloseEv.Content = _model.MechanicalPartControllers.CloseEV.State.ToString();
+			TxtExtensionDoors.Content =
 				$"Enabled: {_model.MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled}, Pressure: {_model.MechanicalPartControllers.ExtensionCircuitDoors.Pressure}";
-			txtRetractionDoors.Content =
+			TxtRetractionDoors.Content =
 				$"Enabled: {_model.MechanicalPartControllers.RetractionCircuitDoors.IsEnabled}, Pressure: {_model.MechanicalPartControllers.RetractionCircuitDoors.Pressure}";
-			txtFrontDoorCyl.Content = _model.MechanicalActuators.FrontDoorCylinder.DoorCylinderState.ToString();
-			txtLeftDoorCyl.Content = _model.MechanicalActuators.LeftDoorCylinder.DoorCylinderState.ToString();
-			txtRightDoorCyl.Content = _model.MechanicalActuators.RightDoorCylinder.DoorCylinderState.ToString();
-			txtFrontDoor.Content = _model.MechanicalPartPlants.DoorFront.State.ToString();
-			txtLeftDoor.Content = _model.MechanicalPartPlants.DoorLeft.State.ToString();
-			txtRightDoor.Content = _model.MechanicalPartPlants.DoorRight.State.ToString();
+			TxtFrontDoorCyl.Content = _model.MechanicalActuators.FrontDoorCylinder.DoorCylinderState.ToString();
+			TxtLeftDoorCyl.Content = _model.MechanicalActuators.LeftDoorCylinder.DoorCylinderState.ToString();
+			TxtRightDoorCyl.Content = _model.MechanicalActuators.RightDoorCylinder.DoorCylinderState.ToString();
+			TxtFrontDoor.Content = _model.MechanicalPartPlants.DoorFront.State.ToString();
+			TxtLeftDoor.Content = _model.MechanicalPartPlants.DoorLeft.State.ToString();
+			TxtRightDoor.Content = _model.MechanicalPartPlants.DoorRight.State.ToString();
 
 			//Gears
-			txtExtendEV.Content = _model.MechanicalPartControllers.ExtendEV.State.ToString();
-			txtRetractEV.Content = _model.MechanicalPartControllers.RetractEV.State.ToString();
-			txtExtensionGears.Content =
+			TxtExtendEv.Content = _model.MechanicalPartControllers.ExtendEV.State.ToString();
+			TxtRetractEv.Content = _model.MechanicalPartControllers.RetractEV.State.ToString();
+			TxtExtensionGears.Content =
 				$"Enabled: {_model.MechanicalPartControllers.ExtensionCircuitGears.IsEnabled}, Pressure: {_model.MechanicalPartControllers.ExtensionCircuitGears.Pressure}";
-			txtRetractionGears.Content =
+			TxtRetractionGears.Content =
 				$"Enabled: {_model.MechanicalPartControllers.RetractionCircuitGears.IsEnabled}, Pressure: {_model.MechanicalPartControllers.RetractionCircuitGears.Pressure}";
-			txtFrontGearCyl.Content = _model.MechanicalActuators.FrontGearCylinder.GearCylinderState.ToString();
-			txtLeftGearCyl.Content = _model.MechanicalActuators.LeftGearCylinder.GearCylinderState.ToString();
-			txtRightGearCyl.Content = _model.MechanicalActuators.RightGearCylinder.GearCylinderState.ToString();
-			txtFrontGear.Content = _model.MechanicalPartPlants.GearFront.State.ToString();
-			txtLeftGear.Content = _model.MechanicalPartPlants.GearLeft.State.ToString();
-			txtRightGear.Content = _model.MechanicalPartPlants.GearRight.State.ToString();
+			TxtFrontGearCyl.Content = _model.MechanicalActuators.FrontGearCylinder.GearCylinderState.ToString();
+			TxtLeftGearCyl.Content = _model.MechanicalActuators.LeftGearCylinder.GearCylinderState.ToString();
+			TxtRightGearCyl.Content = _model.MechanicalActuators.RightGearCylinder.GearCylinderState.ToString();
+			TxtFrontGear.Content = _model.MechanicalPartPlants.GearFront.State.ToString();
+			TxtLeftGear.Content = _model.MechanicalPartPlants.GearLeft.State.ToString();
+			TxtRightGear.Content = _model.MechanicalPartPlants.GearRight.State.ToString();
 		}
 
         private void HandleClicked(object sender, RoutedEventArgs e)
-		{
+        {
+            if (!_simulationStarted)
+                return;
 		    _handleButtonClicked = true;
 			UpdateModelState();
 		}
 
         private void AirplaneClicked(object sender, RoutedEventArgs e)
         {
+            if (!_simulationStarted)
+                return;
             _airplaneButtonClicked = true;
             UpdateModelState();
         }
@@ -182,7 +187,7 @@ namespace SafetySharp.CaseStudies.Visualizations
             var fault = (Fault)ActiveFaultList.SelectedItem;
             if (fault == null)
                 return;
-            _faultList.Add(fault);
+            _inactiveFaultList.Add(fault);
             _activeFaultList.Remove(fault);
 
             fault.ToggleActivationMode();
@@ -194,9 +199,14 @@ namespace SafetySharp.CaseStudies.Visualizations
             if (fault == null)
                 return;
             _activeFaultList.Add(fault);
-            _faultList.Remove(fault);
+            _inactiveFaultList.Remove(fault);
 
             fault.ToggleActivationMode();
+        }
+
+        private void StartButtonOnClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            _simulationStarted = true;
         }
 
     }

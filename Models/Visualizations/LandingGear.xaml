@@ -9,7 +9,7 @@
              mc:Ignorable="d">
 
     <DockPanel LastChildFill="true">
-        <infrastructure:SimulationControls x:Name="SimulationControls" DockPanel.Dock="Top" />
+        <infrastructure:SimulationControls x:Name="MySimulationControls" DockPanel.Dock="Top" />
 
         <Grid>
 
@@ -30,7 +30,7 @@
 
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
                     <Label VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="14" FontWeight="Bold" Content="Sequence State:" />
-                    <Label x:Name="txtSequence" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="14" />
+                    <Label x:Name="TxtSequence" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="14" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
@@ -41,7 +41,7 @@
                     
                     <Popup IsOpen="False" x:Name="AnomalyPopup" StaysOpen="False" PlacementTarget="{Binding ElementName=Red}" Placement="Top">
                         <Border BorderBrush="Black" BorderThickness="1" Background="LightYellow">
-                            <Label x:Name="txtPopup" Margin="0,0,0,0" FontSize="12" Foreground="Black"/>
+                            <Label x:Name="TxtPopup" Margin="0,0,0,0" FontSize="12" Foreground="Black"/>
                         </Border>
                     </Popup>
                 </StackPanel>
@@ -59,7 +59,7 @@
 
                     <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
                         <Label Margin="10,0,0,0" FontSize="10" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Pilot Handle:" />
-                        <Label x:Name="txtHandle" Margin="0,0,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        <Label x:Name="TxtHandle" Margin="0,0,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     </StackPanel>
                     <Button  
                         HorizontalContentAlignment="Stretch"
@@ -78,7 +78,7 @@
 
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <Label Margin="10,0,0,0" FontSize="10" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Airplane Status:" />
-                        <Label x:Name="txtAirplane" Margin="0,0,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        <Label x:Name="TxtAirplane" Margin="0,0,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     </StackPanel>
                     <Button  
                         HorizontalContentAlignment="Stretch"
@@ -97,12 +97,12 @@
 
                     <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
                         <Label Margin="10,0,0,0" FontSize="10" FontWeight="Bold" HorizontalAlignment="Left" Content="GeneralEV:" />
-                        <Label x:Name="txtGeneralEV" Margin="0,0,0,0" FontSize="10" HorizontalAlignment="Left" />
+                        <Label x:Name="TxtGeneralEv" Margin="0,0,0,0" FontSize="10" HorizontalAlignment="Left" />
                     </StackPanel>
 
                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" HorizontalAlignment="Left" Content="First Pressure Circuit:" />
-                        <Label x:Name="txtFirstPressure" Margin="0,0,0,0" FontSize="10" HorizontalAlignment="Left" />
+                        <Label x:Name="TxtFirstPressure" Margin="0,0,0,0" FontSize="10" HorizontalAlignment="Left" />
                     </StackPanel>
 
                 </Grid>
@@ -123,52 +123,52 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
                         <Label Margin="10,0,0,0" FontWeight="Bold" FontSize="10" Content="OpenEV:" />
-                        <Label x:Name="txtOpenEV" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtOpenEv" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
                         <Label Margin="10,0,0,0" FontSize="10" FontWeight="Bold" Content="CloseEV:" />
-                        <Label x:Name="txtCloseEV" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtCloseEv" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="ExtensionCircuit:" />
-                        <Label x:Name="txtExtensionDoors" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtExtensionDoors" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="RetractionCircuit:" />
-                        <Label x:Name="txtRetractionDoors" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtRetractionDoors" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Front Door Cylinder:" />
-                        <Label x:Name="txtFrontDoorCyl" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtFrontDoorCyl" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Left Door Cylinder:" />
-                        <Label x:Name="txtLeftDoorCyl" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtLeftDoorCyl" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Right Door Cylinder:" />
-                        <Label x:Name="txtRightDoorCyl" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtRightDoorCyl" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Horizontal">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Front Door:" />
-                        <Label x:Name="txtFrontDoor" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtFrontDoor" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Horizontal">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Left Door:" />
-                        <Label x:Name="txtLeftDoor" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtLeftDoor" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Horizontal">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Right Door:" />
-                        <Label x:Name="txtRightDoor" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtRightDoor" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                 </Grid>
@@ -189,52 +189,52 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
                         <Label Margin="10,0,0,0" FontSize="10" FontWeight="Bold" Content="ExtendEV:" />
-                        <Label x:Name="txtExtendEV" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtExtendEv" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
                         <Label Margin="10,0,0,0" FontSize="10" FontWeight="Bold" Content="RetractEV:" />
-                        <Label x:Name="txtRetractEV" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtRetractEv" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="ExtensionCircuit:" />
-                        <Label x:Name="txtExtensionGears" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtExtensionGears" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="RetractionCircuit:" />
-                        <Label x:Name="txtRetractionGears" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtRetractionGears" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Front Gear Cylinder:" />
-                        <Label x:Name="txtFrontGearCyl" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtFrontGearCyl" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Left Gear Cylinder:" />
-                        <Label x:Name="txtLeftGearCyl" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtLeftGearCyl" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Vertical">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Right Gear Cylinder:" />
-                        <Label x:Name="txtRightGearCyl" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtRightGearCyl" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Horizontal">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Front Gear:" />
-                        <Label x:Name="txtFrontGear" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtFrontGear" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Horizontal">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Left Gear:" />
-                        <Label x:Name="txtLeftGear" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtLeftGear" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Horizontal">
                         <Label Margin="0,0,0,0" FontSize="10" FontWeight="Bold" Content="Right Gear:" />
-                        <Label x:Name="txtRightGear" Margin="0,0,0,0" FontSize="10" />
+                        <Label x:Name="TxtRightGear" Margin="0,0,0,0" FontSize="10" />
                     </StackPanel>
 
                 </Grid>
