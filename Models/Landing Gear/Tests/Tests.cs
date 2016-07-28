@@ -12,7 +12,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Tests
 
     internal class Tests
     {
-        //Enumarets all reachable states.
+        //Enumaretes all reachable states.
         [Test]
         public void EnumerateAllStates()
         {

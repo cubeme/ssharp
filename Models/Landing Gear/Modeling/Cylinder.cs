@@ -27,7 +27,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
     public class Cylinder : Component
     {
         /// <summary>
-        ///   Timer to time the movement of the gear cylinder.
+        ///   Timer to time the movement of the cylinders.
         /// </summary>
         protected readonly Timer Timer = new Timer();
 

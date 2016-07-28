@@ -22,16 +22,10 @@
 
 namespace SafetySharp.CaseStudies.Visualizations
 {
-	using System;
-	using System.Collections.Generic;
+
 	using System.Collections.ObjectModel;
-	using System.ComponentModel;
-	using System.Linq;
-	using System.Runtime.CompilerServices;
 	using System.Windows;
-	using System.Windows.Controls.Primitives;
 	using System.Windows.Media;
-	using Analysis;
 	using CaseStudies.LandingGear.Modeling;
 	using Modeling;
 
@@ -42,15 +36,19 @@ namespace SafetySharp.CaseStudies.Visualizations
 	{
 		private readonly Model _model;
 
+        //Collections for the ListBoxes
         private readonly ObservableCollection<Fault> _inactiveFaultList;
         private readonly ObservableCollection<Fault> _activeFaultList = new ObservableCollection<Fault>();
 
+        //Bools that indicates whether an the pilot handle has been moved or the state of the airplane has been changed
 	    private bool _handleButtonClicked;
         private bool _airplaneButtonClicked;
 
+        //Used for displaying a detected anomaly
         private bool _anomalyToggled = true;
 
-        private bool _simulationStarted = false;
+        //Used for prohibiting any onClick actions of HandleButton and AirplaneButton if the simulation has not yet started/is paused
+        private bool _simulationStarted;
 
         public LandingGear()
 		{
@@ -61,12 +59,14 @@ namespace SafetySharp.CaseStudies.Visualizations
             var model = (new Model(new InitializeOne()));
             model.Faults.SuppressActivations();
             MySimulationControls.SetModel(model);
+
             MySimulationControls.StartButton.Clicked += StartButtonOnClicked;
             MySimulationControls.PauseButton.Clicked += PauseButtonOnClicked;
 
             _model = (Model)MySimulationControls.Model;
 			_model.Faults.SuppressActivations();
 
+            //Set fault lists
             _inactiveFaultList = new ObservableCollection<Fault>(_model.Faults);
 
             InactiveFaultList.ItemsSource = _inactiveFaultList;
@@ -92,15 +92,15 @@ namespace SafetySharp.CaseStudies.Visualizations
             Orange.Foreground = _model.DigitalPart.GearsManeuveringComposition() ? Brushes.Orange : Brushes.White;
             Red.Foreground = _model.DigitalPart.AnomalyComposition() ? Brushes.Red : Brushes.White;
 
-		    if (_anomalyToggled && _model.DigitalPart.AnomalyComposition())
-		    {
-		        _model.DigitalPart.AnomalyComposition();
+            if (_anomalyToggled && _model.DigitalPart.AnomalyComposition())
+            {
+                _model.DigitalPart.AnomalyComposition();
 
                 AnomalyPopup.IsOpen = true;
-		        TxtPopup.Content = "An anomaly has been detected! \nPlease reset the simulation.";
+                TxtPopup.Content = "An anomaly has been detected! \nPlease reset the simulation.";
 
                 _anomalyToggled = false;
-		    }
+            }
 
             //Pilot Handle
             TxtHandle.Content = _model.Cockpit.PilotHandle.Position.ToString();

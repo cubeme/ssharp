@@ -210,12 +210,18 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         public ActionSequenceStates ActionSequenceState => _actionSequence.State;
 
-        //for model checking
+        //needed for unit tests
+        /// <summary>
+        /// Gets a value indicating whether the gears are not being retracted.
+        /// </summary>
         public bool NotRetracting
             =>
                 _actionSequence.State != ActionSequenceStates.RetractOne && _actionSequence.State != ActionSequenceStates.RetractTwo &&
                 _actionSequence.State != ActionSequenceStates.RetractThree && _actionSequence.State != ActionSequenceStates.RetractFour;
 
+        /// <summary>
+        /// Gets a value indicating whether the gears are not being extended.
+        /// </summary>
         public bool NotOutgoing
             =>
                 _actionSequence.State != ActionSequenceStates.OutgoingOne && _actionSequence.State != ActionSequenceStates.OutgoingTwo &&

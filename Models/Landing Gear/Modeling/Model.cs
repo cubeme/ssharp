@@ -48,7 +48,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         public readonly AirplaneStates AirplaneState = AirplaneStates.Flight;
         public readonly GearStates GearStart = GearStates.LockedExtended;
         public readonly HandlePosition HandlePosition = HandlePosition.Down;
-        public readonly HandlePosition Move = HandlePosition.Up;
+        public readonly HandlePosition Move = HandlePosition.Down;
         public readonly int PressureLimit = 60;
     }
 

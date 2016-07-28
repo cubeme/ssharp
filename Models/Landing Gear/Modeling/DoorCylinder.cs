@@ -42,11 +42,6 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         private readonly StateMachine<DoorStates> _stateMachine = DoorStates.LockedClosed;
 
         /// <summary>
-        ///   Timer to time the movement of the door cylinder.
-        /// </summary>
-        private readonly Timer _timer = new Timer();
-
-        /// <summary>
         ///   The fault keeps the door cylinder stuck in a certain state.
         /// </summary>
         public readonly Fault DoorCylinderIsStuckFault = new PermanentFault();
@@ -73,7 +68,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// </summary>
         public override void Update()
         {
-            Update(_timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
+            Update(Timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
 
             _stateMachine
                 .Transition(
@@ -91,11 +86,11 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     guard:
                         ExtensionCircuitIsPressurized && _latchingBoxClosedOne.IsUnlocked &&
                         _latchingBoxClosedTwo.IsUnlocked,
-                    action: () => { _timer.Start(Position == Position.Front ? 12 : 15); })
+                    action: () => { Timer.Start(Position == Position.Front ? 12 : 15); })
                 .Transition(
                     @from: DoorStates.MoveOpening,
                     to: DoorStates.Open,
-                    guard: ExtensionCircuitIsPressurized && _timer.HasElapsed)
+                    guard: ExtensionCircuitIsPressurized && Timer.HasElapsed)
                 .Transition(
                     @from: DoorStates.Open,
                     to: DoorStates.Open,
@@ -104,7 +99,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     @from: new[] { DoorStates.Open, DoorStates.OpenLoose },
                     to: DoorStates.MoveClosing,
                     guard: RetractionCurcuitIsPressurized,
-                    action: () => { _timer.Start(Position == Position.Front ? 12 : 16); })
+                    action: () => { Timer.Start(Position == Position.Front ? 12 : 16); })
                 .Transition(
                     @from: DoorStates.Open,
                     to: DoorStates.OpenLoose,
@@ -116,7 +111,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                 .Transition(
                     @from: DoorStates.MoveClosing,
                     to: DoorStates.LockingClosed,
-                    guard: RetractionCurcuitIsPressurized && _timer.HasElapsed,
+                    guard: RetractionCurcuitIsPressurized && Timer.HasElapsed,
                     action: () =>
                     {
                         _latchingBoxClosedOne.Lock();
@@ -135,7 +130,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     action:
                         () =>
                         {
-                            _timer.Start(Position == Position.Front ? 12 - _timer.RemainingTime : 15 - (15 * _timer.RemainingTime) / 16);
+                            Timer.Start(Position == Position.Front ? 12 - Timer.RemainingTime : 15 - (15 * Timer.RemainingTime) / 16);
                         })
                 .Transition(
                     @from: DoorStates.MoveOpening,
@@ -144,7 +139,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     action:
                         () =>
                         {
-                            _timer.Start(Position == Position.Front ? 12 - _timer.RemainingTime : 16 - (16 * _timer.RemainingTime) / 15);
+                            Timer.Start(Position == Position.Front ? 12 - Timer.RemainingTime : 16 - (16 * Timer.RemainingTime) / 15);
                         })
                 .Transition(
                     @from: DoorStates.UnlockingClosed,
@@ -170,7 +165,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
 
             public override void Update()
             {
-                Update(_timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
+                Update(Timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
 
                 //no statemachine transtiions
             }
