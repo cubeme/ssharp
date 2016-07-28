@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 // 
-// Copyright (c) 2014-2015, Institute for Software & Systems Engineering
+// Copyright (c) 2014-2016, Institute for Software & Systems Engineering
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,15 +29,18 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
     /// </summary>
     public class Timer : Component
     {
-        public Timer()
-        {
-            Range.Restrict(_remainingTime, -1, 200, OverflowBehavior.Clamp);
-        }
-
         /// <summary>
         ///   The remaining time before the timeout is signaled. A value of -1 indicates that the timer is inactive.
         /// </summary>
         private int _remainingTime = -1;
+
+        /// <summary>
+        ///   Initializes a new instance.
+        /// </summary>
+        public Timer()
+        {
+            Range.Restrict(_remainingTime, -1, 200, OverflowBehavior.Clamp);
+        }
 
         /// <summary>
         ///   Gets a value indicating whether the timeout has elapsed. This method returns true only for the single system step where
@@ -78,6 +81,5 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         {
             --_remainingTime;
         }
-
     }
 }

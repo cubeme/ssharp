@@ -1,4 +1,24 @@
-﻿
+﻿// The MIT License (MIT)
+// 
+// Copyright (c) 2014-2016, Institute for Software & Systems Engineering
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
@@ -7,16 +27,34 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
     public class DoorCylinder : Cylinder
     {
         /// <summary>
+        ///   Latchin box locking the door cylinder in closed position.
+        /// </summary>
+        private readonly LatchingBox _latchingBoxClosedOne;
+
+        /// <summary>
+        ///   Latchin box locking the door cylinder in closed position.
+        /// </summary>
+        private readonly LatchingBox _latchingBoxClosedTwo;
+
+        /// <summary>
+        ///   Gets the state machine that manages the state of the door cylinder.
+        /// </summary>
+        private readonly StateMachine<DoorStates> _stateMachine = DoorStates.LockedClosed;
+
+        /// <summary>
+        ///   Timer to time the movement of the door cylinder.
+        /// </summary>
+        private readonly Timer _timer = new Timer();
+
+        /// <summary>
         ///   The fault keeps the door cylinder stuck in a certain state.
         /// </summary>
         public readonly Fault DoorCylinderIsStuckFault = new PermanentFault();
 
         /// <summary>
-        /// Two latching boxes locking the door cylinder in closed position.
+        ///   Initializes a new instance.
         /// </summary>
-        private readonly LatchingBox _latchingBoxClosedOne;
-        private readonly LatchingBox _latchingBoxClosedTwo;
-
+        /// <param name="position">Indicates the position of the clyinder (front, left, right).</param>
         public DoorCylinder(Position position)
             : base(position)
         {
@@ -26,105 +64,88 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         }
 
         /// <summary>
-		///   Gets the state machine that manages the state of the door cylinder.
-		/// </summary>
-		private readonly StateMachine<DoorStates> _stateMachine = DoorStates.LockedClosed;                     
-
+        ///   Gets the current state of the door cylinder.
+        /// </summary>
         public DoorStates DoorCylinderState => _stateMachine.State;
 
         /// <summary>
-        /// Updates the door cylinder
+        ///   Updates the DoorCylinder instance.
         /// </summary>
         public override void Update()
         {
-            Update(Timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
+            Update(_timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
 
-	        _stateMachine
-		        .Transition(
-			        @from: new[] { DoorStates.LockedClosed, DoorStates.LockingClosed},
-			        to: DoorStates.UnlockingClosed,
-			        guard: ExtensionCircuitIsPressurized,
-			        action: () =>
-			        {
-			            _latchingBoxClosedOne.Unlock();
-						_latchingBoxClosedTwo.Unlock();
-			        })
-
-				.Transition(
-					@from: DoorStates.UnlockingClosed,
-					to: DoorStates.MoveOpening,
-					guard:
-						ExtensionCircuitIsPressurized && _latchingBoxClosedOne.IsUnlocked &&
-						_latchingBoxClosedTwo.IsUnlocked,
-					action: () =>
-					{
-						Timer.Start(Position == Position.Front ? 12 : 15);
-					})
-
-				.Transition(
-					@from: DoorStates.MoveOpening,
-					to: DoorStates.Open,
-					guard: ExtensionCircuitIsPressurized && Timer.HasElapsed)
-
-				.Transition(
-					@from: DoorStates.Open,
-					to: DoorStates.Open,
-					guard: ExtensionCircuitIsPressurized)
-
-				.Transition(
-					@from: new [] { DoorStates.Open, DoorStates.OpenLoose},
-                    to: DoorStates.MoveClosing,
-					guard: RetractionCurcuitIsPressurized,
-					action: () =>
-					{
-						Timer.Start(Position == Position.Front ? 12 : 16);
-					})
-
-				.Transition(
-					@from: DoorStates.Open,
-					to: DoorStates.OpenLoose,
-					guard: RetractionCurcuitIsPressurized == false && ExtensionCircuitIsPressurized == false)
-
-				.Transition(
-					@from: DoorStates.OpenLoose,
-					to: DoorStates.Open,
-					guard: ExtensionCircuitIsPressurized)
-
-				.Transition(
-					@from: DoorStates.MoveClosing,
-					to: DoorStates.LockingClosed,
-					guard: RetractionCurcuitIsPressurized && Timer.HasElapsed,
-					action: () =>
-					{
-						_latchingBoxClosedOne.Lock();
-						_latchingBoxClosedTwo.Lock();
-					})
-
-				.Transition(
-					@from: DoorStates.LockingClosed,
-					to: DoorStates.LockedClosed,
-					guard:
-						RetractionCurcuitIsPressurized && _latchingBoxClosedOne.IsLocked &&
-						_latchingBoxClosedTwo.IsLocked)
-
+            _stateMachine
                 .Transition(
-					@from: DoorStates.MoveClosing,
-					to: DoorStates.MoveOpening,
-					guard: ExtensionCircuitIsPressurized,
-					action: () =>
-					{
-						Timer.Start(Position == Position.Front ? 12 - Timer.RemainingTime : 15 - (15 * Timer.RemainingTime) / 16);
-					})
-
-				.Transition(
-					@from: DoorStates.MoveOpening,
-					to: DoorStates.MoveClosing,
-					guard: RetractionCurcuitIsPressurized ,
-					action: () =>
-					{
-						Timer.Start(Position == Position.Front ? 12 - Timer.RemainingTime : 16 - (16 * Timer.RemainingTime) / 15);
-					})
-
+                    @from: new[] { DoorStates.LockedClosed, DoorStates.LockingClosed },
+                    to: DoorStates.UnlockingClosed,
+                    guard: ExtensionCircuitIsPressurized,
+                    action: () =>
+                    {
+                        _latchingBoxClosedOne.Unlock();
+                        _latchingBoxClosedTwo.Unlock();
+                    })
+                .Transition(
+                    @from: DoorStates.UnlockingClosed,
+                    to: DoorStates.MoveOpening,
+                    guard:
+                        ExtensionCircuitIsPressurized && _latchingBoxClosedOne.IsUnlocked &&
+                        _latchingBoxClosedTwo.IsUnlocked,
+                    action: () => { _timer.Start(Position == Position.Front ? 12 : 15); })
+                .Transition(
+                    @from: DoorStates.MoveOpening,
+                    to: DoorStates.Open,
+                    guard: ExtensionCircuitIsPressurized && _timer.HasElapsed)
+                .Transition(
+                    @from: DoorStates.Open,
+                    to: DoorStates.Open,
+                    guard: ExtensionCircuitIsPressurized)
+                .Transition(
+                    @from: new[] { DoorStates.Open, DoorStates.OpenLoose },
+                    to: DoorStates.MoveClosing,
+                    guard: RetractionCurcuitIsPressurized,
+                    action: () => { _timer.Start(Position == Position.Front ? 12 : 16); })
+                .Transition(
+                    @from: DoorStates.Open,
+                    to: DoorStates.OpenLoose,
+                    guard: RetractionCurcuitIsPressurized == false && ExtensionCircuitIsPressurized == false)
+                .Transition(
+                    @from: DoorStates.OpenLoose,
+                    to: DoorStates.Open,
+                    guard: ExtensionCircuitIsPressurized)
+                .Transition(
+                    @from: DoorStates.MoveClosing,
+                    to: DoorStates.LockingClosed,
+                    guard: RetractionCurcuitIsPressurized && _timer.HasElapsed,
+                    action: () =>
+                    {
+                        _latchingBoxClosedOne.Lock();
+                        _latchingBoxClosedTwo.Lock();
+                    })
+                .Transition(
+                    @from: DoorStates.LockingClosed,
+                    to: DoorStates.LockedClosed,
+                    guard:
+                        RetractionCurcuitIsPressurized && _latchingBoxClosedOne.IsLocked &&
+                        _latchingBoxClosedTwo.IsLocked)
+                .Transition(
+                    @from: DoorStates.MoveClosing,
+                    to: DoorStates.MoveOpening,
+                    guard: ExtensionCircuitIsPressurized,
+                    action:
+                        () =>
+                        {
+                            _timer.Start(Position == Position.Front ? 12 - _timer.RemainingTime : 15 - (15 * _timer.RemainingTime) / 16);
+                        })
+                .Transition(
+                    @from: DoorStates.MoveOpening,
+                    to: DoorStates.MoveClosing,
+                    guard: RetractionCurcuitIsPressurized,
+                    action:
+                        () =>
+                        {
+                            _timer.Start(Position == Position.Front ? 12 - _timer.RemainingTime : 16 - (16 * _timer.RemainingTime) / 15);
+                        })
                 .Transition(
                     @from: DoorStates.UnlockingClosed,
                     to: DoorStates.LockingClosed,
@@ -134,7 +155,6 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                         _latchingBoxClosedOne.Lock();
                         _latchingBoxClosedTwo.Lock();
                     });
-
         }
 
         /// <summary>
@@ -143,16 +163,17 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         [FaultEffect(Fault = nameof(DoorCylinderIsStuckFault))]
         public class DoorCylinderIsStuckFaultEffect : DoorCylinder
         {
-            public DoorCylinderIsStuckFaultEffect(Position position) : base(position) { }
+            public DoorCylinderIsStuckFaultEffect(Position position)
+                : base(position)
+            {
+            }
 
             public override void Update()
             {
-                Update(Timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
+                Update(_timer, _latchingBoxClosedOne, _latchingBoxClosedTwo);
 
                 //no statemachine transtiions
-
             }
         }
-
     }
 }

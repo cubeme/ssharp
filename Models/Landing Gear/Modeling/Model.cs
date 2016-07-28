@@ -1,56 +1,98 @@
-﻿namespace SafetySharp.CaseStudies.LandingGear.Modeling
+﻿// The MIT License (MIT)
+// 
+// Copyright (c) 2014-2016, Institute for Software & Systems Engineering
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using SafetySharp.Modeling;
-     
+
+    /// <summary>
+    ///   Auxialiary class for initialization of a model with more than one computing module.
+    /// </summary>
     public class InitializeMany
     {
-        public readonly int PressureLimit = 60;
-        public readonly AirplaneStates AirplaneState = AirplaneStates.Flight;
-        public readonly Mode Mode = Mode.Any;
-        public readonly int Count = 1;
         public readonly ActionSequenceStates ActionStart = ActionSequenceStates.WaitRetract;
-        public readonly HandlePosition HandlePosition = HandlePosition.Down;
-        public readonly HandlePosition Move = HandlePosition.Down;
+        public readonly AirplaneStates AirplaneState = AirplaneStates.Flight;
+        public readonly int Count = 1;
         public readonly GearStates GearStart = GearStates.LockedExtended;
+        public readonly HandlePosition HandlePosition = HandlePosition.Down;
+        public readonly Mode Mode = Mode.Any;
+        public readonly HandlePosition Move = HandlePosition.Down;
+        public readonly int PressureLimit = 60;
     }
 
+    /// <summary>
+    ///   Auxialiary class for initialization of a model with one computing module.
+    /// </summary>
     public class InitializeOne
     {
-        public readonly int PressureLimit = 60;
-        public readonly AirplaneStates AirplaneState = AirplaneStates.Flight;
         public readonly ActionSequenceStates ActionStart = ActionSequenceStates.WaitRetract;
+        public readonly AirplaneStates AirplaneState = AirplaneStates.Flight;
+        public readonly GearStates GearStart = GearStates.LockedExtended;
         public readonly HandlePosition HandlePosition = HandlePosition.Down;
         public readonly HandlePosition Move = HandlePosition.Up;
-        public readonly GearStates GearStart = GearStates.LockedExtended;
+        public readonly int PressureLimit = 60;
     }
 
     public class Model : ModelBase
-	{
-	    [Root(RootKind.Plant)]
+    {
+        /// <summary>
+        ///   Instance of Airplane categorized as plant.
+        /// </summary>
+        [Root(RootKind.Plant)]
         public Airplane Airplane;
-         
-	    [Root(RootKind.Controller)]
+
+        /// <summary>
+        ///   Instance of DigitalPart categorized as controller.
+        /// </summary>
+        [Root(RootKind.Controller)]
         public DigitalPart DigitalPart;
 
-	    [Root(RootKind.Controller)]
+        /// <summary>
+        ///   Instance of MechanicalPartControllers categorized as controller.
+        /// </summary>
+        [Root(RootKind.Controller)]
         public MechanicalPartControllers MechanicalPartControllers;
 
-	    [Root(RootKind.Plant)]
+        /// <summary>
+        ///   Instance of MechanicalPartPlants categorized as plant.
+        /// </summary>
+        [Root(RootKind.Plant)]
         public MechanicalPartPlants MechanicalPartPlants;
 
-	    public MechanicalPartActuators MechanicalActuators => MechanicalPartPlants.Actuators;
-
-	    public Cockpit Cockpit => Pilot.Cockpit;
-
-	    [Root(RootKind.Plant)]
+        /// <summary>
+        ///   Instance of Pilot categorized as plant.
+        /// </summary>
+        [Root(RootKind.Plant)]
         public Pilot Pilot;
 
+        /// <summary>
+        ///   Intialize a new instance with more than one computing module.
+        /// </summary>
+        /// <param name="initialize">Helps initialize with initialization.</param>
         public Model(InitializeMany initialize)
-		{
-
+        {
             Airplane = new Airplane(initialize.AirplaneState);
 
-            DigitalPart = new DigitalPart(initialize.Mode, initialize.Count, initialize.ActionStart );
+            DigitalPart = new DigitalPart(initialize.Mode, initialize.Count, initialize.ActionStart);
 
             MechanicalPartControllers = new MechanicalPartControllers(initialize.PressureLimit);
 
@@ -66,12 +108,14 @@
             };
 
             Bindings();
+        }
 
-		}
-
+        /// <summary>
+        ///   Intialize a new instance with one computing module.
+        /// </summary>
+        /// <param name="initialize">Helps initialize with initialization.</param>
         public Model(InitializeOne initialize)
         {
-
             Airplane = new Airplane(initialize.AirplaneState);
 
             DigitalPart = new DigitalPart(initialize.ActionStart);
@@ -90,9 +134,21 @@
             };
 
             Bindings();
-
         }
 
+        /// <summary>
+        ///   Instance of MechanicalActuators actin as container for actuators (which are neither plants nor controllers).
+        /// </summary>
+        public MechanicalPartActuators MechanicalActuators => MechanicalPartPlants.Actuators;
+
+        /// <summary>
+        ///   Instance of Cockpit actin as container for pilot handel and cockpit lights (which are neither plants nor controllers).
+        /// </summary>
+        public Cockpit Cockpit => Pilot.Cockpit;
+
+        /// <summary>
+        ///   Sets the port bindings.
+        /// </summary>
         private void Bindings()
         {
             Bind(nameof(MechanicalPartPlants.GearFront.GearCylinderState), nameof(MechanicalActuators.FrontGearCylinder.GearCylinderState));
@@ -103,21 +159,33 @@
             Bind(nameof(MechanicalPartPlants.DoorRight.DoorCylinderState), nameof(MechanicalActuators.RightDoorCylinder.DoorCylinderState));
             Bind(nameof(MechanicalPartPlants.DoorLeft.DoorCylinderState), nameof(MechanicalActuators.LeftDoorCylinder.DoorCylinderState));
 
-            Bind(nameof(MechanicalActuators.FrontGearCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
-            Bind(nameof(MechanicalActuators.RightGearCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
-            Bind(nameof(MechanicalActuators.LeftGearCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
+            Bind(nameof(MechanicalActuators.FrontGearCylinder.ExtensionCircuitIsPressurized),
+                nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
+            Bind(nameof(MechanicalActuators.RightGearCylinder.ExtensionCircuitIsPressurized),
+                nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
+            Bind(nameof(MechanicalActuators.LeftGearCylinder.ExtensionCircuitIsPressurized),
+                nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
 
-            Bind(nameof(MechanicalActuators.FrontGearCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
-            Bind(nameof(MechanicalActuators.RightGearCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
-            Bind(nameof(MechanicalActuators.LeftGearCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
+            Bind(nameof(MechanicalActuators.FrontGearCylinder.RetractionCurcuitIsPressurized),
+                nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
+            Bind(nameof(MechanicalActuators.RightGearCylinder.RetractionCurcuitIsPressurized),
+                nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
+            Bind(nameof(MechanicalActuators.LeftGearCylinder.RetractionCurcuitIsPressurized),
+                nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
 
-            Bind(nameof(MechanicalActuators.FrontDoorCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
-            Bind(nameof(MechanicalActuators.RightDoorCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
-            Bind(nameof(MechanicalActuators.LeftDoorCylinder.ExtensionCircuitIsPressurized), nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
+            Bind(nameof(MechanicalActuators.FrontDoorCylinder.ExtensionCircuitIsPressurized),
+                nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
+            Bind(nameof(MechanicalActuators.RightDoorCylinder.ExtensionCircuitIsPressurized),
+                nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
+            Bind(nameof(MechanicalActuators.LeftDoorCylinder.ExtensionCircuitIsPressurized),
+                nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
 
-            Bind(nameof(MechanicalActuators.FrontDoorCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
-            Bind(nameof(MechanicalActuators.RightDoorCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
-            Bind(nameof(MechanicalActuators.LeftDoorCylinder.RetractionCurcuitIsPressurized), nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
+            Bind(nameof(MechanicalActuators.FrontDoorCylinder.RetractionCurcuitIsPressurized),
+                nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
+            Bind(nameof(MechanicalActuators.RightDoorCylinder.RetractionCurcuitIsPressurized),
+                nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
+            Bind(nameof(MechanicalActuators.LeftDoorCylinder.RetractionCurcuitIsPressurized),
+                nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
 
             Bind(nameof(MechanicalPartControllers.ExtensionCircuitGears.InputPressure), nameof(MechanicalPartControllers.ExtendEV.Hout));
             Bind(nameof(MechanicalPartControllers.RetractionCircuitGears.InputPressure), nameof(MechanicalPartControllers.RetractEV.Hout));
@@ -209,7 +277,5 @@
                     Bind(nameof(sensor.CheckValue), nameof(MechanicalPartControllers.FirstPressureCircuit.IsEnabled));
             }
         }
-
-		
-	}
+    }
 }

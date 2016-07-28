@@ -1,16 +1,41 @@
-﻿
+﻿// The MIT License (MIT)
+// 
+// Copyright (c) 2014-2016, Institute for Software & Systems Engineering
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 namespace SafetySharp.CaseStudies.LandingGear.Modeling
-{ 
-
-    class HealthGears : HealthMonitoring
+{
+    internal class HealthGears : HealthMonitoring
     {
-
         /// <summary>
-        /// Initializes a new instance.
+        ///   Initializes a new instance.
         /// </summary>
         /// <param name="module"> The computing model which does the health monitoring. </param>
-        public HealthGears(ComputingModule module) : base(module) { }
+        public HealthGears(ComputingModule module)
+            : base(module)
+        {
+        }
 
+        /// <summary>
+        ///   Updates the HealthGears instance.
+        /// </summary>
         public override void Update()
         {
             Update(Timer);
@@ -21,14 +46,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     @from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Extend,
                     guard: ComputingModule.ExtendEV,
-                    action: () =>
-                    {
-                        Timer.Start(100);
-                    })
+                    action: () => { Timer.Start(100); })
                 .Transition(
                     @from: HealthMonitoringStates.Extend,
                     to: HealthMonitoringStates.Error,
-                    guard: (Timer.RemainingTime == 30 && ComputingModule.GearsRetracted) || (Timer.HasElapsed && !ComputingModule.GearsExtended),
+                    guard:
+                        (Timer.RemainingTime == 30 && ComputingModule.GearsRetracted) ||
+                        (Timer.HasElapsed && !ComputingModule.GearsExtended),
                     action: () => AnomalyDetected = true)
                 .Transition(
                     @from: HealthMonitoringStates.Extend,
@@ -38,14 +62,13 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     @from: HealthMonitoringStates.Wait,
                     to: HealthMonitoringStates.Retract,
                     guard: ComputingModule.RetractEV,
-                    action: () =>
-                    {
-                        Timer.Start(100);
-                    })
+                    action: () => { Timer.Start(100); })
                 .Transition(
                     @from: HealthMonitoringStates.Retract,
                     to: HealthMonitoringStates.Error,
-                    guard: (Timer.RemainingTime == 30 && ComputingModule.GearsExtended) || (Timer.HasElapsed && !ComputingModule.GearsRetracted),
+                    guard:
+                        (Timer.RemainingTime == 30 && ComputingModule.GearsExtended) ||
+                        (Timer.HasElapsed && !ComputingModule.GearsRetracted),
                     action: () => AnomalyDetected = true)
                 .Transition(
                     @from: HealthMonitoringStates.Retract,
@@ -53,6 +76,9 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     guard: ComputingModule.GearsRetracted && !ComputingModule.GearsExtended);
         }
 
+        /// <summary>
+        ///   Resets the state machine.
+        /// </summary>
         public override void Reset()
         {
             StateMachine.

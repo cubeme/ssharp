@@ -61,7 +61,8 @@ namespace SafetySharp.CaseStudies.Visualizations
             var model = (new Model(new InitializeOne()));
             model.Faults.SuppressActivations();
             MySimulationControls.SetModel(model);
-            MySimulationControls.StartButton.Clicked += StartButtonOnClicked;    
+            MySimulationControls.StartButton.Clicked += StartButtonOnClicked;
+            MySimulationControls.PauseButton.Clicked += PauseButtonOnClicked;
 
             _model = (Model)MySimulationControls.Model;
 			_model.Faults.SuppressActivations();
@@ -207,6 +208,11 @@ namespace SafetySharp.CaseStudies.Visualizations
         private void StartButtonOnClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             _simulationStarted = true;
+        }
+
+        private void PauseButtonOnClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            _simulationStarted = false;
         }
 
     }

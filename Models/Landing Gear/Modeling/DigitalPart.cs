@@ -1,4 +1,26 @@
-﻿namespace SafetySharp.CaseStudies.LandingGear.Modeling
+﻿// The MIT License (MIT)
+// 
+// Copyright (c) 2014-2016, Institute for Software & Systems Engineering
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+namespace SafetySharp.CaseStudies.LandingGear.Modeling
 {
     using System;
     using System.Collections.Generic;
@@ -6,16 +28,17 @@
     using SafetySharp.Modeling;
 
     /// <summary>
-    /// Modus the digital part operates in.
+    ///   Desscribe the mode the digital part operates in.
     /// </summary>
     public enum Mode
     {
         /// <summary>
-        /// Any one value of the computing module has to be true to return a true value (logical OR).
+        ///   Any one value of the computing module has to be true to return a true value (logical OR).
         /// </summary>
         Any,
+
         /// <summary>
-        /// All values of the computing module has to be true to return a true value (logical AND).
+        ///   All values of the computing module has to be true to return a true value (logical AND).
         /// </summary>
         All
     }
@@ -23,21 +46,25 @@
     public class DigitalPart : Component
     {
         /// <summary>
-        /// Array with computing modules the digital part is composed of.
+        ///   Function delegate that can be set in accordance with the chosen mode.
+        /// </summary>
+        private readonly Func<IEnumerable<ComputingModule>, Func<ComputingModule, bool>, bool> _comparisonFunction;
+
+        /// <summary>
+        ///   Array with computing modules the digital part is composed of.
         /// </summary>
         public readonly ComputingModule[] ComputingModules;
 
-        private readonly Func<IEnumerable<ComputingModule>,Func<ComputingModule,bool>, bool> _comparisonFunction;
-
         /// <summary>
-        /// Initializes a new instance.
+        ///   Initializes a new instance.
         /// </summary>
         /// <param name="mode">Indicates the mode the digital part is operating in: Any, All, One.</param>
         /// <param name="count">Indicates how many computing modules are to be used.</param>
+        /// <param name="startState">Indicates the indital state of the action sequence.</param>
         public DigitalPart(Mode mode, int count, ActionSequenceStates startState)
         {
             ComputingModules = new ComputingModule[count];
-            for(var i = 0; i< count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ComputingModules[i] = new ComputingModule(startState);
             }
@@ -50,97 +77,128 @@
             InitializeSensors();
         }
 
+        /// <summary>
+        ///   Initializes a new instance with only one computing module.
+        /// </summary>
+        /// <param name="startState">Indicates the initial state of the action sequence. </param>
         public DigitalPart(ActionSequenceStates startState)
         {
-            ComputingModules = new[] {new ComputingModule(startState)};
+            ComputingModules = new[] { new ComputingModule(startState) };
             _comparisonFunction = Enumerable.Any;
 
             InitializeSensors();
         }
 
+        /// <summary>
+        ///   Updates the DigitalPart instance.
+        /// </summary>
         public override void Update()
-        {     
-            Update(ComputingModules);     
-            
-            //todo: etwas unschön
-            if(_comparisonFunction(ComputingModules, element => element.CloseEV == true))
+        {
+            Update(ComputingModules);
+
+            //Opens or closes motion controlling electro-valves
+            if (_comparisonFunction(ComputingModules, element => element.CloseEV))
+            {
                 OpenCloseEV();
+            }
             else
             {
                 CloseCloseEV();
             }
 
-            if (_comparisonFunction(ComputingModules, element => element.OpenEV == true))
+            if (_comparisonFunction(ComputingModules, element => element.OpenEV))
+            {
                 OpenOpenEV();
+            }
             else
             {
                 CloseOpenEV();
             }
 
-            if (_comparisonFunction(ComputingModules, element => element.RetractEV == true))
+            if (_comparisonFunction(ComputingModules, element => element.RetractEV))
+            {
                 OpenRetractEV();
+            }
             else
             {
                 CloseRetractEV();
             }
 
-            if (_comparisonFunction(ComputingModules, element => element.ExtendEV == true))
+            if (_comparisonFunction(ComputingModules, element => element.ExtendEV))
+            {
                 OpenExtendEV();
+            }
             else
             {
                 CloseExtendEV();
             }
-
-
         }
 
         /// <summary>
-        /// Gets a value indicating whether the general electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
-        /// </summary>       
-        public bool GeneralEVComposition() => _comparisonFunction(ComputingModules, element => element.GeneralEV == true);
+        ///   Gets a value indicating whether the general electro valve is to be stimulated through composition of the two computing
+        ///   modules outputs.
+        /// </summary>
+        public bool GeneralEVComposition() => _comparisonFunction(ComputingModules, element => element.GeneralEV);
 
         /// <summary>
-        /// Gets a value indicating whether the door closure electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
-        /// </summary
+        ///   Closes the door closing electro-valve.
+        /// </summary>
         public extern void CloseCloseEV();
+
+        /// <summary>
+        ///   Opens the door closing electro-valve.
+        /// </summary>
         public extern void OpenCloseEV();
 
         /// <summary>
-        /// Gets a value indicating whether the door opening electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
-        /// </summary
+        ///   Closes the door opening electro-valve.
+        /// </summary>
         public extern void CloseOpenEV();
+
+        /// <summary>
+        ///   Opens the door opening electro-valve.
+        /// </summary>
         public extern void OpenOpenEV();
 
         /// <summary>
-        /// Gets a value indicating whether the gear retraction electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
-        /// </summary
+        ///   Closes the gear retraction electro-valve.
+        /// </summary>
         public extern void CloseRetractEV();
+
+        /// <summary>
+        ///   Opens the gear retraction electro-valve.
+        /// </summary>
         public extern void OpenRetractEV();
 
         /// <summary>
-        /// Gets a value indicating whether the gear extension electro valve is to be stimulated through composition of the two computing modules outputs with a logical or.
-        /// </summary
+        ///   Closes the gear extension electro-valve.
+        /// </summary>
         public extern void CloseExtendEV();
+
+        /// <summary>
+        ///   OPens the gear extension electro-valve.
+        /// </summary>
         public extern void OpenExtendEV();
 
+        /// <summary>
+        ///   Gets a value indicating whether all three gears are locked down through composition of the two computing modules outputs.
+        /// </summary>
+        public bool GearsLockedDownComposition() => _comparisonFunction(ComputingModules, element => element.GearsLockedDown);
 
         /// <summary>
-        /// Gets a value indicating whether all three gears are locked down through composition of the two computing modules outputs with a logical or.
-        /// </summary
-        public bool GearsLockedDownComposition() => _comparisonFunction(ComputingModules, element => element.GearsLockedDown == true);
-
-
-        /// <summary>
-        /// Gets a value indicating whether all three gears are maneuvering through composition of the two computing modules outputs with a logical or.
-        /// </summary
-        public bool GearsManeuveringComposition() => _comparisonFunction(ComputingModules, element => element.GearsManeuvering == true);
-
+        ///   Gets a value indicating whether at least one gear or one door is not in locked position through composition of the two
+        ///   computing modules outputs.
+        /// </summary>
+        public bool GearsManeuveringComposition() => _comparisonFunction(ComputingModules, element => element.GearsManeuvering);
 
         /// <summary>
-        /// Gets a value indicating whether an anomaly has been detected through composition of the two computing modules outputs with a logical or.
-        /// </summary
-        public bool AnomalyComposition() => _comparisonFunction(ComputingModules, element => element.Anomaly == true);
+        ///   Gets a value indicating whether an anomaly has been detected through composition of the two computing modules outputs.
+        /// </summary>
+        public bool AnomalyComposition() => _comparisonFunction(ComputingModules, element => element.Anomaly);
 
+        /// <summary>
+        ///   Initializes the triple sensors in the computing modules.
+        /// </summary>
         private void InitializeSensors()
         {
             var sensorHandle = new TripleSensor<HandlePosition>("SensorPilotHandle");
@@ -170,7 +228,6 @@
 
             var sensorCircuitPressurized = new TripleSensor<bool>("SensorFirstPressureCircuit");
 
-
             foreach (var module in ComputingModules)
             {
                 module.HandlePosition = sensorHandle;
@@ -199,7 +256,6 @@
                 module.RightDoorClosed = sensorRightDoorClosed;
 
                 module.CircuitPressurized = sensorCircuitPressurized;
-
             }
         }
     }
