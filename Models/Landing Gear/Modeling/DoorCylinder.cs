@@ -98,12 +98,12 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                 .Transition(
                     @from: new[] { DoorStates.Open, DoorStates.OpenLoose },
                     to: DoorStates.MoveClosing,
-                    guard: RetractionCurcuitIsPressurized,
+                    guard: RetractionCircuitIsPressurized,
                     action: () => { Timer.Start(Position == Position.Front ? 12 : 16); })
                 .Transition(
                     @from: DoorStates.Open,
                     to: DoorStates.OpenLoose,
-                    guard: RetractionCurcuitIsPressurized == false && ExtensionCircuitIsPressurized == false)
+                    guard: RetractionCircuitIsPressurized == false && ExtensionCircuitIsPressurized == false)
                 .Transition(
                     @from: DoorStates.OpenLoose,
                     to: DoorStates.Open,
@@ -111,7 +111,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                 .Transition(
                     @from: DoorStates.MoveClosing,
                     to: DoorStates.LockingClosed,
-                    guard: RetractionCurcuitIsPressurized && Timer.HasElapsed,
+                    guard: RetractionCircuitIsPressurized && Timer.HasElapsed,
                     action: () =>
                     {
                         _latchingBoxClosedOne.Lock();
@@ -121,7 +121,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                     @from: DoorStates.LockingClosed,
                     to: DoorStates.LockedClosed,
                     guard:
-                        RetractionCurcuitIsPressurized && _latchingBoxClosedOne.IsLocked &&
+                        RetractionCircuitIsPressurized && _latchingBoxClosedOne.IsLocked &&
                         _latchingBoxClosedTwo.IsLocked)
                 .Transition(
                     @from: DoorStates.MoveClosing,
@@ -135,7 +135,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                 .Transition(
                     @from: DoorStates.MoveOpening,
                     to: DoorStates.MoveClosing,
-                    guard: RetractionCurcuitIsPressurized,
+                    guard: RetractionCircuitIsPressurized,
                     action:
                         () =>
                         {
@@ -144,7 +144,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                 .Transition(
                     @from: DoorStates.UnlockingClosed,
                     to: DoorStates.LockingClosed,
-                    guard: RetractionCurcuitIsPressurized,
+                    guard: RetractionCircuitIsPressurized,
                     action: () =>
                     {
                         _latchingBoxClosedOne.Lock();

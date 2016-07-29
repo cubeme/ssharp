@@ -166,11 +166,11 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
             Bind(nameof(MechanicalActuators.LeftGearCylinder.ExtensionCircuitIsPressurized),
                 nameof(MechanicalPartControllers.ExtensionCircuitGears.IsEnabled));
 
-            Bind(nameof(MechanicalActuators.FrontGearCylinder.RetractionCurcuitIsPressurized),
+            Bind(nameof(MechanicalActuators.FrontGearCylinder.RetractionCircuitIsPressurized),
                 nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
-            Bind(nameof(MechanicalActuators.RightGearCylinder.RetractionCurcuitIsPressurized),
+            Bind(nameof(MechanicalActuators.RightGearCylinder.RetractionCircuitIsPressurized),
                 nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
-            Bind(nameof(MechanicalActuators.LeftGearCylinder.RetractionCurcuitIsPressurized),
+            Bind(nameof(MechanicalActuators.LeftGearCylinder.RetractionCircuitIsPressurized),
                 nameof(MechanicalPartControllers.RetractionCircuitGears.IsEnabled));
 
             Bind(nameof(MechanicalActuators.FrontDoorCylinder.ExtensionCircuitIsPressurized),
@@ -180,11 +180,11 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
             Bind(nameof(MechanicalActuators.LeftDoorCylinder.ExtensionCircuitIsPressurized),
                 nameof(MechanicalPartControllers.ExtensionCircuitDoors.IsEnabled));
 
-            Bind(nameof(MechanicalActuators.FrontDoorCylinder.RetractionCurcuitIsPressurized),
+            Bind(nameof(MechanicalActuators.FrontDoorCylinder.RetractionCircuitIsPressurized),
                 nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
-            Bind(nameof(MechanicalActuators.RightDoorCylinder.RetractionCurcuitIsPressurized),
+            Bind(nameof(MechanicalActuators.RightDoorCylinder.RetractionCircuitIsPressurized),
                 nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
-            Bind(nameof(MechanicalActuators.LeftDoorCylinder.RetractionCurcuitIsPressurized),
+            Bind(nameof(MechanicalActuators.LeftDoorCylinder.RetractionCircuitIsPressurized),
                 nameof(MechanicalPartControllers.RetractionCircuitDoors.IsEnabled));
 
             Bind(nameof(MechanicalPartControllers.ExtensionCircuitGears.InputPressure), nameof(MechanicalPartControllers.ExtendEV.Hout));

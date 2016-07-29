@@ -49,7 +49,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
         /// <summary>
         ///   Gets a value indicating whether the retraction circuit is pressurized.
         /// </summary>
-        public extern bool RetractionCurcuitIsPressurized { get; }
+        public extern bool RetractionCircuitIsPressurized { get; }
 
         /// <summary>
         ///   Gets a value indictaing whether the extension circuit is pressurized.

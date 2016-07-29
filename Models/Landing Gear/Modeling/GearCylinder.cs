@@ -77,22 +77,22 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                 .Transition(
                     @from: new[] { GearStates.LockedExtended, GearStates.LockingExtended },
                     to: GearStates.UnlockingExtended,
-                    guard: RetractionCurcuitIsPressurized,
+                    guard: RetractionCircuitIsPressurized,
                     action: () => { _latchingBoxExtended.Unlock(); })
                 .Transition(
                     @from: GearStates.UnlockingExtended,
                     to: GearStates.MoveRetracting,
-                    guard: RetractionCurcuitIsPressurized && _latchingBoxExtended.IsUnlocked,
+                    guard: RetractionCircuitIsPressurized && _latchingBoxExtended.IsUnlocked,
                     action: () => { Timer.Start(Position == Position.Front ? 16 : 20); })
                 .Transition(
                     @from: GearStates.MoveRetracting,
                     to: GearStates.LockingRetracted,
-                    guard: RetractionCurcuitIsPressurized && Timer.HasElapsed,
+                    guard: RetractionCircuitIsPressurized && Timer.HasElapsed,
                     action: () => { _latchingBoxRetracted.Lock(); })
                 .Transition(
                     @from: GearStates.LockingRetracted,
                     to: GearStates.LockedRetracted,
-                    guard: RetractionCurcuitIsPressurized && _latchingBoxRetracted.IsLocked)
+                    guard: RetractionCircuitIsPressurized && _latchingBoxRetracted.IsLocked)
                 .Transition(
                     @from: new[] { GearStates.LockedRetracted, GearStates.LockingRetracted },
                     to: GearStates.UnlockingRetracted,
@@ -129,7 +129,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                 .Transition(
                     @from: GearStates.MoveExtending,
                     to: GearStates.MoveRetracting,
-                    guard: RetractionCurcuitIsPressurized,
+                    guard: RetractionCircuitIsPressurized,
                     action:
                         () =>
                         {
@@ -138,7 +138,7 @@ namespace SafetySharp.CaseStudies.LandingGear.Modeling
                 .Transition(
                     @from: GearStates.UnlockingRetracted,
                     to: GearStates.LockingRetracted,
-                    guard: RetractionCurcuitIsPressurized,
+                    guard: RetractionCircuitIsPressurized,
                     action: () => { _latchingBoxRetracted.Lock(); });
         }
 
